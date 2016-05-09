@@ -55,6 +55,23 @@ class TypoScriptParserTest extends PHPUnit_Framework_TestCase
 					'} ',
 				],
 			),
+			array (
+				[
+					'one.' => [
+						'two' => 'THREE',
+						'two.' => [
+							'three' => 'FOUR'
+						]
+					]
+				],
+				[
+					'/ single slash comment',
+					'one.two = THREE',
+					'one.two { ',
+					'	three = FOUR',
+					'} ',
+				],
+			),
 		];
 	}
 

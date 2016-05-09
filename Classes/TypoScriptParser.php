@@ -4,15 +4,31 @@ namespace ElmarHinz;
 
 class TypoScriptParser
 {
-	protected $steps = [];
+	protected $lineCount = 0;
 	protected $stack = [];
 	protected $tree = [];
-	protected $lineCount = 0;
 
 	const COMMENT = '/^\//';
 	const EMPTY = '/^\s*$/';
 	const PATH = '/^\s*([[:alnum:].]*[[:alnum:]])\s*([=<{)])\s*(.*)$/';
 	const CLOSE = '/^\s*}/';
+
+	/*
+	 * Tree to be extended by parsing additional TS templates
+	 *
+	 * Preset a an array with a TS tree that will be
+	 * extended by overruling it with every call to parse().
+	 *
+	 * The array has the same data model as the expected result
+	 * of parse().
+	 *
+	 * @param array	The tree
+	 * @return void
+	 */
+	public function presetTree($treeArray)
+	{
+		$this->tree = $treeArray;
+	}
 
 	public function parse($input)
 	{
@@ -21,40 +37,31 @@ class TypoScriptParser
 		$lines = $this->toLines($input);
 		foreach($lines as $line) {
 			if(preg_match(self::EMPTY, $line)) {
-				$this->log('EMPTY');
+				// skip
 			} elseif(preg_match(self::COMMENT, $line)) {
-				$this->log('COMMENT');
+				// skip
 			} elseif(preg_match(self::PATH, $line, $matches)) {
-				$this->log('PATH');
 				$keys = explode('.', $matches[1]);
+				if($matches[2] === '=') $valueKey = array_pop($keys);
+				// Reference to the last entry. How to improve?
+				end($this->stack);
+				$pointer =& $this->stack[key($this->stack)];
+				foreach($keys as $key) {
+					$key .= '.';
+					if(!key_exists($key, $pointer)) {
+						$pointer[$key] = array();
+					}
+					$pointer =& $pointer[$key];
+				}
 				if($matches[2] === '=') {
-					$valueKey = array_pop($keys);
-					end($this->stack);
-					$local =& $this->stack[key($this->stack)];
-					foreach($keys as $key) {
-						$key .= '.';
-						if(!key_exists($key, $local)) {
-							$local[$key] = array();
-						}
-						$local =& $local[$key];
-					}
-					$local[$valueKey] = trim($matches[3]);
+					$pointer[$valueKey] = trim($matches[3]);
 				} elseif($matches[2] === '{') {
-					end($this->stack);
-					$local =& $this->stack[key($this->stack)];
-					foreach($keys as $key) {
-						$key .= '.';
-						if(!key_exists($key, $local)) {
-							$local[$key] = array();
-						}
-						$local =& $local[$key];
-					}
-					$this->stack[] =& $local;
+					$this->stack[] =& $pointer;
 				}
 			} elseif(preg_match(self::CLOSE, $line)) {
 					array_pop($this->stack);
 			} else {
-				$this->log('INVALID');
+				// Give error feedback here.
 			}
 		}
 		return $this->tree;
@@ -73,9 +80,5 @@ class TypoScriptParser
 		return $lines;
 	}
 
-	private function log($token)
-	{
-		print("\n# " . $token);
-	}
 }
 
