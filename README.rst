@@ -17,8 +17,9 @@ Memory allocation
 =================
 
 Both parsers need to allocate new memory for every node of the parse
-tree. I guess that is the critical point. I follow to different strategies
+tree. I guess that is the critical point. I follow two different strategies
 to push the memory allocation to the C level of PHP.
+
 
 Getting started
 ===============
