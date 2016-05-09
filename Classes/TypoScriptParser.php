@@ -9,7 +9,7 @@ class TypoScriptParser
 	protected $tree = [];
 
 	const COMMENT = '/^\//';
-	const EMPTY = '/^\s*$/';
+	const VOID = '/^\s*$/';
 	const PATH = '/^\s*([[:alnum:].]*[[:alnum:]])\s*([=<{)])\s*(.*)$/';
 	const CLOSE = '/^\s*}/';
 
@@ -36,7 +36,7 @@ class TypoScriptParser
 		$this->stack[] =& $this->tree;
 		$lines = $this->toLines($input);
 		foreach($lines as $line) {
-			if(preg_match(self::EMPTY, $line)) {
+			if(preg_match(self::VOID, $line)) {
 				// skip
 			} elseif(preg_match(self::COMMENT, $line)) {
 				// skip
