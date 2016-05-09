@@ -1,0 +1,14 @@
+{
+    "name": "elmar-hinz/typoscript-parser",
+    "description": "PHP class to parse TypoScript without conditions",
+    "authors": [
+        {
+            "name": "Elmar Hinz",
+            "email": "t3elmar@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^5.3",
+        "jaz303/phake": "^0.6.0"
+    }
+}
