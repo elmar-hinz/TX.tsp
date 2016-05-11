@@ -25,9 +25,14 @@ class TypoScriptParser
 	 * @param array	The tree
 	 * @return void
 	 */
-	public function presetTree($treeArray)
+	public function presetTree(&$treeArray)
 	{
-		$this->tree = $treeArray;
+		$this->tree =& $treeArray;
+	}
+
+	public function &getTree()
+	{
+		return $this->tree;
 	}
 
 	public function parse($input)
@@ -72,7 +77,7 @@ class TypoScriptParser
 		$lines = [];
 		if(!is_array($input))
 		{
-			$lines = explode('\n', $input);
+			$lines = explode("\n", $input);
 		} else {
 			$lines = $input;
 		}

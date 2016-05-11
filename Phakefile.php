@@ -1,5 +1,7 @@
 <?php
 
+require_once("vendor/autoload.php");
+
 task('default', 'list');
 
 desc('List all tasks.');
@@ -16,9 +18,13 @@ task('list', function($application){
 
 group('test', function() {
 	desc('Run all tests');
-	task('all', 'test:unit');
+	task('all','test:speed',  'test:unit');
 
-	desc('Run simple test');
+	desc('Performance comparism test ');
+	task('speed', function() {
+		(new \ElmarHinz\Tests\PerformanceComparismTest())->main();
+	});
+	desc('Unit tests');
 	task('unit', function() {
 		passthru('./vendor/bin/phpunit ./Tests/Unit/');
 	});

@@ -2,11 +2,26 @@
 
 require_once("vendor/autoload.php");
 
+define("LF", "\n");
+define("TAB", "\t");
+
 class TypoScriptParserTest extends PHPUnit_Framework_TestCase
 {
 	public function setup()
 	{
-		$this->parser = new \ElmarHinz\TypoScriptParser();
+		$this->thisParser = new \ElmarHinz\TypoScriptParser();
+		$this->t3Parser = new \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+	}
+
+	/**
+	 * @dataProvider tsProvider
+	 */
+	public function testCmsParser($expected, $input)
+	{
+		$input = implode("\n", $input);
+		$this->t3Parser->parse($input);
+		$result = $this->t3Parser->setup;
+		$this->assertEquals($expected, $result);
 	}
 
 	/**
@@ -14,7 +29,7 @@ class TypoScriptParserTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testParse($expected, $input)
 	{
-		$result = $this->parser->parse($input);
+		$result = $this->thisParser->parse($input);
 		$this->assertEquals($expected, $result);
 	}
 
