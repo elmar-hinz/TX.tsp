@@ -22,7 +22,7 @@ class PerformanceComparismTest
 		$results[$times] = $this->recursiveVsNonrecursive($provider, $times);
 		$times = 10000;
 		$results[$times] = $this->recursiveVsNonrecursive($provider, $times);
-		$times = 30000;
+		$times = 100000;
 		$results[$times] = $this->recursiveVsNonrecursive($provider, $times);
 		$this->report($results);
 	}
