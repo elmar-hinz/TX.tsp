@@ -9,10 +9,23 @@ abstract class AbstractTypoScriptParser
 	 */
 	protected $inputLines = Null;
 
+	// Constants
+	const DOT = '.';
+
+	// Matches
 	const COMMENT = '/^\//';
 	const VOID = '/^\s*$/';
-	const PATH = '/^\s*([[:alnum:].]*[[:alnum:]])\s*([=<{)])\s*(.*)$/';
+	const PATH = '/^\s*([[:alnum:].]*[[:alnum:]])\s*(:=|[=<>{)])\s*(.*)$/';
 	const CLOSE = '/^\s*}/';
+
+	// Operators
+	const ASSIGN = '=';
+	const ALTER = ':=';
+	const UNSET = '>';
+	const COPY = '<';
+	const OPEN = '{';
+	const ML_OPEN = '(';
+	const ML_CLOSE = ')';
 
 	/**
 	 * Join multiple templates before parsing them.

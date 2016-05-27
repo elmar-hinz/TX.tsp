@@ -61,6 +61,22 @@ class TypoScriptExamples {
 					]
 				],
 			),
+			'unsetting' => array (
+				[
+					'one.two = 2',
+					'one.two.three = 3',
+					'one.four = 4',
+					'one.two >',
+				],
+				[
+					'one.four' => 4,
+				],
+				[
+					'one.' => [
+						'four' => 4,
+					],
+				],
+			),
 			'nested override' => array (
 				[
 					'one.two { ',
