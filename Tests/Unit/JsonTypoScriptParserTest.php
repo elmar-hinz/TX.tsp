@@ -1,7 +1,7 @@
 <?php
 
 require_once("vendor/autoload.php");
-use \ElmarHinz\Tests\Unit\Fixtures\TypoScriptExamples as Examples;
+use \ElmarHinz\Tests\Unit\Fixtures\FirstTypoScriptExamples as Examples;
 
 class JsonTypoScriptParserTest extends PHPUnit_Framework_TestCase
 {

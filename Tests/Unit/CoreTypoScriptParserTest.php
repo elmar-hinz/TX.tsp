@@ -17,7 +17,7 @@ class CoreTypoScriptParserTest extends PHPUnit_Framework_TestCase
 	 * @dataProvider tsProvider
 	 * @test
 	 */
-	public function parseTyposcript($input, $hash, $tree)
+	public function parseTyposcript($input, $tree)
 	{
 		$input = implode("\n", $input);
 		$this->parser->parse($input);

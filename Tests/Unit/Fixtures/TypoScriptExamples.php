@@ -12,15 +12,10 @@ class TypoScriptExamples {
 				],
 				[
 				],
-				[
-				],
 			),
 			'simple path' => array (
 				[
 					'one.two.three = FOUR',
-				],
-				[
-					'one.two.three' => 'FOUR',
 				],
 				[
 					'one.' => [
@@ -37,9 +32,6 @@ class TypoScriptExamples {
 					'} ',
 				],
 				[
-					'one.two.three' => 'FOUR',
-				],
-				[
 					'one.' => [
 						'two.' => [
 							'three' => 'FOUR'
@@ -51,9 +43,6 @@ class TypoScriptExamples {
 				[
 					'one.two = THREE',
 					'one.two = FIVE',
-				],
-				[
-					'one.two' => 'FIVE',
 				],
 				[
 					'one.' => [
@@ -69,9 +58,6 @@ class TypoScriptExamples {
 					'one.two >',
 				],
 				[
-					'one.four' => 4,
-				],
-				[
 					'one.' => [
 						'four' => '4',
 					],
@@ -84,9 +70,6 @@ class TypoScriptExamples {
 					'one.four < one.two',
 					'one.two = 22',
 					'one.two.three = 33',
-				],
-				[
-					'one.four' => 4,
 				],
 				[
 					'one.' => [
@@ -107,9 +90,6 @@ class TypoScriptExamples {
 					'} ',
 				],
 				[
-					'one.two.three' => 'FIVE',
-				],
-				[
 					'one.' => [
 						'two.' => [
 							'three' => 'FIVE'
@@ -128,10 +108,6 @@ class TypoScriptExamples {
 					'one { ',
 					'	two.three = FIVE',
 					'} ',
-				],
-				[
-					'one.two' => 'FIVE',
-					'one.two.three' => 'FIVE',
 				],
 				[
 					'one.' => [

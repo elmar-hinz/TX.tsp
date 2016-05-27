@@ -15,7 +15,7 @@ class TypoScriptParserTest extends PHPUnit_Framework_TestCase
 	 * @dataProvider tsProvider
 	 * @test
 	 */
-	public function parseTyposcript($input, $hash, $tree)
+	public function parseTyposcript($input, $tree)
 	{
 		$this->parser->appendTemplate($input);
 		$result = $this->parser->parse();
