@@ -2,20 +2,12 @@
 
 require_once("vendor/autoload.php");
 use \ElmarHinz\Tests\Unit\Fixtures\TypoScriptExamples as Examples;
-use \ElmarHinz\ExtendedParser;
+use \ElmarHinz\CoreTypoScriptParserAdapter as Adapter;
 
 if(!defined("LF")) define("LF", "\n");
 if(!defined("TAB")) define("TAB", "\t");
 
-class MatchObject
-{
-	public function match($condition)
-	{
-		return $condition == '[TRUE]';
-	}
-}
-
-class ExtendedParserTest extends PHPUnit_Framework_TestCase
+class CoreTypoScriptParserAdapterTest extends PHPUnit_Framework_TestCase
 {
 	public function setup()
 	{
@@ -24,7 +16,7 @@ class ExtendedParserTest extends PHPUnit_Framework_TestCase
 		$matcher->method('match')->will($this->returnCallback(
 			function($condition) { return $condition == '[TRUE]'; }));
 		$this->matcher = $matcher;
-		$this->parser = new ExtendedParser;
+		$this->parser = new Adapter();
 	}
 
 	/**
