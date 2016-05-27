@@ -19,6 +19,11 @@ class ExtendedParserTest extends PHPUnit_Framework_TestCase
 {
 	public function setup()
 	{
+		$matchClass = '\\TYPO3\\CMS\\Backend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher';
+		$matcher = $this->getMockBuilder($matchClass)->getMock();
+		$matcher->method('match')->will($this->returnCallback(
+			function($condition) { return $condition == '[TRUE]'; }));
+		$this->matcher = $matcher;
 		$this->parser = new ExtendedParser;
 	}
 
@@ -28,9 +33,8 @@ class ExtendedParserTest extends PHPUnit_Framework_TestCase
 	 */
 	public function parseTyposcript($input, $tree)
 	{
-		$matchObject = new MatchObject();
 		$input = implode("\n", $input);
-		$this->parser->parse($input, $matchObject);
+		$this->parser->parse($input, $this->matcher);
 		$result = $this->parser->setup;
 		$this->assertEquals($tree, $result);
 	}

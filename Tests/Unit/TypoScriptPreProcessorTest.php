@@ -2,20 +2,16 @@
 
 require_once("vendor/autoload.php");
 
-class MatchObject
-{
-	public function match($condition)
-	{
-		return $condition == '[TRUE]';
-	}
-}
-
 class TypoScriptPreProcessorTest extends PHPUnit_Framework_TestCase
 {
 	public function setup()
 	{
+		$matchClass = '\\TYPO3\\CMS\\Backend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher';
+		$matcher = $this->getMockBuilder($matchClass)->getMock();
+		$matcher->method('match')->will($this->returnCallback(
+			function($condition) { return $condition == '[TRUE]'; }));
 		$this->parser = new \ElmarHinz\TypoScriptPreProcessor();
-		$this->parser->setMatcher(new MatchObject());
+		$this->parser->setMatcher($matcher);
 	}
 
 	/**
