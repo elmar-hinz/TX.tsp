@@ -1,14 +1,17 @@
 <?php
 
+namespace ElmarHinz\TypoScript\Tests\Unit;
+
 require_once("vendor/autoload.php");
 
-use \ElmarHinz\Tests\Unit\Fixtures\TypoScriptExamples as Examples;
+use \ElmarHinz\TypoScript\Tests\Unit\Fixtures\TypoScriptExamples as Examples;
+use \ElmarHinz\TypoScript\TypoScriptParser as Parser;
 
-class TypoScriptParserTest extends PHPUnit_Framework_TestCase
+class TypoScriptParserTest extends \PHPUnit_Framework_TestCase
 {
 	public function setup()
 	{
-		$this->parser = new \ElmarHinz\TypoScriptParser();
+		$this->parser = new Parser();
 	}
 
 	/**

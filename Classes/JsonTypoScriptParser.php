@@ -1,8 +1,8 @@
 <?php
 
-namespace ElmarHinz;
+namespace ElmarHinz\TypoScript;
 
-use ElmarHinz\TypoScriptToHashParser as HashParser;
+use \ElmarHinz\TypoScript\TypoScriptToHashParser as HashParser;
 
 class JsonTypoScriptParser extends AbstractTypoScriptParser
 {

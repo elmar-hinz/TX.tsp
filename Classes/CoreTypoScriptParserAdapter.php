@@ -1,10 +1,10 @@
 <?php
 
-namespace ElmarHinz;
+namespace ElmarHinz\TypoScript;
 
 use	\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser as CoreParser;
-use	\ElmarHinz\TypoScriptParser as NewParser;
-use	\ElmarHinz\TypoScriptPreProcessor as PreProcessor;
+use	\ElmarHinz\TypoScript\TypoScriptParser as NewParser;
+use	\ElmarHinz\TypoScript\TypoScriptPreProcessor as PreProcessor;
 
 class CoreTypoScriptParserAdapter extends CoreParser
 {

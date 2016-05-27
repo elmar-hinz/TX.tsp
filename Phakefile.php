@@ -22,12 +22,12 @@ group('test', function() {
 
 	desc('Performance comparism test ');
 	task('perform', function() {
-		(new \ElmarHinz\Tests\PerformanceComparismTest())->main();
+		(new \ElmarHinz\TypoScript\Tests\PerformanceComparismTest())->main();
 	});
 
 	desc('Simple performane tests');
 	task('speed', function() {
-		(new \ElmarHinz\Tests\DiversePerformanceTest())->main();
+		(new \ElmarHinz\TypoScript\Tests\DiversePerformanceTest())->main();
 	});
 
 	desc('Unit tests');

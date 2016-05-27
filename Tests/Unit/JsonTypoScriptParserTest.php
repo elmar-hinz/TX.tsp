@@ -1,14 +1,17 @@
 <?php
 
-require_once("vendor/autoload.php");
-use \ElmarHinz\Tests\Unit\Fixtures\FirstTypoScriptExamples as Examples;
+namespace ElmarHinz\TypoScript\Tests\Unit;
 
-class JsonTypoScriptParserTest extends PHPUnit_Framework_TestCase
+require_once("vendor/autoload.php");
+use \ElmarHinz\TypoScript\Tests\Unit\Fixtures\FirstTypoScriptExamples as Examples;
+use \ElmarHinz\TypoScript\JsonTypoScriptParser as Parser;
+
+class JsonTypoScriptParserTest extends \PHPUnit_Framework_TestCase
 {
 
 	public function setup()
 	{
-		$this->parser = new \ElmarHinz\JsonTypoScriptParser;
+		$this->parser = new Parser();
 	}
 
 	/**

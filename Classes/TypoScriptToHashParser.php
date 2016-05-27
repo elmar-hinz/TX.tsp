@@ -1,6 +1,6 @@
 <?php
 
-namespace ElmarHinz;
+namespace ElmarHinz\TypoScript;
 
 class TypoScriptToHashParser extends AbstractTypoScriptParser
 {

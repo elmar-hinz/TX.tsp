@@ -1,6 +1,6 @@
 <?php
 
-namespace ElmarHinz\Tests;
+namespace ElmarHinz\TypoScript\Tests;
 
 require_once("vendor/autoload.php");
 

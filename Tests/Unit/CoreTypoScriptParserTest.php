@@ -1,12 +1,15 @@
 <?php
 
+namespace ElmarHinz\TypoScript\Tests\Unit;
+
 require_once("vendor/autoload.php");
-use \ElmarHinz\Tests\Unit\Fixtures\TypoScriptExamples as Examples;
+
+use \ElmarHinz\TypoScript\Tests\Unit\Fixtures\TypoScriptExamples as Examples;
 
 if(!defined("LF")) define("LF", "\n");
 if(!defined("TAB")) define("TAB", "\t");
 
-class CoreTypoScriptParserTest extends PHPUnit_Framework_TestCase
+class CoreTypoScriptParserTest extends \PHPUnit_Framework_TestCase
 {
 	public function setup()
 	{

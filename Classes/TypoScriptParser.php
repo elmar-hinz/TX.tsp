@@ -1,6 +1,6 @@
 <?php
 
-namespace ElmarHinz;
+namespace ElmarHinz\TypoScript;
 
 class TypoScriptParser extends AbstractTypoScriptParser
 {
@@ -76,6 +76,10 @@ class TypoScriptParser extends AbstractTypoScriptParser
 			}
 		}
 		return $tree;
+	}
+
+	public function alter(&$tree, $path)
+	{
 	}
 
 	/**

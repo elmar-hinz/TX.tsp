@@ -1,8 +1,12 @@
 <?php
 
+namespace ElmarHinz\TypoScript\Tests\Unit;
+
 require_once("vendor/autoload.php");
 
-class TypoScriptPreProcessorTest extends PHPUnit_Framework_TestCase
+use \ElmarHinz\TypoScript\TypoScriptPreProcessor;
+
+class TypoScriptPreProcessorTest extends \PHPUnit_Framework_TestCase
 {
 	public function setup()
 	{
@@ -10,7 +14,7 @@ class TypoScriptPreProcessorTest extends PHPUnit_Framework_TestCase
 		$matcher = $this->getMockBuilder($matchClass)->getMock();
 		$matcher->method('match')->will($this->returnCallback(
 			function($condition) { return $condition == '[TRUE]'; }));
-		$this->parser = new \ElmarHinz\TypoScriptPreProcessor();
+		$this->parser = new TypoScriptPreProcessor();
 		$this->parser->setMatcher($matcher);
 	}
 

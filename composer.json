@@ -16,8 +16,8 @@
     },
     "autoload": {
         "psr-4" : {
-            "ElmarHinz\\Tests\\": "Tests/",
-            "ElmarHinz\\": "Classes/"
+            "ElmarHinz\\TypoScript\\Tests\\": "Tests/",
+            "ElmarHinz\\TypoScript\\": "Classes/"
         }
     }
 }
