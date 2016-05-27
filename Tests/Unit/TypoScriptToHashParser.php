@@ -4,11 +4,11 @@ require_once("vendor/autoload.php");
 
 use \ElmarHinz\Tests\Unit\Fixtures\TypoScriptExamples as Examples;
 
-class TypoScriptParserTest extends PHPUnit_Framework_TestCase
+class TypoScriptToHashParserTest extends PHPUnit_Framework_TestCase
 {
 	public function setup()
 	{
-		$this->parser = new \ElmarHinz\TypoScriptParser();
+		$this->parser = new \ElmarHinz\TypoScriptToPlainKeysParser();
 	}
 
 	/**
@@ -18,14 +18,12 @@ class TypoScriptParserTest extends PHPUnit_Framework_TestCase
 	public function parseTyposcript($input, $hash, $tree)
 	{
 		$this->parser->appendTemplate($input);
-		$result = $this->parser->parse();
-		$this->assertEquals($tree, $result);
+		$this->assertEquals($hash, $this->parser->parse());
 	}
 
 	public function tsProvider()
 	{
 		return Examples::getExamples();
 	}
-
 }
 

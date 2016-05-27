@@ -1,14 +1,16 @@
 <?php
 
 require_once("vendor/autoload.php");
-
 use \ElmarHinz\Tests\Unit\Fixtures\TypoScriptExamples as Examples;
 
-class TypoScriptParserTest extends PHPUnit_Framework_TestCase
+if(!defined("LF")) define("LF", "\n");
+if(!defined("TAB")) define("TAB", "\t");
+
+class CoreTypoScriptParserTest extends PHPUnit_Framework_TestCase
 {
 	public function setup()
 	{
-		$this->parser = new \ElmarHinz\TypoScriptParser();
+		$this->parser = new \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 	}
 
 	/**
@@ -17,8 +19,9 @@ class TypoScriptParserTest extends PHPUnit_Framework_TestCase
 	 */
 	public function parseTyposcript($input, $hash, $tree)
 	{
-		$this->parser->appendTemplate($input);
-		$result = $this->parser->parse();
+		$input = implode("\n", $input);
+		$this->parser->parse($input);
+		$result = $this->parser->setup;
 		$this->assertEquals($tree, $result);
 	}
 

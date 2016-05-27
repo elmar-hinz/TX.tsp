@@ -21,11 +21,22 @@ group('test', function() {
 	task('all','test:speed',  'test:unit');
 
 	desc('Performance comparism test ');
-	task('speed', function() {
+	task('perform', function() {
 		(new \ElmarHinz\Tests\PerformanceComparismTest())->main();
 	});
+
+	desc('Simple performane tests');
+	task('speed', function() {
+		(new \ElmarHinz\Tests\DiversePerformanceTest())->main();
+	});
+
 	desc('Unit tests');
 	task('unit', function() {
 		passthru('./vendor/bin/phpunit ./Tests/Unit/');
+	});
+
+	desc('Unit tests --testdox');
+	task('dox', function() {
+		passthru('./vendor/bin/phpunit --testdox ./Tests/Unit/');
 	});
 });
