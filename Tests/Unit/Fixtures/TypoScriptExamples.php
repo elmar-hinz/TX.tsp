@@ -73,7 +73,27 @@ class TypoScriptExamples {
 				],
 				[
 					'one.' => [
-						'four' => 4,
+						'four' => '4',
+					],
+				],
+			),
+			'copying' => array (
+				[
+					'one.two = 2',
+					'one.two.three = 3',
+					'one.four < one.two',
+					'one.two = 22',
+					'one.two.three = 33',
+				],
+				[
+					'one.four' => 4,
+				],
+				[
+					'one.' => [
+						'two' => '22',
+						'two.' => [ 'three' => '33', ],
+						'four' => '2',
+						'four.' => [ 'three' => '3', ],
 					],
 				],
 			),
