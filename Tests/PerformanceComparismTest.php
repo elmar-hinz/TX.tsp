@@ -4,10 +4,10 @@ namespace ElmarHinz\TypoScript\Tests;
 
 require_once("vendor/autoload.php");
 
-use \ElmarHinz\TypoScriptPreProcessor as PreProcessor;
-use \ElmarHinz\TypoScriptParser as DirectParser;
-use \ElmarHinz\JsonTypoScriptParser as JsonParser;
-use \ElmarHinz\TypoScriptToHashParser as HashParser;
+use \ElmarHinz\TypoScript\TypoScriptPreProcessor as PreProcessor;
+use \ElmarHinz\TypoScript\TypoScriptParser as DirectParser;
+use \ElmarHinz\TypoScript\JsonTypoScriptParser as JsonParser;
+use \ElmarHinz\TypoScript\TypoScriptToHashParser as HashParser;
 use \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser as CoreParser;
 
 define("LF", "\n");

@@ -48,7 +48,8 @@ class TypoScriptParser extends AbstractTypoScriptParser
 		$operator = self::EMPTY_STRING;
 		$value = self::EMPTY_STRING;
 		$context = self::OUTER_CONTEXT;
-		foreach($this->inputLines as $line) {
+		for($nr = 0; $nr < count($this->inputLines); $nr++) {
+			$line = $this->inputLines[$nr];
 			switch($context) {
 			case self::OUTER_CONTEXT:
 				if(preg_match(self::PATH, $line, $matches)) {
