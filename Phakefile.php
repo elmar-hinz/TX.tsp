@@ -1,6 +1,6 @@
 <?php
 
-require_once("vendor/autoload.php");
+require_once(".Build/vendor/autoload.php");
 
 task('default', 'list');
 
@@ -17,26 +17,14 @@ task('list', function($application){
 });
 
 group('test', function() {
-	desc('Run all tests');
-	task('all','test:speed',  'test:unit');
-
-	desc('Performance comparism test ');
-	task('perform', function() {
-		(new \ElmarHinz\TypoScript\Tests\PerformanceComparismTest())->main();
-	});
-
-	desc('Simple performane tests');
-	task('speed', function() {
-		(new \ElmarHinz\TypoScript\Tests\DiversePerformanceTest())->main();
-	});
 
 	desc('Unit tests');
 	task('unit', function() {
-		passthru('./vendor/bin/phpunit ./Tests/Unit/');
+		passthru('.Build/bin/phpunit Tests/Unit/');
 	});
 
 	desc('Unit tests --testdox');
 	task('dox', function() {
-		passthru('./vendor/bin/phpunit --testdox ./Tests/Unit/');
+		passthru('.Build/bin/phpunit --testdox Tests/Unit/');
 	});
 });

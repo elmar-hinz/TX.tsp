@@ -2,8 +2,6 @@
 
 namespace ElmarHinz\TypoScript\Tests\Unit;
 
-require_once("vendor/autoload.php");
-
 use \ElmarHinz\TypoScript\Tests\Unit\Fixtures\TypoScriptExamples as Examples;
 
 if(!defined("LF")) define("LF", "\n");

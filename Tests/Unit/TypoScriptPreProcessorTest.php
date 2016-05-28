@@ -2,8 +2,6 @@
 
 namespace ElmarHinz\TypoScript\Tests\Unit;
 
-require_once("vendor/autoload.php");
-
 use \ElmarHinz\TypoScript\TypoScriptPreProcessor;
 
 class TypoScriptPreProcessorTest extends \PHPUnit_Framework_TestCase
