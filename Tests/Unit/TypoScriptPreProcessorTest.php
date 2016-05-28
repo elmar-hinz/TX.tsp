@@ -26,7 +26,7 @@ class TypoScriptPreProcessorTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->parser->appendTemplate($dirty);
 		$result = implode("\n", $this->parser->parse());
-		$this->assertEquals($clean, $result);
+		$this->assertSame($clean, $result);
 	}
 
 	public function tsProvider()

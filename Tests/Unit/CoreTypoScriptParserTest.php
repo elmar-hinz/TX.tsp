@@ -16,6 +16,11 @@ class CoreTypoScriptParserTest extends \PHPUnit_Framework_TestCase
 		$this->parser = new \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 	}
 
+	public function tsProvider()
+	{
+		return Examples::getExamples();
+	}
+
 	/**
 	 * @dataProvider tsProvider
 	 * @test
@@ -25,12 +30,7 @@ class CoreTypoScriptParserTest extends \PHPUnit_Framework_TestCase
 		$input = implode("\n", $input);
 		$this->parser->parse($input);
 		$result = $this->parser->setup;
-		$this->assertEquals($tree, $result);
-	}
-
-	public function tsProvider()
-	{
-		return Examples::getExamples();
+		$this->assertSame($tree, $result);
 	}
 
 }

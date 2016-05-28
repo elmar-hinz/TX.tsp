@@ -18,9 +18,9 @@ class TypoScriptPreProcessor extends AbstractTypoScriptParser
 		$lines = [];
 		$doCollect = true;
 		foreach($this->inputLines as $line) {
-			$line = ltrim($line);
-			if($line && $line[0] == '[') {
-				$doCollect = $this->handleCondition($line);
+			$trimmed = ltrim($line);
+			if($trimmed && $trimmed[0] == '[') {
+				$doCollect = $this->handleCondition($trimmed);
 			} elseif ($doCollect) {
 				$lines[] = $line;
 			}
@@ -28,8 +28,8 @@ class TypoScriptPreProcessor extends AbstractTypoScriptParser
 		return $lines;
 	}
 
-	public function handleCondition($line) {
-		$condition = trim($line);
+	protected function handleCondition($trimmedLine) {
+		$condition = $trimmedLine;
 		$tag = strtoupper($condition);
 		$doCollect = true;
 		if ($tag == '[GLOBAL]' || $tag == '[END]') {

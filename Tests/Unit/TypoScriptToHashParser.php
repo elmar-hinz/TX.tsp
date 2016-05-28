@@ -20,7 +20,7 @@ class TypoScriptToHashParserTest extends \PHPUnit_Framework_TestCase
 	public function parseTyposcript($input, $hash, $tree)
 	{
 		$this->parser->appendTemplate($input);
-		$this->assertEquals($hash, $this->parser->parse());
+		$this->assertSame($hash, $this->parser->parse());
 	}
 
 	public function tsProvider()

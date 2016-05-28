@@ -12,12 +12,17 @@ abstract class AbstractTypoScriptParser
 
 	// Constants
 	const DOT = '.';
+	const NL = "\n";
+	const EMPTY_STRING = '';
 
 	// Matches
-	const COMMENT = '/^\//';
-	const VOID = '/^\s*$/';
-	const PATH = '/^\s*([[:alnum:].]*[[:alnum:]])\s*(:=|[=<>{)])\s*(.*)$/';
-	const CLOSE = '/^\s*}/';
+	const COMMENT = '/^\s*(#|\/[^\*])/';
+	const VOID = '|^\s*$|';
+	const PATH = '/^\s*([[:alnum:].]*[[:alnum:]])\s*(:=|[=<>{(])\s*(.*)$/';
+	const CLOSE = '|^\s*}|';
+	const MULTILINE_COMMENT_OPEN = '|^\s*/\*|';
+	const MULTILINE_COMMENT_CLOSE = '|^\s*\*/|';
+	const MULTILINE_VALUE_CLOSE = '|^\s*\)|';
 
 	// Operators
 	const ASSIGN = '=';
@@ -25,8 +30,12 @@ abstract class AbstractTypoScriptParser
 	const UNSET = '>';
 	const COPY = '<';
 	const OPEN = '{';
-	const ML_OPEN = '(';
-	const ML_CLOSE = ')';
+	const MULITLINE_VALUE_OPEN = '(';
+
+	// Contexts
+	const OUTER_CONTEXT = 1;
+	const MULITLINE_COMMENT_CONTEXT = 2;
+	const MULITLINE_VALUE_CONTEXT = 3;
 
 	/**
 	 * Join multiple templates before parsing them.

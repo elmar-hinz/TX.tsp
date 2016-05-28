@@ -8,9 +8,28 @@ class TypoScriptExamples {
 		return [
 			'comments' => array (
 				[
+					'/ single slash comment',
 					'// double slash comment',
+					'# hash comment',
 				],
 				[
+				],
+			),
+			'multiline comments' => array (
+				[
+					'before = comment',
+					'/* comment begin ',
+				    '  comment.looks.like = path',
+				    '  comment.looks (',
+					'          like',
+					'          multiline value',
+					'  )',
+					'*/ comment end discared ',
+					'after = comment',
+				],
+				[
+					'before' => 'comment',
+					'after' => 'comment',
 				],
 			),
 			'simple path' => array (
@@ -35,6 +54,28 @@ class TypoScriptExamples {
 					'one.' => [
 						'two.' => [
 							'three' => 'FOUR'
+						]
+					]
+				],
+			),
+			'multiline value' => array (
+				[
+					'one.two { ',
+					'	three (',
+					'         multiline 1',
+					'         multiline 2',
+					'	)',
+					'	empty (',
+					'	)',
+					'} ',
+				],
+				[
+					'one.' => [
+						'two.' => [
+							'three' =>
+							'         multiline 1' . "\n"
+							.  '         multiline 2',
+							'empty' => '',
 						]
 					]
 				],
@@ -117,13 +158,18 @@ class TypoScriptExamples {
 					'one { ',
 					'	two.three = FIVE',
 					'} ',
+					'one { ',
+					'   value = value',
+					'   value := prependString(pre_)',
+					'} ',
 				],
 				[
 					'one.' => [
 						'two' => 'FIVE',
 						'two.' => [
 							'three' => 'FIVE'
-						]
+						],
+						'value' => 'pre_value',
 					]
 				],
 			),
@@ -159,8 +205,8 @@ class TypoScriptExamples {
 				],
 				[
 					'before' => '0',
-					'after' => '99',
 					'condition.' => ['2' => '2'],
+					'after' => '99',
 				],
 			),
 			'true-false'  => array (
@@ -175,8 +221,8 @@ class TypoScriptExamples {
 				],
 				[
 					'before' => '0',
-					'after' => '99',
 					'condition.' => ['1' => '1'],
+					'after' => '99',
 				],
 			),
 			'true-true'  => array (
@@ -191,11 +237,11 @@ class TypoScriptExamples {
 				],
 				[
 					'before' => '0',
-					'after' => '99',
 					'condition.' => [
 						'1' => '1',
 						'2' => '2'
 					],
+					'after' => '99',
 				],
 			),
 			'false-else'  => array (
@@ -210,10 +256,10 @@ class TypoScriptExamples {
 				],
 				[
 					'before' => '0',
-					'after' => '99',
 					'condition.' => [
 						'2' => '2'
 					],
+					'after' => '99',
 				],
 			),
 			'true-else'  => array (
@@ -228,16 +274,18 @@ class TypoScriptExamples {
 				],
 				[
 					'before' => '0',
-					'after' => '99',
 					'condition.' => [
 						'1' => '1'
 					],
+					'after' => '99',
 				],
 			),
 			'complex'  => array (
 				[
 					'[TRUE]',
+						'/ single slash comment',
 						'// double slash comment',
+						'# hash comment',
 						'one.two = THREE',
 						'one.two { ',
 						'	three = FOUR',

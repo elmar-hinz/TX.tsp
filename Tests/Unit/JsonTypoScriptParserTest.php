@@ -21,7 +21,7 @@ class JsonTypoScriptParserTest extends \PHPUnit_Framework_TestCase
 	{
 		$array = ["a" => ["aa" => 1, "ab" => 2]];
 		$json = json_encode($array);
-		$this->assertEquals($array, json_decode($json, true));
+		$this->assertSame($array, json_decode($json, true));
 	}
 
 	/**
@@ -34,7 +34,7 @@ class JsonTypoScriptParserTest extends \PHPUnit_Framework_TestCase
 		$this->parser->appendTemplate($input);
 		$result = $this->parser->parse();
 		/* $result = json_decode($result, true); */
-		$this->assertEquals($expected, $result);
+		$this->assertSame($expected, $result);
 	}
 
 	/**
@@ -45,7 +45,7 @@ class JsonTypoScriptParserTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->parser->appendTemplate($input);
 		$result = $this->parser->parse();
-		$this->assertEquals($tree, $result);
+		$this->assertSame($tree, $result);
 	}
 
 	public function tsProvider()

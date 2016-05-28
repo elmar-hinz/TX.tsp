@@ -19,6 +19,11 @@ class TypoScriptParserTest extends \PHPUnit_Framework_TestCase
 		$this->parser->setValueModifier($modifier);
 	}
 
+	public function tsProvider()
+	{
+		return Examples::getExamples();
+	}
+
 	/**
 	 * @dataProvider tsProvider
 	 * @test
@@ -27,12 +32,7 @@ class TypoScriptParserTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->parser->appendTemplate($input);
 		$result = $this->parser->parse();
-		$this->assertEquals($tree, $result);
-	}
-
-	public function tsProvider()
-	{
-		return Examples::getExamples();
+		$this->assertSame($tree, $result);
 	}
 
 }

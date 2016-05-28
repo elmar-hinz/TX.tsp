@@ -35,7 +35,7 @@ class CoreTypoScriptParserAdapterTest extends \PHPUnit_Framework_TestCase
 		$input = implode("\n", $input);
 		$this->parser->parse($input, $this->matcher);
 		$result = $this->parser->setup;
-		$this->assertEquals($tree, $result);
+		$this->assertSame($tree, $result);
 	}
 
 	public function conditionasTsProvider()
@@ -52,7 +52,7 @@ class CoreTypoScriptParserAdapterTest extends \PHPUnit_Framework_TestCase
 		$input = implode("\n", $input);
 		$this->parser->parse($input, $this->matcher);
 		$result = $this->parser->setup;
-		$this->assertEquals($tree, $result);
+		$this->assertSame($tree, $result);
 	}
 
 }
