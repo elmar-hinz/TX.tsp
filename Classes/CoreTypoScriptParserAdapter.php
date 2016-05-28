@@ -20,9 +20,15 @@ class CoreTypoScriptParserAdapter extends CoreParser implements ValueModifierInt
 		$this->setup = $parser->parse();
 	}
 
-	public function modifyValue($value, $modifier, $argument = null) : string
+	public function modifyValue($value, $operation) : string
 	{
-		return (string)$this->executeValueModifier($modifier, $argument, $value);
+		$pattern = '/^([[:alpha:]]+)\\s*\\((.*)\\).*/';
+		if(preg_match($pattern, $operation, $matches)) {
+			list(,$modifier, $argument) = $matches;
+				return (string)$this->executeValueModifier($modifier, $argument, $value);
+		} else {
+			// Error handling: not well formatted modifier
+		}
 	}
 
 }

@@ -5,13 +5,17 @@ namespace ElmarHinz\TypoScript;
 interface ValueModifierInterface
 {
 	/**
-	 * Modify the input string
+	 * Modify the input string by the given operation.
+	 *
+	 * The modifier oparation is an unparsed string, i.e.:
+	 *   'removeFromList(2,1)'
+	 *
+	 * It depends fully apon the implementation, which formats are supported.
 	 *
 	 * @param string The input value.
-	 * @param string The modifier name.
-	 * @param string The modifier argument.
+	 * @param string The operation.
 	 * @return string The modified input value.
 	 */
-    public function modifyValue($value, $modifier, $argument = null) : string;
+    public function modifyValue($value, $unparsedModifierOperation) : string;
 }
 

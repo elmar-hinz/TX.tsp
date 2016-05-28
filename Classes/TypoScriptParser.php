@@ -26,12 +26,15 @@ class TypoScriptParser extends AbstractTypoScriptParser
 	 *
 	 * The purpose of the stack is, to move the pointer back to the above
 	 * position in the tree, whenever a brace closes, within one single jump,
-	 * despite the multiple keys.
+	 * despite the multiple keys. A path, that does just assign a value, isn't
+	 * pushed onto the stack at all else would be popped immediatly.
 	 *
-	 * A path, that does just assign a value, isn't pushed onto the stack at
-	 * all else would be popped immediatly.
-	 *
-	 * Switch-case and if are ordered by likelyhood, most likely first.
+	 * This function is optimised to be fast. It's by intention, that no
+	 * recursion is done. Calling functions is more expensive then simple
+	 * loops. Apart from the rarely occuring copy and modifier methods no
+	 * methods are called. The price are a more lines than in code optimised
+	 * for readability. Switch-case and if are ordered by likelyhood, most
+	 * likely first.
 	 *
 	 * @return array The TypoScript tree.
 	 */
@@ -80,8 +83,10 @@ class TypoScriptParser extends AbstractTypoScriptParser
 						$context = self::MULITLINE_VALUE_CONTEXT;
 						break;
 					case self::MODIFY:
-						$pointer[$valueKey] =
-							$this->modify($pointer[$valueKey], $value);
+						if($this->valueModifier) {
+							$pointer[$valueKey] = $this->valueModifier
+								->modifyValue($pointer[$valueKey], $value);
+						}
 						break;
 					case self::UNSET:
 						unset($pointer[$valueKey]);
@@ -121,21 +126,6 @@ class TypoScriptParser extends AbstractTypoScriptParser
 		return $tree;
 	}
 
-	protected function modify($value, $operation)
-	{
-		$pattern = '/^([[:alpha:]]+)\\s*\\((.*)\\).*/';
-		if(preg_match($pattern, $operation, $matches)) {
-			list(,$modifier, $argument) = $matches;
-			if($this->valueModifier) {
-				return $this->valueModifier->modifyValue($value, $modifier, $argument);
-			} else {
-				return $value;
-			}
-		} else {
-			// Error handling: not well formatted modifier
-		}
-	}
-
 	/**
 	 * Return the value or a deep copy of the sub array of the TS tree the path
 	 * is pointing to.
@@ -145,7 +135,7 @@ class TypoScriptParser extends AbstractTypoScriptParser
 	 *
 	 * Path is i.e.: page.10.10
 	 *
-	 * @param $tree Reference to the TS tree.
+	 * @param $tree The TS tree.
 	 * @param $path The path to the sub array or value.
 	 */
 	public function copyByPath(&$tree, $path)
@@ -153,9 +143,8 @@ class TypoScriptParser extends AbstractTypoScriptParser
 		$keys = explode(self::DOT, trim($path));
 		$valueKey = array_pop($keys);
 		$pointer =& $tree;
-		foreach($keys as $key) {
+		foreach($keys as $key)
 			$pointer =& $pointer[$key . self::DOT];
-		}
 		return [$pointer[$valueKey], $pointer[$valueKey . self::DOT]];
 	}
 
