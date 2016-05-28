@@ -5,6 +5,13 @@ namespace ElmarHinz\TypoScript;
 class TypoScriptParser extends AbstractTypoScriptParser
 {
 
+	protected $valueModifier;
+
+	public function setValueModifier($modifier)
+	{
+		$this->valueModifier = $modifier;
+	}
+
 	/**
 	 * Parse TypoScript
 	 *
@@ -38,6 +45,7 @@ class TypoScriptParser extends AbstractTypoScriptParser
 			} elseif(preg_match(self::PATH, $line, $matches)) {
 				list(,$keys, $operator, $value) = $matches;
 				$keys = explode(self::DOT, $keys);
+				$value = ltrim($value);
 				if($operator !== self::OPEN)
 					$valueKey = array_pop($keys);
 				// Reference to the last entry. How to improve?
@@ -54,15 +62,16 @@ class TypoScriptParser extends AbstractTypoScriptParser
 					$stack[] =& $pointer;
 					break;
 				case self::ASSIGN:
-					$pointer[$valueKey] = ltrim($value);
+					$pointer[$valueKey] = $value;
 					break;
 				case self::COPY:
-					$pair = $this->copyByPath($tree, trim($value));
+					$pair = $this->copyByPath($tree, $value);
 					$pointer[$valueKey] = $pair[0];
 					$pointer[$valueKey . self::DOT] = $pair[1];
 					break;
-				case self::ALTER:
-					// TODO
+				case self::MODIFY:
+					$pointer[$valueKey] =
+						$this->modify($pointer[$valueKey], $value);
 					break;
 				case self::UNSET:
 					unset($pointer[$valueKey]);
@@ -78,8 +87,19 @@ class TypoScriptParser extends AbstractTypoScriptParser
 		return $tree;
 	}
 
-	public function alter(&$tree, $path)
+	protected function modify($value, $operation)
 	{
+		$pattern = '/^([[:alpha:]]+)\\s*\\((.*)\\).*/';
+		if(preg_match($pattern, $operation, $matches)) {
+			list(,$modifier, $argument) = $matches;
+			if($this->valueModifier) {
+				return $this->valueModifier->modifyValue($value, $modifier, $argument);
+			} else {
+				return $value;
+			}
+		} else {
+			// Error handling: not well formatted modifier
+		}
 	}
 
 	/**
@@ -96,7 +116,7 @@ class TypoScriptParser extends AbstractTypoScriptParser
 	 */
 	public function copyByPath(&$tree, $path)
 	{
-		$keys = explode(self::DOT, $path);
+		$keys = explode(self::DOT, trim($path));
 		$valueKey = array_pop($keys);
 		$pointer =& $tree;
 		foreach($keys as $key) {

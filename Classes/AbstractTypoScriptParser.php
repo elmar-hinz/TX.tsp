@@ -4,6 +4,7 @@ namespace ElmarHinz\TypoScript;
 
 abstract class AbstractTypoScriptParser
 {
+
 	/**
 	 * The lines to parse.
 	 */
@@ -20,7 +21,7 @@ abstract class AbstractTypoScriptParser
 
 	// Operators
 	const ASSIGN = '=';
-	const ALTER = ':=';
+	const MODIFY = ':=';
 	const UNSET = '>';
 	const COPY = '<';
 	const OPEN = '{';

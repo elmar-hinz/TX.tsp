@@ -97,6 +97,15 @@ class TypoScriptExamples {
 					]
 				],
 			),
+			'modify' => array (
+				[
+					'value = value',
+					'value := prependString(pre_)',
+				],
+				[
+					'value' => 'pre_value',
+				]
+			),
 			'composition' => array (
 				[
 					'// double slash comment',

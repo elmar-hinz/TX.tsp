@@ -21,6 +21,11 @@ class CoreTypoScriptParserAdapterTest extends \PHPUnit_Framework_TestCase
 		$this->parser = new Adapter();
 	}
 
+	public function tsProvider()
+	{
+		return Examples::getExamples();
+	}
+
 	/**
 	 * @dataProvider tsProvider
 	 * @test
@@ -33,9 +38,21 @@ class CoreTypoScriptParserAdapterTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($tree, $result);
 	}
 
-	public function tsProvider()
+	public function conditionasTsProvider()
 	{
 		return Examples::getPreProcessExamples();
+	}
+
+	/**
+	 * @dataProvider conditionasTsProvider
+	 * @test
+	 */
+	public function parseTyposcriptWithConditions($input, $tree)
+	{
+		$input = implode("\n", $input);
+		$this->parser->parse($input, $this->matcher);
+		$result = $this->parser->setup;
+		$this->assertEquals($tree, $result);
 	}
 
 }

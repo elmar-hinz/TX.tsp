@@ -11,7 +11,12 @@ class TypoScriptParserTest extends \PHPUnit_Framework_TestCase
 {
 	public function setup()
 	{
+		$modifierClass = '\\ElmarHinz\\TypoScript\\ValueModifierInterface';
+		$modifier = $this->getMockBuilder($modifierClass)->getMock();
+		$modifier->method('modifyValue')->willReturn(
+			'pre_value');
 		$this->parser = new Parser();
+		$this->parser->setValueModifier($modifier);
 	}
 
 	/**
