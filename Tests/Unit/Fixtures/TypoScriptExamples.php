@@ -121,6 +121,25 @@ class TypoScriptExamples {
 					],
 				],
 			),
+			'copying relative' => array (
+				[
+					'one {',
+					'  two = 2',
+					'  two.three = 3',
+					'  four < .two',
+					'  two = 22',
+					'  two.three = 33',
+					'} ',
+				],
+				[
+					'one.' => [
+						'two' => '22',
+						'two.' => [ 'three' => '33', ],
+						'four' => '2',
+						'four.' => [ 'three' => '3', ],
+					],
+				],
+			),
 			'nested override' => array (
 				[
 					'one.two { ',
