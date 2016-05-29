@@ -1,6 +1,6 @@
-==============================
-Nonrecursive TypoScript Parser
-==============================
+===============================
+Non-recursive TypoScript Parser
+===============================
 
 :state: experimental
 :license: GPLv2
@@ -28,8 +28,8 @@ Getting started
 
 ::
 
-    git clone https://github.com/elmar-hinz/TX.tsparser.git tsparser
-    cd tsparser
+    git clone https://github.com/elmar-hinz/TX.tsp.git tsp
+    cd tsp
     composer install
     ./phake
     ./phake test:unit

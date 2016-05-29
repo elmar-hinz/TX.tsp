@@ -29,15 +29,18 @@ JSON Parser
 ===========
 
 The idea of the ``JSON Parser`` was, to use the PHP function ``json_decode`` to
-create the large ``TypoScript`` tree consising of hundreds of PHP arrays on the
-binary level. ``TypoScript`` would be rewritten to a valid ``JSON`` sting as
+create the large ``TypoScript`` tree consisting of hundreds of PHP arrays on
+the binary level. ``TypoScript`` was rewritten to a valid ``JSON`` string as
 input.
 
-Unfortunately ``json_decode`` does merging but not recursive merging.
-As overwriting is a feature of ``TypoScript`` this requires overwriting the
-values by simple path overwriting to prepare the ``JSON`` rendering. Together
-with the conversion to a ``JSON`` string, there is no advantage in speed, if
-both sums up. Taking the non-recursive apprach to handle the two steps, it
-ends up in quite the same speed as the ``Origional TypoScript Parser``.
+Unfortunately ``json_decode`` does merging but not recursive merging.  As
+overwriting is a feature of ``TypoScript`` this requires to prepare the
+``JSON`` rendering by any approach to do the overwriting in advance. An array
+was created, containing the full object path as key and the value as value to
+solve this. Although this creates no nested tree, it takes time.
+
+Together with the conversion to a ``JSON`` string in the second step, there is
+no advantage in speed. Taking the non-recursive approach to handle the two
+steps, it ends up in a similar speed as the ``Original TypoScript Parser``.
 
 

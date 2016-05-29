@@ -36,8 +36,8 @@
         }
     },
     "replace": {
-        "tsparser": "self.version",
-        "typo3-ter/tsparser": "self.version"
+        "tsp": "self.version",
+        "typo3-ter/tsp": "self.version"
     },
     "config": {
         "vendor-dir": ".Build/vendor",
@@ -46,7 +46,7 @@
     "scripts": {
         "post-autoload-dump": [
             "mkdir -p .Build/Web/typo3conf/ext/",
-            "[ -L .Build/Web/typo3conf/ext/tsparser ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/tsparser"
+            "[ -L .Build/Web/typo3conf/ext/tsp ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/tsp"
         ]
     },
     "extra": {

@@ -17,7 +17,7 @@ Questions, answers, images and a little animation.
 .. only:: html
 
 	:Classification:
-		tsparser
+		tsp
 
 	:Version:
 		|release|

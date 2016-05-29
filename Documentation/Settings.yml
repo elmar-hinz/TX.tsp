@@ -18,7 +18,7 @@ conf.py:
     - null
   latex_documents:
   - - Index
-    - tsparser.tex
+    - tsp.tex
     - Double Speed TypoScript Parser
     - Elmar Hinz
     - manual
