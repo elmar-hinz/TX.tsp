@@ -103,8 +103,10 @@ class TypoScriptParser extends AbstractTypoScriptParser
 				} elseif(preg_match(self::MULTILINE_COMMENT_OPEN, $line)) {
 					$context = self::MULITLINE_COMMENT_CONTEXT;
 				} else {
-					// Give error feedback here.
-					print("ERROR, last operator: $operator \n");
+					$message  = 'TypoScript Parse exception' . self::NL;
+					$message .= 'Line '.$nr. self::NL;
+					$message .= '" '.$line. ' "' . self::NL;
+					throw new \Exception($message);
 				}
 				break;
 			case self::MULITLINE_COMMENT_CONTEXT:
