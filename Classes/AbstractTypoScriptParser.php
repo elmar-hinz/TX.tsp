@@ -18,7 +18,7 @@ abstract class AbstractTypoScriptParser
 	// Matches
 	const COMMENT = '/^\s*(#|\/[^\*])/';
 	const VOID = '|^\s*$|';
-	const PATH = '/^\s*([[:alnum:].]*[[:alnum:]])\s*(:=|[=<>{(])\s*(.*)$/';
+	const PATH = '/^\s*([[:alnum:].\\\\_-]*[[:alnum:]\\\\_-])\s*(:=|[=<>{(])\s*(.*)$/';
 	const CLOSE = '|^\s*}|';
 	const MULTILINE_COMMENT_OPEN = '|^\s*/\*|';
 	const MULTILINE_COMMENT_CLOSE = '|^\s*\*/|';

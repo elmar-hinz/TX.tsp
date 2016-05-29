@@ -44,6 +44,18 @@ class TypoScriptExamples {
 					]
 				],
 			),
+			'minus underscore' => array (
+				[
+					'-one-two-._three_four_ = FOUR',
+					'\A\Name\Space\Like\Key = classname',
+				],
+				[
+					'-one-two-.' => [
+						'_three_four_' => 'FOUR'
+					],
+					'\A\Name\Space\Like\Key' => 'classname',
+				],
+			),
 			'nested path' => array (
 				[
 					'one.two { ',
