@@ -27,8 +27,8 @@ abstract class AbstractTypoScriptParser
 	// Operators
 	const ASSIGN = '=';
 	const MODIFY = ':=';
-	const UNSET = '>';
-	const COPY = '<';
+	const OPERATOR_UNSET = '>';
+	const OPERATOR_COPY = '<';
 	const OPEN = '{';
 	const MULITLINE_VALUE_OPEN = '(';
 

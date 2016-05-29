@@ -16,6 +16,6 @@ interface ValueModifierInterface
 	 * @param string The operation.
 	 * @return string The modified input value.
 	 */
-    public function modifyValue($value, $unparsedModifierOperation) : string;
+    public function modifyValue($value, $unparsedModifierOperation);
 }
 

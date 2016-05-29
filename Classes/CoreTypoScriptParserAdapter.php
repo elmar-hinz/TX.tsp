@@ -20,7 +20,7 @@ class CoreTypoScriptParserAdapter extends CoreParser implements ValueModifierInt
 		$this->setup = $parser->parse();
 	}
 
-	public function modifyValue($value, $operation) : string
+	public function modifyValue($value, $operation)
 	{
 		$pattern = '/^([[:alpha:]]+)\\s*\\((.*)\\).*/';
 		if(preg_match($pattern, $operation, $matches)) {

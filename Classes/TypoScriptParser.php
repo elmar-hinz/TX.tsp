@@ -38,7 +38,7 @@ class TypoScriptParser extends AbstractTypoScriptParser
 	 *
 	 * @return array The TypoScript tree.
 	 */
-	public function parse() : array
+	public function parse()
 	{
 		$tree = [];
 		$stack[] =& $tree;
@@ -74,7 +74,7 @@ class TypoScriptParser extends AbstractTypoScriptParser
 					case self::ASSIGN:
 						$pointer[$valueKey] = $value;
 						break;
-					case self::COPY:
+					case self::OPERATOR_COPY:
 						$pair = $this->copyByPath($tree, $pointer, $value);
 						$pointer[$valueKey] = $pair[0];
 						$pointer[$valueKey . self::DOT] = $pair[1];
@@ -89,7 +89,7 @@ class TypoScriptParser extends AbstractTypoScriptParser
 								->modifyValue($pointer[$valueKey], $value);
 						}
 						break;
-					case self::UNSET:
+					case self::OPERATOR_UNSET:
 						unset($pointer[$valueKey]);
 						unset($pointer[$valueKey . self::DOT]);
 						break;
