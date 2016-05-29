@@ -75,7 +75,7 @@ class TypoScriptParser extends AbstractTypoScriptParser
 						$pointer[$valueKey] = $value;
 						break;
 					case self::COPY:
-						$pair = $this->copyByPath($tree, $value);
+						$pair = $this->copyByPath($tree, $pointer, $value);
 						$pointer[$valueKey] = $pair[0];
 						$pointer[$valueKey . self::DOT] = $pair[1];
 						break;
@@ -128,22 +128,31 @@ class TypoScriptParser extends AbstractTypoScriptParser
 	}
 
 	/**
-	 * Return the value or a deep copy of the sub array of the TS tree the path
-	 * is pointing to.
+	 * Extract subtree by given path
+	 *
+	 * Absolute path like:  page.10.10
+	 * Relative path like:  .10.10
+	 *
+	 * I the path is absolute $tree will be used.
+	 * I the path is relative $context will be used.
 	 *
 	 * Path resolving in done by reference for reasons of performance.
 	 * The result is returned as a copy.
 	 *
-	 * Path is i.e.: page.10.10
-	 *
 	 * @param $tree The TS tree.
 	 * @param $path The path to the sub array or value.
 	 */
-	public function copyByPath(&$tree, $path)
+	public function copyByPath(&$tree, &$context, $path)
 	{
-		$keys = explode(self::DOT, trim($path));
+		$path = trim($path);
+		if($path[0] === self::DOT) {
+			$path = substr($path, 1);
+			$pointer =& $context;
+		} else {
+			$pointer =& $tree;
+		}
+		$keys = explode(self::DOT, $path);
 		$valueKey = array_pop($keys);
-		$pointer =& $tree;
 		foreach($keys as $key)
 			$pointer =& $pointer[$key . self::DOT];
 		return [$pointer[$valueKey], $pointer[$valueKey . self::DOT]];
