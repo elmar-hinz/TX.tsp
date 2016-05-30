@@ -9,7 +9,7 @@
 ---
 conf.py:
   copyright: 2016
-  project: Double Speed TypoScript Parser
+  project: tsp
   version: 0.1
   release: 0.1.0
   intersphinx_mapping:
@@ -19,7 +19,7 @@ conf.py:
   latex_documents:
   - - Index
     - tsp.tex
-    - Double Speed TypoScript Parser
+    - Next Generation TypoScript Parser (tsp)
     - Elmar Hinz
     - manual
   latex_elements:

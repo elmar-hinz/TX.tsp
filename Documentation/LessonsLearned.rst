@@ -5,11 +5,24 @@
 
 .. include:: Includes.txt
 
-.. _start:
+.. _lessons:
 
 ==============================
 Lessons Learned
 ==============================
+
+The overall time to parse the TypoScript of a website takes just a few
+milliseconds. It is not a critical part of the overall page rendering time. Yet
+the development of this extension was also focused on performance.
+
+Time to parse the templates vs. time to parse TypoScript
+========================================================
+
+When measured with the TYPO3 core time tracker (admin panel) the template
+parsing takes a few hundred milliseconds. When measuring and summing up all
+calls to the TypoScript parse function (TypoScriptParser::parse()) it takes
+just a few milliseconds. The difference is most likley to be explained by I/O
+calls to read the templates.
 
 Non-Recursive Parser
 ====================
@@ -42,5 +55,4 @@ solve this. Although this creates no nested tree, it takes time.
 Together with the conversion to a ``JSON`` string in the second step, there is
 no advantage in speed. Taking the non-recursive approach to handle the two
 steps, it ends up in a similar speed as the ``Original TypoScript Parser``.
-
 

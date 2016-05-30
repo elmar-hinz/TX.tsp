@@ -47,7 +47,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Double Speed TypoScript Parser'
+project = u'Next Generation TypoScript Parser (tsp)'
 copyright = u'2016, Elmar Hinz'
 author = u'Elmar Hinz'
 
