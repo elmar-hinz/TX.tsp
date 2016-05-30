@@ -1,14 +1,12 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = array (
-	'title' => 'Double Speed TypoScript Parser',
-	'description' => 'Classes to parse TypoScript with double speed.',
+	'title' => 'Next Generation TypoScript Parser',
+	'description' => 'Public evaluation of a rewritten TypoScript parser',
 	'category' => 'fe',
 	'author' => 'Elmar Hinz',
 	'author_email' => 't3elmar@gmail.com',
 	'state' => 'alpha',
-	'uploadfolder' => false,
-	'author_company' => '',
 	'version' => '0.1.0',
 	'constraints' =>
 	array (
@@ -23,6 +21,5 @@ $EM_CONF[$_EXTKEY] = array (
 		array (
 		),
 	),
-	'createDirs' => NULL,
 );
 

@@ -1,0 +1,10 @@
+
+Change log
+
+2016-05-30  Elmar Hinz <t3elmar@gmail.com>
+
+	* version 0.1.0
+	* Initial publishing
+	* Standalone TS parser
+	* Adapter for TYPO3 CMS FE parsing
+
