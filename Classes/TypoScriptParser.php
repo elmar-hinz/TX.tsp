@@ -55,7 +55,7 @@ class TypoScriptParser extends AbstractTypoScriptParser
 				if(preg_match(self::PATH, $line, $matches)) {
 					list(,$keys, $operator, $value) = $matches;
 					$keys = explode(self::DOT, $keys);
-					$value = ltrim($value);
+					$value = trim($value);
 					if($operator !== self::OPEN)
 						$valueKey = array_pop($keys);
 					// Reference to the last entry. How to improve?
