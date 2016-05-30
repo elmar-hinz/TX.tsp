@@ -16,10 +16,17 @@ core. Moreover the following goals are in focus:
 The package may be used standalone outside of the TYPO3 CMS as well. The
 dependency from the TYPO3 CMS in incapsulated into an adapter class.
 
-Documentation: http://typoscript-parser.readthedocs.io/en/latest/index.html
+Manual: http://typoscript-parser.readthedocs.io/en/latest/index.html
 
-Getting started
-===============
+Getting Started as T3 Extension
+===============================
+
+It's a TYPO3 CMS extension. Install it like an extension.
+
+Manual: http://typoscript-parser.readthedocs.io/en/latest/index.html
+
+Standalone Testing
+==================
 
 ::
 
