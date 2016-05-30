@@ -15,6 +15,7 @@ class CoreTypoScriptParserAdapter extends CoreParser implements ValueModifierInt
 		$preProcessor->setMatcher($matchObj);
 		$parser = new NewParser();
 		$parser->setValueModifier($this);
+		$parser->presetTree($this->setup);
 		$preProcessor->appendTemplate($string);
 		$parser->appendTemplate($preProcessor->parse());
 		$this->setup = $parser->parse();

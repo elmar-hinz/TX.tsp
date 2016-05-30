@@ -6,6 +6,12 @@ class TypoScriptParser extends AbstractTypoScriptParser
 {
 
 	protected $valueModifier;
+	protected $tree = [];
+
+	public function presetTree(&$tree)
+	{
+		$this->tree =& $tree;
+	}
 
 	public function setValueModifier($modifier)
 	{
@@ -29,6 +35,12 @@ class TypoScriptParser extends AbstractTypoScriptParser
 	 * despite the multiple keys. A path, that does just assign a value, isn't
 	 * pushed onto the stack at all else would be popped immediatly.
 	 *
+	 * The tree can be preset by reference by the method presetTree().
+	 * Presetting the tree is actually used by the TYPO3 CMS.
+	 *
+	 * The tree is not returned by reference,
+	 * see: http://php.net/manual/en/language.references.return.php
+	 *
 	 * This function is optimised to be fast. It's by intention, that no
 	 * recursion is done. Calling functions is more expensive then simple
 	 * loops. Apart from the rarely occuring copy and modifier methods no
@@ -40,7 +52,7 @@ class TypoScriptParser extends AbstractTypoScriptParser
 	 */
 	public function parse()
 	{
-		$tree = [];
+		$tree =& $this->tree;
 		$stack[] =& $tree;
 		$pointer = null;
 		$keys = [];
