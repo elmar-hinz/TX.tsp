@@ -55,5 +55,6 @@ Next Generation TypoScript Parser
 
     Introduction
     Administration
+    Research
     LessonsLearned
 
