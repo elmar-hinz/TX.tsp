@@ -59,16 +59,16 @@ class TypoScriptParser extends AbstractTypoScriptParser
 		$valueKey = self::EMPTY_STRING;
 		$operator = self::EMPTY_STRING;
 		$value = self::EMPTY_STRING;
-		$context = self::OUTER_CONTEXT;
+		$context = self::DEFAULT_CONTEXT;
 		for($nr = 0; $nr < count($this->inputLines); $nr++) {
 			$line = $this->inputLines[$nr];
 			switch($context) {
-			case self::OUTER_CONTEXT:
-				if(preg_match(self::PATH, $line, $matches)) {
-					list(,$keys, $operator, $value) = $matches;
+			case self::DEFAULT_CONTEXT:
+				if(preg_match(self::OPERATOR_REGEX, $line, $matches)) {
+					list(,,$keys,, $operator,, $value) = $matches;
 					$keys = explode(self::DOT, $keys);
 					$value = trim($value);
-					if($operator !== self::OPEN)
+					if($operator !== self::LEVEL_OPEN_OPERATOR)
 						$valueKey = array_pop($keys);
 					// Reference to the last entry. How to improve?
 					end($stack);
@@ -80,40 +80,40 @@ class TypoScriptParser extends AbstractTypoScriptParser
 						$pointer =& $pointer[$key];
 					}
 					switch($operator) {
-					case self::OPEN:
+					case self::LEVEL_OPEN_OPERATOR:
 						$stack[] =& $pointer;
 						break;
-					case self::ASSIGN:
+					case self::ASSIGN_OPERATOR:
 						$pointer[$valueKey] = $value;
 						break;
-					case self::OPERATOR_COPY:
+					case self::COPY_OPERATOR:
 						$pair = $this->copyByPath($tree, $pointer, $value);
 						$pointer[$valueKey] = $pair[0];
 						$pointer[$valueKey . self::DOT] = $pair[1];
 						break;
-					case self::MULITLINE_VALUE_OPEN:
+					case self::VALUE_CONTEXT_OPEN_OPERATOR:
 						$value = self::EMPTY_STRING;
-						$context = self::MULITLINE_VALUE_CONTEXT;
+						$context = self::VALUE_CONTEXT;
 						break;
-					case self::MODIFY:
+					case self::MODIFY_OPERATOR:
 						if($this->valueModifier) {
 							$pointer[$valueKey] = $this->valueModifier
 								->modifyValue($pointer[$valueKey], $value);
 						}
 						break;
-					case self::OPERATOR_UNSET:
+					case self::UNSET_OPERATOR:
 						unset($pointer[$valueKey]);
 						unset($pointer[$valueKey . self::DOT]);
 						break;
 					}
-				} elseif(preg_match(self::CLOSE, $line)) {
+				} elseif(preg_match(self::LEVEL_CLOSE_REGEX, $line)) {
 					array_pop($stack);
-				} elseif(preg_match(self::VOID, $line)) {
+				} elseif(preg_match(self::VOID_REGEX, $line)) {
 					// skip
-				} elseif(preg_match(self::COMMENT, $line)) {
+				} elseif(preg_match(self::COMMENT_REGEX, $line)) {
 					// skip
-				} elseif(preg_match(self::MULTILINE_COMMENT_OPEN, $line)) {
-					$context = self::MULITLINE_COMMENT_CONTEXT;
+				} elseif(preg_match(self::COMMENT_CONTEXT_OPEN_REGEX, $line)) {
+					$context = self::COMMENT_CONTEXT;
 				} else {
 					$message  = 'TypoScript Parse exception' . self::NL;
 					$message .= 'Line '.$nr. self::NL;
@@ -121,17 +121,17 @@ class TypoScriptParser extends AbstractTypoScriptParser
 					throw new \Exception($message);
 				}
 				break;
-			case self::MULITLINE_COMMENT_CONTEXT:
-				if(preg_match(self::MULTILINE_COMMENT_CLOSE, $line)) {
-					$context = self::OUTER_CONTEXT;
+			case self::COMMENT_CONTEXT:
+				if(preg_match(self::COMMENT_CONTEXT_CLOSE_REGEX, $line)) {
+					$context = self::DEFAULT_CONTEXT;
 				}
 				break;
-			case self::MULITLINE_VALUE_CONTEXT:
-				if(preg_match(self::MULTILINE_VALUE_CLOSE, $line)) {
+			case self::VALUE_CONTEXT:
+				if(preg_match(self::VALUE_CONTEXT_CLOSE_REGEX, $line)) {
 					$pointer[$valueKey] =
 						$value === self::EMPTY_STRING ? $value :
 						substr($value, 0, -1);
-					$context = self::OUTER_CONTEXT;
+					$context = self::DEFAULT_CONTEXT;
 				} else {
 					$value .= $line . self::NL;
 				}

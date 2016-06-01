@@ -7,10 +7,11 @@ use \ElmarHinz\TypoScript\TypoScriptParser as Parser;
 
 class TypoScriptParserTest extends \PHPUnit_Framework_TestCase
 {
+	const MODIFIER_INTERFACE = '\\ElmarHinz\\TypoScript\\ValueModifierInterface';
+
 	public function setup()
 	{
-		$modifierClass = '\\ElmarHinz\\TypoScript\\ValueModifierInterface';
-		$modifier = $this->getMockBuilder($modifierClass)->getMock();
+		$modifier = $this->getMockBuilder(self::MODIFIER_INTERFACE)->getMock();
 		$modifier->method('modifyValue')->willReturn(
 			'pre_value');
 		$this->parser = new Parser();

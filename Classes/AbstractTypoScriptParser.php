@@ -15,27 +15,28 @@ abstract class AbstractTypoScriptParser
 	const NL = "\n";
 	const EMPTY_STRING = '';
 
-	// Matches
-	const COMMENT = '/^\s*(#|\/[^\*])/';
-	const VOID = '|^\s*$|';
-	const PATH = '/^\s*([[:alnum:].\\\\_-]*[[:alnum:]\\\\_-])\s*(:=|[=<>{(])\s*(.*)$/';
-	const CLOSE = '|^\s*}|';
-	const MULTILINE_COMMENT_OPEN = '|^\s*/\*|';
-	const MULTILINE_COMMENT_CLOSE = '|^\s*\*/|';
-	const MULTILINE_VALUE_CLOSE = '|^\s*\)|';
+	// Matchers
+	const COMMENT_CONTEXT_CLOSE_REGEX = '|^(\s*)(\*/)(.*)$|';
+	const COMMENT_CONTEXT_OPEN_REGEX = '|^(\s*)(/\*)(.*)$|';
+	const COMMENT_REGEX = '/^(\s*)(#|\/[^\*])(.*)$/';
+	const CONDITION_REGEX = '|^(\s*)(\[.*)$|';
+	const LEVEL_CLOSE_REGEX = '|^(\s*)(})(.*)$|';
+	const OPERATOR_REGEX = '/^(\s*)([[:alnum:].\\\\_-]*[[:alnum:]\\\\_-])(\s*)(:=|[=<>{(])(\s*)(.*)$/';
+	const VALUE_CONTEXT_CLOSE_REGEX = '|^(\s*)(\))(.*)$|';
+	const VOID_REGEX = '|^(\s*)$|';
 
 	// Operators
-	const ASSIGN = '=';
-	const MODIFY = ':=';
-	const OPERATOR_UNSET = '>';
-	const OPERATOR_COPY = '<';
-	const OPEN = '{';
-	const MULITLINE_VALUE_OPEN = '(';
+	const ASSIGN_OPERATOR = '=';
+	const COPY_OPERATOR = '<';
+	const LEVEL_OPEN_OPERATOR = '{';
+	const MODIFY_OPERATOR = ':=';
+	const UNSET_OPERATOR = '>';
+	const VALUE_CONTEXT_OPEN_OPERATOR = '(';
 
 	// Contexts
-	const OUTER_CONTEXT = 1;
-	const MULITLINE_COMMENT_CONTEXT = 2;
-	const MULITLINE_VALUE_CONTEXT = 3;
+	const COMMENT_CONTEXT = 1;
+	const DEFAULT_CONTEXT = 2;
+	const VALUE_CONTEXT = 3;
 
 	/**
 	 * Join multiple templates before parsing them.
