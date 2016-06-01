@@ -207,7 +207,7 @@ class TypoScriptExamples {
 		];
 	}
 
-	static public function getPreProcessExamples() {
+	static public function getConditionsExamples() {
 		 return [
 			'false-false'  => array (
 				[

@@ -2,9 +2,9 @@
 
 namespace ElmarHinz\TypoScript\Tests\Unit;
 
-use \ElmarHinz\TypoScript\TypoScriptPreProcessor;
+use \ElmarHinz\TypoScript\TypoScriptConditionsProcessor;
 
-class TypoScriptPreProcessorTest extends \PHPUnit_Framework_TestCase
+class TypoScriptConditionsProcessorTest extends \PHPUnit_Framework_TestCase
 {
 	public function setup()
 	{
@@ -12,7 +12,7 @@ class TypoScriptPreProcessorTest extends \PHPUnit_Framework_TestCase
 		$matcher = $this->getMockBuilder($matchClass)->getMock();
 		$matcher->method('match')->will($this->returnCallback(
 			function($condition) { return $condition == '[TRUE]'; }));
-		$this->parser = new TypoScriptPreProcessor();
+		$this->parser = new TypoScriptConditionsProcessor();
 		$this->parser->setMatcher($matcher);
 	}
 

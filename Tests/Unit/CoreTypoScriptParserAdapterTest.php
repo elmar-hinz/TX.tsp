@@ -39,7 +39,7 @@ class CoreTypoScriptParserAdapterTest extends \PHPUnit_Framework_TestCase
 
 	public function conditionasTsProvider()
 	{
-		return Examples::getPreProcessExamples();
+		return Examples::getConditionsExamples();
 	}
 
 	/**
