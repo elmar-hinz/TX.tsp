@@ -16,13 +16,13 @@ abstract class AbstractTypoScriptParser
 	const EMPTY_STRING = '';
 
 	// Matchers
-	const COMMENT_CONTEXT_CLOSE_REGEX = '|^(\s*)(\*/)(.*)$|';
+	const COMMENT_CONTEXT_CLOSE_REGEX = '|^(\s*)(\*/)(\s*)(.*)$|';
 	const COMMENT_CONTEXT_OPEN_REGEX = '|^(\s*)(/\*)(.*)$|';
 	const COMMENT_REGEX = '/^(\s*)(#|\/[^\*])(.*)$/';
 	const CONDITION_REGEX = '|^(\s*)(\[.*)$|';
 	const LEVEL_CLOSE_REGEX = '|^(\s*)(})(.*)$|';
 	const OPERATOR_REGEX = '/^(\s*)([[:alnum:].\\\\_-]*[[:alnum:]\\\\_-])(\s*)(:=|[=<>{(])(\s*)(.*)$/';
-	const VALUE_CONTEXT_CLOSE_REGEX = '|^(\s*)(\))(.*)$|';
+	const VALUE_CONTEXT_CLOSE_REGEX = '|^(\s*)(\))(\s*)(.*)$|';
 	const VOID_REGEX = '|^(\s*)$|';
 
 	// Operators
