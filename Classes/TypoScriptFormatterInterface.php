@@ -67,10 +67,15 @@ interface TypoScriptFormatterInterface
 	/**
 	 * Push an error message fo the current line.
 	 *
+	 * The type and order of further arguments must matcht the $errorClass. In
+	 * case there are further arguments this is documented with the error class
+	 * constant in AbstractTypoScriptParser.
+	 *
 	 * @param string The error message.
+	 * @param mixed Further arguments.
 	 * @return void
 	 */
-	public function pushError($message);
+	public function pushError($errorClass, ...$furtherArguments);
 
 	/**
 	 * Handle the line.

@@ -25,12 +25,27 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 	/**
 	 * Formatter strings
 	 */
-	const COMPOSE_FORMAT = '<pre class="ts-hl">%s</pre>';
-	const ELEMENT_FORMAT = '<span class="%s">%s</span>';
-	const ERROR_FORMAT =
-		' <span class="ts-error"><strong> - ERROR:</strong> %s</span>';
-	const LINE_FORMAT = '%s%s%s';
-	const LINE_NUMBER_FORMAT = '<span class="ts-linenum">%4d: </span>';
+	const COMPOSE_FORMAT
+		= '<pre class="ts-hl">%s</pre>';
+	const ELEMENT_FORMAT
+		= '<span class="%s">%s</span>';
+	const ERROR_FORMAT
+		= ' <span class="ts-error"><strong> - ERROR:</strong> %s</span>';
+	const LINE_FORMAT
+		= '%s%s%s';
+	const LINE_NUMBER_FORMAT
+		= '<span class="ts-linenum">%4d: </span>';
+	const NEGATIVE_KEYS_LEVEL_FORMAT
+		= 'a closing brace to much';
+	const POSITIVE_KEYS_LEVEL_AT_CONDITION_FORMAT
+		= '%d closing braces missing at condition line';
+	const POSITIVE_KEYS_LEVEL_AT_END_FORMAT
+		= '%d closing braces missing at end of template';
+	const UNCLOSED_VALUE_CONTEXT_AT_END_FORMAT
+		= 'unclosed multiline value at end of template';
+	const UNCLOSED_COMMENT_CONTEXT_AT_END_FORMAT
+		= 'unclosed multiline comment at end of template';
+
 
 	/**
 	 * CSS classes of highligthed elements and errors
@@ -63,6 +78,22 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 		AP::VALUE_CONTEXT_TOKEN => self::VALUE_CLASS,
 		AP::VALUE_COPY_TOKEN => self::VALUE_COPY_CLASS,
 		AP::VALUE_TOKEN => self::VALUE_CLASS,
+	];
+
+	/**
+	 * Error to message map
+	 */
+	protected $errorToMessageMap = [
+		AP::NEGATIVE_KEYS_LEVEL_ERRROR
+		=> self::NEGATIVE_KEYS_LEVEL_FORMAT,
+		AP::POSITIVE_KEYS_LEVEL_AT_CONDITION_ERROR
+		=> self::POSITIVE_KEYS_LEVEL_AT_CONDITION_FORMAT,
+		AP::POSITIVE_KEYS_LEVEL_AT_END_ERROR
+		=> self::POSITIVE_KEYS_LEVEL_AT_END_FORMAT,
+		AP::UNCLOSED_COMMENT_CONTEXT_AT_END_ERROR
+		=> self::UNCLOSED_COMMENT_CONTEXT_AT_END_FORMAT,
+		AP::UNCLOSED_VALUE_CONTEXT_AT_END_ERROR
+		=> self::UNCLOSED_VALUE_CONTEXT_AT_END_FORMAT,
 	];
 
 	/**
@@ -137,8 +168,10 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 		$this->elementsOfCurrentLine[] = sprintf($format, $class, $element);
 	}
 
-	public function pushError($message)
+	public function pushError($errorClass, ...$furtherArguments)
 	{
+		$format = $this->errorToMessageMap[$errorClass];
+		$message = sprintf($format, $furtherArguments);
 		$this->errorsOfCurrentLine[] = $message;
 	}
 

@@ -89,8 +89,8 @@ class TypoScriptFormatterTest extends \PHPUnit_Framework_TestCase
 	public function oneError()
 	{
 		$expect = '<span class="ts-error">'
-			. '<strong> - ERROR:</strong> error1</span>';
-		$this->subject->pushError('error1');
+			. '<strong> - ERROR:</strong> a closing brace to much</span>';
+		$this->subject->pushError(AP::NEGATIVE_KEYS_LEVEL_ERRROR);
 		$this->subject->finishLine();
 		$this->assertContains($expect, $this->subject->finish());
 	}
@@ -100,9 +100,9 @@ class TypoScriptFormatterTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function twoErrors()
 	{
-		$expect = 'error1; error2</span>';
-		$this->subject->pushError('error1');
-		$this->subject->pushError('error2');
+		$expect = 'a closing brace to much; a closing brace to much';
+		$this->subject->pushError(AP::NEGATIVE_KEYS_LEVEL_ERRROR);
+		$this->subject->pushError(AP::NEGATIVE_KEYS_LEVEL_ERRROR);
 		$this->subject->finishLine();
 		$this->assertContains($expect, $this->subject->finish());
 	}
@@ -162,6 +162,47 @@ class TypoScriptFormatterTest extends \PHPUnit_Framework_TestCase
 		$this->subject->pushToken($tokenClass, '');
 		$this->subject->finishLine();
 		$this->assertContains($cssClass, $this->subject->finish());
+	}
+
+	/**
+	 *
+	 */
+	public function errorsDataProvider()
+	{
+		return [
+			[
+				AP::NEGATIVE_KEYS_LEVEL_ERRROR, [],
+				Formatter::NEGATIVE_KEYS_LEVEL_FORMAT
+			],
+			[
+				AP::POSITIVE_KEYS_LEVEL_AT_CONDITION_ERROR, [3],
+				Formatter::POSITIVE_KEYS_LEVEL_AT_CONDITION_FORMAT
+			],
+			[
+				AP::POSITIVE_KEYS_LEVEL_AT_END_ERROR, [4],
+				Formatter::POSITIVE_KEYS_LEVEL_AT_END_FORMAT
+			],
+			[
+				AP::UNCLOSED_COMMENT_CONTEXT_AT_END_ERROR, [],
+				Formatter::UNCLOSED_COMMENT_CONTEXT_AT_END_FORMAT
+			],
+			[
+				AP::UNCLOSED_VALUE_CONTEXT_AT_END_ERROR, [],
+				Formatter::UNCLOSED_VALUE_CONTEXT_AT_END_FORMAT
+			],
+		];
+	}
+
+	/**
+	 * @test
+	 * @dataProvider errorsDataProvider
+	 */
+	public function errors($errorClass, $errorArgs, $message)
+	{
+		$this->subject->pushError($errorClass, $errorArgs);
+		$this->subject->finishLine();
+		$expect = sprintf($message, $errorArgs);
+		$this->assertContains($expect, $this->subject->finish());
 	}
 
 }

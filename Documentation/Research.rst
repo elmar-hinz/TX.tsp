@@ -73,8 +73,8 @@ Collected messages:
 
 * 'Script is short of XXX braces.'
 * 'An end brace is in excess.'
-* 'A multiline value section is not ended with a parenthesis!'
 * 'On return to [GLOBAL] scope, the script was short of XXX braces.'
+* 'A multiline value section is not ended with a parenthesis!'
 * 'Object Name String, contains invalid character XXX. Must be alphanumeric or
   one of: "_:-\.".'
 * 'Object Name String XXX was not followed by any operator, =<>({'

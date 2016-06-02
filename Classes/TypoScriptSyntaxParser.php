@@ -24,6 +24,7 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptParser
 	 */
 	public function parse()
 	{
+		$braceLevel = 0;
 		$f = $this->formatter;
 		$context = self::DEFAULT_CONTEXT;
 		foreach($this->inputLines as $line) {
@@ -43,6 +44,7 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptParser
 						$context = self::VALUE_CONTEXT;
 						break;
 					case self::LEVEL_OPEN_OPERATOR:
+						$braceLevel++;
 						$f->pushToken(self::IGNORED_TOKEN, $value);
 						break;
 					case self::ASSIGN_OPERATOR:
@@ -59,10 +61,15 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptParser
 						break;
 					}
 				} elseif(preg_match(self::LEVEL_CLOSE_REGEX, $line, $matches)) {
+					$braceLevel--;
 					list(,$prespace, $operator, $excess) = $matches;
 					$f->pushToken(self::PRESPACE_TOKEN, $prespace);
 					$f->pushToken(self::OPERATOR_TOKEN, $operator);
 					$f->pushToken(self::IGNORED_TOKEN, $value);
+					if($braceLevel < 0) {
+						$f->pushError(self::NEGATIVE_KEYS_LEVEL_ERRROR);
+						$braceLevel = 0;
+					}
 				} elseif(preg_match(self::VOID_REGEX, $line, $matches)) {
 					list(,$prespace) = $matches;
 					$f->pushToken(self::PRESPACE_TOKEN, $prespace);
@@ -74,6 +81,13 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptParser
 					list(,$prespace, $condition) = $matches;
 					$f->pushToken(self::PRESPACE_TOKEN, $prespace);
 					$f->pushToken(self::CONDITION_TOKEN, $condition);
+					if($braceLevel > 0) {
+						$f->pushError(
+							self::POSITIVE_KEYS_LEVEL_AT_CONDITION_ERROR,
+							$braceLevel
+						);
+						$braceLevel = 0;
+					}
 				} elseif(preg_match(self::COMMENT_CONTEXT_OPEN_REGEX, $line,
 					$matches)) {
 					list(,$prespace, $operator, $comment) = $matches;
@@ -115,6 +129,12 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptParser
 			}
 			$f->finishLine();
 		}
+		if($braceLevel > 0)
+			$f->pushError(self::POSITIVE_KEYS_LEVEL_AT_END_ERROR, $braceLevel);
+		if($context == self::VALUE_CONTEXT)
+			$f->pushError(self::UNCLOSED_VALUE_CONTEXT_AT_END_ERROR);
+		if($context == self::COMMENT_CONTEXT)
+			$f->pushError(self::UNCLOSED_COMMENT_CONTEXT_AT_END_ERROR);
 		return $f->finish();
 	}
 

@@ -52,6 +52,13 @@ abstract class AbstractTypoScriptParser
 	const VALUE_COPY_TOKEN         = 11;
 	const VALUE_TOKEN              = 12;
 
+	// Errors
+	const NEGATIVE_KEYS_LEVEL_ERRROR             = 1;
+	const POSITIVE_KEYS_LEVEL_AT_CONDITION_ERROR = 2; // arguments: braceLevel
+	const POSITIVE_KEYS_LEVEL_AT_END_ERROR       = 3; // arguments: braceLevel
+	const UNCLOSED_COMMENT_CONTEXT_AT_END_ERROR  = 4;
+	const UNCLOSED_VALUE_CONTEXT_AT_END_ERROR    = 5;
+
 	/**
 	 * Join multiple templates before parsing them.
 	 *
