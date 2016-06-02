@@ -24,8 +24,8 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptParser
 	 */
 	public function parse()
 	{
-		$context = self::DEFAULT_CONTEXT;
 		$f = $this->formatter;
+		$context = self::DEFAULT_CONTEXT;
 		foreach($this->inputLines as $line) {
 			switch($context) {
 			case self::DEFAULT_CONTEXT:
@@ -90,7 +90,8 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptParser
 				if(preg_match(self::COMMENT_CONTEXT_CLOSE_REGEX, $line,
 					$matches)) {
 					list(,$space1, $operator, $space2, $excess) = $matches;
-					$f->pushToken(self::COMMENT_TOKEN, $space1.$operator);
+					$f->pushToken(self::COMMENT_CONTEXT_TOKEN,
+						$space1.$operator);
 					$f->pushToken(self::OPERATOR_POSTSPACE_TOKEN, $space2);
 					$f->pushToken(self::IGNORED_TOKEN, $excess);
 					$context = self::DEFAULT_CONTEXT;
