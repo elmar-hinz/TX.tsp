@@ -54,7 +54,7 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 		AbstractTypoScriptParser::COMMENT_TOKEN
 		=> self::COMMENT_CLASS,
 		AbstractTypoScriptParser::CONDITION_TOKEN
-		=> self::DEFAULT_CLASS,
+		=> self::CONDITION_CLASS,
 		AbstractTypoScriptParser::IGNORED_TOKEN
 		=> self::IGNORED_CLASS,
 		AbstractTypoScriptParser::KEYS_POSTSPACE_TOKEN

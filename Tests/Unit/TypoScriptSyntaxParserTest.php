@@ -78,6 +78,10 @@ class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 					' */  excess',
 				]
 			],
+			'condition' => [
+				['[CONDITION ...]' , 'ts-prespace', 'ts-condition', ],
+				[ '   [CONDITION ...]' ],
+			],
 		];
 	}
 

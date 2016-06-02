@@ -58,8 +58,7 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptParser
 						$f->pushToken(self::IGNORED_TOKEN, $value);
 						break;
 					}
-				} elseif(preg_match(self::LEVEL_CLOSE_REGEX, $line,
-					$matches)) {
+				} elseif(preg_match(self::LEVEL_CLOSE_REGEX, $line, $matches)) {
 					list(,$prespace, $operator, $excess) = $matches;
 					$f->pushToken(self::PRESPACE_TOKEN, $prespace);
 					$f->pushToken(self::OPERATOR_TOKEN, $operator);
