@@ -2,6 +2,8 @@
 
 namespace ElmarHinz\TypoScript;
 
+use \ElmarHinz\TypoScript\AbstractTypoScriptParser as AP;
+
 /**
  * TypoScript syntax formatter
  *
@@ -49,30 +51,18 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 	 * Token to class map
 	 */
 	protected $tokenToClassMap = [
-		AbstractTypoScriptParser::COMMENT_CONTEXT_TOKEN
-		=> self::COMMENT_CLASS,
-		AbstractTypoScriptParser::COMMENT_TOKEN
-		=> self::COMMENT_CLASS,
-		AbstractTypoScriptParser::CONDITION_TOKEN
-		=> self::CONDITION_CLASS,
-		AbstractTypoScriptParser::IGNORED_TOKEN
-		=> self::IGNORED_CLASS,
-		AbstractTypoScriptParser::KEYS_POSTSPACE_TOKEN
-		=> self::KEYS_POSTSPACE_CLASS,
-		AbstractTypoScriptParser::KEYS_TOKEN
-		=> self::KEYS_CLASS,
-		AbstractTypoScriptParser::OPERATOR_POSTSPACE_TOKEN
-		=> self::OPERATOR_POSTSPACE_CLASS,
-		AbstractTypoScriptParser::OPERATOR_TOKEN
-		=> self::OPERATOR_CLASS,
-		AbstractTypoScriptParser::PRESPACE_TOKEN
-		=> self::PRESPACE_CLASS,
-		AbstractTypoScriptParser::VALUE_CONTEXT_TOKEN
-		=> self::VALUE_CLASS,
-		AbstractTypoScriptParser::VALUE_COPY_TOKEN
-		=> self::VALUE_COPY_CLASS,
-		AbstractTypoScriptParser::VALUE_TOKEN
-		=> self::VALUE_CLASS,
+		AP::COMMENT_CONTEXT_TOKEN => self::COMMENT_CLASS,
+		AP::COMMENT_TOKEN => self::COMMENT_CLASS,
+		AP::CONDITION_TOKEN => self::CONDITION_CLASS,
+		AP::IGNORED_TOKEN => self::IGNORED_CLASS,
+		AP::KEYS_POSTSPACE_TOKEN => self::KEYS_POSTSPACE_CLASS,
+		AP::KEYS_TOKEN => self::KEYS_CLASS,
+		AP::OPERATOR_POSTSPACE_TOKEN => self::OPERATOR_POSTSPACE_CLASS,
+		AP::OPERATOR_TOKEN => self::OPERATOR_CLASS,
+		AP::PRESPACE_TOKEN => self::PRESPACE_CLASS,
+		AP::VALUE_CONTEXT_TOKEN => self::VALUE_CLASS,
+		AP::VALUE_COPY_TOKEN => self::VALUE_COPY_CLASS,
+		AP::VALUE_TOKEN => self::VALUE_CLASS,
 	];
 
 	/**
@@ -161,7 +151,7 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 		}
 		if($this->errorsOfCurrentLine) {
 			$errors = implode('; ', $this->errorsOfCurrentLine);
-			$this->highligthed .= sprintf(self::ERROR_FORMAT, $errors);
+			$errors = sprintf(self::ERROR_FORMAT, $errors);
 		}
 		$nr = $this->numberOfFirstLine + $this->lineCounter;
 		$nr = sprintf(self::LINE_NUMBER_FORMAT, $nr);
