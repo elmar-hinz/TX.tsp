@@ -4,6 +4,7 @@ namespace ElmarHinz\TypoScript\Tests\Unit;
 
 use \ElmarHinz\TypoScript\Tests\Unit\Fixtures\TypoScriptExamples as Examples;
 use \ElmarHinz\TypoScript\TypoScriptSyntaxParser as Parser;
+use \ElmarHinz\TypoScript\TypoScriptFormatter as Formatter;
 
 class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 {
@@ -11,10 +12,9 @@ class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 
 	public function setup()
 	{
-		/* $modifier = $this->getMockBuilder(self::MODIFIER_INTERFACE)->getMock(); */
-		/* $modifier->method('modifyValue')->willReturn('pre_value'); */
 		$this->parser = new Parser();
-		/* $this->parser->setValueModifier($modifier); */
+		$formatter = new Formatter();
+		$this->parser->injectFormatter($formatter);
 	}
 
 	public function tsProvider()

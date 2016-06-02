@@ -72,12 +72,12 @@ This method collects into $this->errors[] = [a, b, c, d] with:
 Collected messages:
 
 * 'Script is short of XXX braces.'
+* 'An end brace is in excess.'
 * 'A multiline value section is not ended with a parenthesis!'
 * 'On return to [GLOBAL] scope, the script was short of XXX braces.'
 * 'Object Name String, contains invalid character XXX. Must be alphanumeric or
   one of: "_:-\.".'
 * 'Object Name String XXX was not followed by any operator, =<>({'
-* 'An end brace is in excess.'
 * '### ERROR: XXX' (Error to be extract form an error comment created in
   previous parsing steps like during template includes.)
 
