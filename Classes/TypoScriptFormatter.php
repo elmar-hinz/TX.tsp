@@ -35,14 +35,19 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 		= '%s%s%s';
 	const LINE_NUMBER_FORMAT
 		= '<span class="ts-linenum">%4d: </span>';
+
 	const NEGATIVE_KEYS_LEVEL_FORMAT
 		= 'a closing brace to much';
 	const POSITIVE_KEYS_LEVEL_AT_CONDITION_FORMAT
 		= '%d closing braces missing at condition line';
 	const POSITIVE_KEYS_LEVEL_AT_END_FORMAT
 		= '%d closing braces missing at end of template';
+	const UNCLOSED_VALUE_CONTEXT_AT_CONDITION_FORMAT
+		= 'unclosed multiline value at condition line';
 	const UNCLOSED_VALUE_CONTEXT_AT_END_FORMAT
 		= 'unclosed multiline value at end of template';
+	const UNCLOSED_COMMENT_CONTEXT_AT_CONDITION_FORMAT
+		= 'unclosed multiline comment at condition line';
 	const UNCLOSED_COMMENT_CONTEXT_AT_END_FORMAT
 		= 'unclosed multiline comment at end of template';
 
@@ -90,8 +95,12 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 		=> self::POSITIVE_KEYS_LEVEL_AT_CONDITION_FORMAT,
 		AP::POSITIVE_KEYS_LEVEL_AT_END_ERROR
 		=> self::POSITIVE_KEYS_LEVEL_AT_END_FORMAT,
+		AP::UNCLOSED_COMMENT_CONTEXT_AT_CONDITION_ERROR
+		=> self::UNCLOSED_COMMENT_CONTEXT_AT_CONDITION_FORMAT,
 		AP::UNCLOSED_COMMENT_CONTEXT_AT_END_ERROR
 		=> self::UNCLOSED_COMMENT_CONTEXT_AT_END_FORMAT,
+		AP::UNCLOSED_VALUE_CONTEXT_AT_CONDITION_ERROR
+		=> self::UNCLOSED_VALUE_CONTEXT_AT_CONDITION_FORMAT,
 		AP::UNCLOSED_VALUE_CONTEXT_AT_END_ERROR
 		=> self::UNCLOSED_VALUE_CONTEXT_AT_END_FORMAT,
 	];
