@@ -10,11 +10,12 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptParser
 	 *
 	 * Conditions are highlighted, but not evaluated in any way, because all
 	 * lines need highlighting. For the production TypoScript parser,
-	 * conditions are prprocessed. To refelect this overall priority of
+	 * conditions are preprocessed. To refelect this overall priority of
 	 * conditions here they are processed before branching into contexts.
 	 *
-	 * Whenever a condition line is matched, the other states must be in their
-	 * default state. Otherwise they are reset and an error is reported:
+	 * Whenever a condition line is matched (including ELSE, END, GLOBAL), all
+	 * states must be at default, otherwise they are reset and an error is
+	 * reported:
 	 *
 	 * - if a mulitline comment was not closed
 	 * - if a mulitline value was not closed
