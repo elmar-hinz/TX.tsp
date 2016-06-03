@@ -109,6 +109,32 @@ class TypoScriptFormatterTest extends \PHPUnit_Framework_TestCase
 
 	/**
 	 * @test
+	 * @expectedException OutOfBoundsException
+	 */
+	public function pushError_arguments_outOfBounds()
+	{
+		$this->subject->pushError(1,2,3,4);
+	}
+
+	/**
+	 * @test
+	 */
+	public function finalErrors()
+	{
+		$expect1 = 'FINAL ERRORS';
+		$expect2 = ';';
+		$expect3 = '3';
+		$this->subject->finishLine();
+		$this->subject->pushError(AP::UNCLOSED_COMMENT_CONTEXT_AT_END_ERROR);
+		$this->subject->pushError(AP::POSITIVE_KEYS_LEVEL_AT_END_ERROR, 3);
+		$result = $this->subject->finish();
+		$this->assertContains($expect1, $result);
+		$this->assertContains($expect2, $result);
+		$this->assertContains($expect3, $result);
+	}
+
+	/**
+	 * @test
 	 */
 	public function oneToken()
 	{

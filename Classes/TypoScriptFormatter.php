@@ -31,6 +31,8 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 		= '<span class="%s">%s</span>';
 	const ERROR_FORMAT
 		= ' <span class="ts-error"><strong> - ERROR:</strong> %s</span>';
+	const FINAL_ERROR_FORMAT
+		=  ' <span class="ts-error"><strong> - FINAL ERRORS:</strong> %s</span>';
 	const LINE_FORMAT
 		= '%s%s%s';
 	const LINE_NUMBER_FORMAT
@@ -66,6 +68,12 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 	const PRESPACE_CLASS           = 'ts-prespace';
 	const VALUE_CLASS              = 'ts-value';
 	const VALUE_COPY_CLASS         = 'ts-value_copy';
+
+	/**
+	 * Exceptions
+	 */
+	const PUSH_ERROR_ARGUMENTS_EXCEPTION
+		= 'The upper bound of arguments is three.';
 
 	/**
 	 * Token to class map
@@ -118,12 +126,12 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 	/**
 	 * Collect the elements of the current line.
 	 */
-	protected $elementsOfCurrentLine = [];
+	protected $currentElements = [];
 
 	/**
-	 * Collect the errors of the current line.
+	 * Collect the errors of the current line or the final errors.
 	 */
-	protected $errorsOfCurrentLine = [];
+	protected $currentErrors = [];
 
 	/**
 	 * Collect the lines.
@@ -174,38 +182,58 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 		$class = $this->tokenToClassMap[$tokenClass];
 		$format = self::ELEMENT_FORMAT;
 		$element = htmlspecialchars($element);
-		$this->elementsOfCurrentLine[] = sprintf($format, $class, $element);
+		$this->currentElements[] = sprintf($format, $class, $element);
 	}
 
 	public function pushError($errorClass, ...$furtherArguments)
 	{
 		$format = $this->errorToMessageMap[$errorClass];
-		$message = sprintf($format, $furtherArguments);
-		$this->errorsOfCurrentLine[] = $message;
+		switch(count($furtherArguments)) {
+		case 0:
+			$message = sprintf($format);
+			break;
+		case 1:
+			$message = sprintf($format, $furtherArguments[0]);
+			break;
+		case 2:
+			$message = sprintf($format,
+				$furtherArguments[0], $furtherArguments[1]);
+			break;
+		default:
+			throw new \OutOfBoundsException(
+				self::PUSH_ERROR_ARGUMENTS_EXCEPTION, 1484191758);
+		}
+		$this->currentErrors[] = $message;
 	}
 
 	public function finishLine()
 	{
 		$elements = '';
 		$errors = '';
-		if($this->elementsOfCurrentLine) {
-			$elements = implode('', $this->elementsOfCurrentLine);
+		if($this->currentElements) {
+			$elements = implode('', $this->currentElements);
 		}
-		if($this->errorsOfCurrentLine) {
-			$errors = implode('; ', $this->errorsOfCurrentLine);
+		if($this->currentErrors) {
+			$errors = implode('; ', $this->currentErrors);
 			$errors = sprintf(self::ERROR_FORMAT, $errors);
 		}
 		$nr = $this->numberOfFirstLine + $this->lineCounter;
 		$nr = sprintf(self::LINE_NUMBER_FORMAT, $nr);
 		$this->lines[] = sprintf(self::LINE_FORMAT, $nr, $elements, $errors);
-		$this->elementsOfCurrentLine = [];
-		$this->errorsOfCurrentLine = [];
+		$this->currentElements = [];
+		$this->currentErrors = [];
 		$this->lineCounter++;
 	}
 
 	public function finish()
 	{
-		return sprintf(self::COMPOSE_FORMAT, implode("\n", $this->lines));
+		$errors = '';
+		if($this->currentErrors) {
+			$errors = implode('; ', $this->currentErrors);
+			$errors = "\n" . sprintf(self::FINAL_ERROR_FORMAT, $errors);
+		}
+		return sprintf(self::COMPOSE_FORMAT,
+			implode("\n", $this->lines) . $errors);
 	}
 
 }
