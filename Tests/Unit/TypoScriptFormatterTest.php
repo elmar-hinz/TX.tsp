@@ -55,7 +55,7 @@ class TypoScriptFormatterTest extends \PHPUnit_Framework_TestCase
 	public function OneEmptyLine()
 	{
 		$expect = '<pre class="ts-hl">'
-			. '<span class="ts-linenum">   1: </span></pre>';
+			. '<span class="ts-linenum">   1:</span> </pre>';
 		$this->subject->finishLine();
 		$this->assertContains($expect, $this->subject->finish());
 	}
@@ -65,8 +65,8 @@ class TypoScriptFormatterTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function TwoLines()
 	{
-		$expect = '<span class="ts-linenum">   1: </span>'
-			. "\n" .  '<span class="ts-linenum">   2: </span>';
+		$expect = '<span class="ts-linenum">   1:</span> '
+			. "\n" .  '<span class="ts-linenum">   2:</span> ';
 		$this->subject->finishLine();
 		$this->subject->finishLine();
 		$this->assertContains($expect, $this->subject->finish());
@@ -77,7 +77,7 @@ class TypoScriptFormatterTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function LineNumberOfThreeDigets()
 	{
-		$expect = '<span class="ts-linenum"> 111: </span>';
+		$expect = '<span class="ts-linenum"> 111:</span> ';
 		$this->subject->setNumberOfFirstLine(111);
 		$this->subject->finishLine();
 		$this->assertContains($expect, $this->subject->finish());
@@ -121,7 +121,7 @@ class TypoScriptFormatterTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function finalErrors()
 	{
-		$expect1 = 'FINAL ERRORS';
+		$expect1 = 'FINAL ERROR';
 		$expect2 = ';';
 		$expect3 = '3';
 		$this->subject->finishLine();

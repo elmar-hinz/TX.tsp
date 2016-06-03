@@ -18,10 +18,25 @@ namespace ElmarHinz\TypoScript;
  * Elements are specified by token classes. The token classes are defined as
  * constants in AbstractTypoScriptParser.
  *
- * If a number for the first line is not set, lines shall start with 1.
+ * If a number for the first line is not set, lines shall start with 1. By
+ * default line numbering shall be enabled.
  */
 interface TypoScriptFormatterInterface
 {
+
+	/**
+     * Hide line numbers
+     *
+     * @return void
+     */
+    public function hideLineNumbers();
+
+	/**
+     * Show line numbers
+     *
+     * @return void
+     */
+    public function showLineNumbers();
 
 	/**
 	 * Set number first line.
@@ -75,7 +90,7 @@ interface TypoScriptFormatterInterface
 	 * @param mixed Further arguments.
 	 * @return void
 	 */
-	public function pushError($errorClass, ...$furtherArguments);
+	public function pushError();
 
 	/**
 	 * Handle the line.

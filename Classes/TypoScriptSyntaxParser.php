@@ -50,95 +50,96 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptParser
 					self::UNCLOSED_COMMENT_CONTEXT_AT_CONDITION_ERROR);
 				$braceLevel = 0;
 				$context = self::DEFAULT_CONTEXT;
-			}
-			switch($context) {
-			case self::DEFAULT_CONTEXT:
-				if(preg_match(self::OPERATOR_REGEX, $line, $matches)) {
-					list(,$prespace ,$keys, $space2, $operator, $space3,
-						$value) = $matches;
-					$f->pushToken(self::PRESPACE_TOKEN, $prespace);
-					$f->pushToken(self::KEYS_TOKEN, $keys);
-					$f->pushToken(self::KEYS_POSTSPACE_TOKEN, $space2);
-					$f->pushToken(self::OPERATOR_TOKEN, $operator);
-					switch($operator) {
-					case self::VALUE_CONTEXT_OPEN_OPERATOR:
-						$f->pushToken(self::IGNORED_TOKEN, $space3 . $value);
-						$context = self::VALUE_CONTEXT;
-						break;
-					case self::LEVEL_OPEN_OPERATOR:
-						$braceLevel++;
-						$f->pushToken(self::IGNORED_TOKEN, $space3 . $value);
-						break;
-					case self::ASSIGN_OPERATOR:
-						$f->pushToken(self::OPERATOR_POSTSPACE_TOKEN, $space3);
-						$f->pushToken(self::VALUE_TOKEN, $value);
-						break;
-					case self::COPY_OPERATOR:
-						$f->pushToken(self::OPERATOR_POSTSPACE_TOKEN, $space3);
-						$f->pushToken(self::VALUE_COPY_TOKEN, $value);
-						break;
-					case self::MODIFY_OPERATOR:
-						$f->pushToken(self::OPERATOR_POSTSPACE_TOKEN, $space3);
-						$f->pushToken(self::VALUE_TOKEN, $value);
-						break;
-					case self::UNSET_OPERATOR:
-						$f->pushToken(self::OPERATOR_POSTSPACE_TOKEN, $space3);
-						$f->pushToken(self::IGNORED_TOKEN, $value);
-						break;
-					}
-				} elseif(preg_match(self::LEVEL_CLOSE_REGEX, $line, $matches)) {
-					$braceLevel--;
-					list(,$prespace, $operator, $excess) = $matches;
-					$f->pushToken(self::PRESPACE_TOKEN, $prespace);
-					$f->pushToken(self::OPERATOR_TOKEN, $operator);
-					$f->pushToken(self::IGNORED_TOKEN, $excess);
-					if($braceLevel < 0) {
-						$f->pushError(self::NEGATIVE_KEYS_LEVEL_ERRROR);
-						$braceLevel = 0;
-					}
-				} elseif(preg_match(self::VOID_REGEX, $line)) {
-					$f->pushToken(self::PRESPACE_TOKEN, $line);
-				} elseif(preg_match(self::COMMENT_REGEX, $line, $matches)) {
-					list(,$prespace, $operator, $comment) = $matches;
-					$f->pushToken(self::PRESPACE_TOKEN, $prespace);
-					$f->pushToken(self::COMMENT_TOKEN, $operator . $comment);
-				} elseif(preg_match(self::COMMENT_CONTEXT_OPEN_REGEX, $line,
-					$matches)) {
-					list(,$prespace, $operator, $comment) = $matches;
-					$f->pushToken(self::PRESPACE_TOKEN, $prespace);
-					$f->pushToken(self::COMMENT_CONTEXT_TOKEN, $operator
-						. $comment);
-					$context = self::COMMENT_CONTEXT;
-				} else {
-					$f->pushToken(self::IGNORED_TOKEN, $line);
-					// TODO: push error
-				}
-				break;
-			case self::COMMENT_CONTEXT:
-				if(preg_match(self::COMMENT_CONTEXT_CLOSE_REGEX, $line,
-					$matches)) {
-					list(,$space1, $operator, $excess) = $matches;
-					$f->pushToken(self::COMMENT_CONTEXT_TOKEN,
-						$space1.$operator);
-					$f->pushToken(self::IGNORED_TOKEN, $excess);
-					$context = self::DEFAULT_CONTEXT;
-				} else {
-					$f->pushToken(self::COMMENT_CONTEXT_TOKEN, $line);
-				}
-				break;
-			case self::VALUE_CONTEXT:
-				if(preg_match(self::VALUE_CONTEXT_CLOSE_REGEX, $line,
-					$matches)) {
-					list(,$space1, $operator, $excess) = $matches;
-					$f->pushToken(self::PRESPACE_TOKEN, $space1);
-					$f->pushToken(self::OPERATOR_TOKEN, $operator);
-					$f->pushToken(self::IGNORED_TOKEN, $excess);
-					$context = self::DEFAULT_CONTEXT;
-				} else {
-					$f->pushToken(self::VALUE_CONTEXT_TOKEN, $line);
-				}
-				break;
-			}
+			} else {
+                switch($context) {
+                case self::DEFAULT_CONTEXT:
+                    if(preg_match(self::OPERATOR_REGEX, $line, $matches)) {
+                        list(,$prespace ,$keys, $space2, $operator, $space3,
+                            $value) = $matches;
+                        $f->pushToken(self::PRESPACE_TOKEN, $prespace);
+                        $f->pushToken(self::KEYS_TOKEN, $keys);
+                        $f->pushToken(self::KEYS_POSTSPACE_TOKEN, $space2);
+                        $f->pushToken(self::OPERATOR_TOKEN, $operator);
+                        switch($operator) {
+                        case self::VALUE_CONTEXT_OPEN_OPERATOR:
+                            $f->pushToken(self::IGNORED_TOKEN, $space3 . $value);
+                            $context = self::VALUE_CONTEXT;
+                            break;
+                        case self::LEVEL_OPEN_OPERATOR:
+                            $braceLevel++;
+                            $f->pushToken(self::IGNORED_TOKEN, $space3 . $value);
+                            break;
+                        case self::ASSIGN_OPERATOR:
+                            $f->pushToken(self::OPERATOR_POSTSPACE_TOKEN, $space3);
+                            $f->pushToken(self::VALUE_TOKEN, $value);
+                            break;
+                        case self::COPY_OPERATOR:
+                            $f->pushToken(self::OPERATOR_POSTSPACE_TOKEN, $space3);
+                            $f->pushToken(self::VALUE_COPY_TOKEN, $value);
+                            break;
+                        case self::MODIFY_OPERATOR:
+                            $f->pushToken(self::OPERATOR_POSTSPACE_TOKEN, $space3);
+                            $f->pushToken(self::VALUE_TOKEN, $value);
+                            break;
+                        case self::UNSET_OPERATOR:
+                            $f->pushToken(self::OPERATOR_POSTSPACE_TOKEN, $space3);
+                            $f->pushToken(self::IGNORED_TOKEN, $value);
+                            break;
+                        }
+                    } elseif(preg_match(self::LEVEL_CLOSE_REGEX, $line, $matches)) {
+                        $braceLevel--;
+                        list(,$prespace, $operator, $excess) = $matches;
+                        $f->pushToken(self::PRESPACE_TOKEN, $prespace);
+                        $f->pushToken(self::OPERATOR_TOKEN, $operator);
+                        $f->pushToken(self::IGNORED_TOKEN, $excess);
+                        if($braceLevel < 0) {
+                            $f->pushError(self::NEGATIVE_KEYS_LEVEL_ERRROR);
+                            $braceLevel = 0;
+                        }
+                    } elseif(preg_match(self::VOID_REGEX, $line)) {
+                        $f->pushToken(self::PRESPACE_TOKEN, $line);
+                    } elseif(preg_match(self::COMMENT_REGEX, $line, $matches)) {
+                        list(,$prespace, $operator, $comment) = $matches;
+                        $f->pushToken(self::PRESPACE_TOKEN, $prespace);
+                        $f->pushToken(self::COMMENT_TOKEN, $operator . $comment);
+                    } elseif(preg_match(self::COMMENT_CONTEXT_OPEN_REGEX, $line,
+                        $matches)) {
+                        list(,$prespace, $operator, $comment) = $matches;
+                        $f->pushToken(self::PRESPACE_TOKEN, $prespace);
+                        $f->pushToken(self::COMMENT_CONTEXT_TOKEN, $operator
+                            . $comment);
+                        $context = self::COMMENT_CONTEXT;
+                    } else {
+                        $f->pushToken(self::IGNORED_TOKEN, $line);
+                        // TODO: push error
+                    }
+                    break;
+                case self::COMMENT_CONTEXT:
+                    if(preg_match(self::COMMENT_CONTEXT_CLOSE_REGEX, $line,
+                        $matches)) {
+                        list(,$space1, $operator, $excess) = $matches;
+                        $f->pushToken(self::COMMENT_CONTEXT_TOKEN,
+                            $space1.$operator);
+                        $f->pushToken(self::IGNORED_TOKEN, $excess);
+                        $context = self::DEFAULT_CONTEXT;
+                    } else {
+                        $f->pushToken(self::COMMENT_CONTEXT_TOKEN, $line);
+                    }
+                    break;
+                case self::VALUE_CONTEXT:
+                    if(preg_match(self::VALUE_CONTEXT_CLOSE_REGEX, $line,
+                        $matches)) {
+                        list(,$space1, $operator, $excess) = $matches;
+                        $f->pushToken(self::PRESPACE_TOKEN, $space1);
+                        $f->pushToken(self::OPERATOR_TOKEN, $operator);
+                        $f->pushToken(self::IGNORED_TOKEN, $excess);
+                        $context = self::DEFAULT_CONTEXT;
+                    } else {
+                        $f->pushToken(self::VALUE_CONTEXT_TOKEN, $line);
+                    }
+                    break;
+                }
+            }
 			$f->finishLine();
 		}
 		if($braceLevel > 0)

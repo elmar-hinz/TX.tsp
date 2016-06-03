@@ -27,16 +27,16 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 	 */
 	const COMPOSE_FORMAT
 		= '<pre class="ts-hl">%s</pre>';
-	const ELEMENT_FORMAT
+	const TOKEN_FORMAT
 		= '<span class="%s">%s</span>';
 	const ERROR_FORMAT
 		= ' <span class="ts-error"><strong> - ERROR:</strong> %s</span>';
 	const FINAL_ERROR_FORMAT
-		=  ' <span class="ts-error"><strong> - FINAL ERRORS:</strong> %s</span>';
+		=  '      <span class="ts-error"><strong> - FINAL ERROR:</strong> %s</span>';
 	const LINE_FORMAT
 		= '%s%s%s';
 	const LINE_NUMBER_FORMAT
-		= '<span class="ts-linenum">%4d: </span>';
+		= '<span class="ts-linenum">%4d:</span> ';
 
 	const NEGATIVE_KEYS_LEVEL_FORMAT
 		= 'a closing brace to much';
@@ -114,6 +114,11 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 	];
 
 	/**
+	 * Hide line numbers
+	 */
+	protected $hideLineNumbers = false;
+
+	/**
 	 * Number of first line
 	 */
 	protected $numberOfFirstLine = 1;
@@ -137,6 +142,26 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 	 * Collect the lines.
 	 */
 	protected $lines = [];
+
+	/**
+     * Hide line numbers
+     *
+     * @return void
+     */
+    public function hideLineNumbers()
+    {
+        $this->hideLineNumbers = true;
+    }
+
+	/**
+     * Show line numbers
+     *
+     * @return void
+     */
+    public function showLineNumbers()
+    {
+        $this->hideLineNumbers = false;
+    }
 
 	/**
 	 * Set number first line.
@@ -180,13 +205,28 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 	public function pushToken($tokenClass, $element)
 	{
 		$class = $this->tokenToClassMap[$tokenClass];
-		$format = self::ELEMENT_FORMAT;
+		$format = self::TOKEN_FORMAT;
 		$element = htmlspecialchars($element);
 		$this->currentElements[] = sprintf($format, $class, $element);
 	}
 
-	public function pushError($errorClass, ...$furtherArguments)
+	/**
+	 * Push an error message fo the current line.
+	 *
+	 * The type and order of further arguments must matcht the $errorClass. In
+	 * case there are further arguments this is documented with the error class
+	 * constant in AbstractTypoScriptParser.
+	 *
+     * @see TypoScriptFormatterInterface::pushError()
+	 * @param string The error message.
+	 * @param mixed Further arguments.
+	 * @return void
+	 */
+	public function pushError()
 	{
+        $arguments = func_get_args();
+        $errorClass = $arguments[0];
+        $furtherArguments = array_splice($arguments, 1);
 		$format = $this->errorToMessageMap[$errorClass];
 		switch(count($furtherArguments)) {
 		case 0:
@@ -217,8 +257,12 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 			$errors = implode('; ', $this->currentErrors);
 			$errors = sprintf(self::ERROR_FORMAT, $errors);
 		}
-		$nr = $this->numberOfFirstLine + $this->lineCounter;
-		$nr = sprintf(self::LINE_NUMBER_FORMAT, $nr);
+        if($this->hideLineNumbers) {
+            $nr = '';
+        } else {
+            $nr = $this->numberOfFirstLine + $this->lineCounter;
+            $nr = sprintf(self::LINE_NUMBER_FORMAT, $nr);
+        }
 		$this->lines[] = sprintf(self::LINE_FORMAT, $nr, $elements, $errors);
 		$this->currentElements = [];
 		$this->currentErrors = [];

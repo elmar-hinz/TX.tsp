@@ -5,6 +5,8 @@ namespace ElmarHinz\TypoScript;
 use	\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser as CoreParser;
 use	\ElmarHinz\TypoScript\TypoScriptParser as NewParser;
 use	\ElmarHinz\TypoScript\TypoScriptConditionsProcessor as ConditionsProcessor;
+use	\ElmarHinz\TypoScript\TypoScriptSyntaxParser as SyntaxParser;
+use	\ElmarHinz\TypoScript\TypoScriptFormatter as Formatter;
 
 class CoreTypoScriptParserAdapter extends CoreParser implements ValueModifierInterface
 {
@@ -31,6 +33,27 @@ class CoreTypoScriptParserAdapter extends CoreParser implements ValueModifierInt
 			// Error handling: not well formatted modifier
 		}
 	}
+
+    /**
+     * Do syntax highlighting
+     *
+     * @param string The template to parse.
+     * @param array The first entry is the line number offset.
+     * @param bool Toggle blockmode.
+     */
+    public function doSyntaxHighlight($template, $numbers = null, $blockmode = false)
+    {
+        $formatter = new Formatter();
+        if(is_array($numbers) && count($numbers) > 0 && is_int($numbers[0])) {
+            $formatter->setNumberOfFirstLine($numbers[0]);
+        } else {
+            $formatter->hideLineNumbers();
+        }
+		$parser = new SyntaxParser();
+        $parser->injectFormatter($formatter);
+        $parser->appendTemplate($template);
+        return $parser->parse();
+    }
 
 }
 

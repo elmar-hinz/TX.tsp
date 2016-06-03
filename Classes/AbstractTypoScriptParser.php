@@ -136,6 +136,10 @@ abstract class AbstractTypoScriptParser
 			if(substr($template, -1) == "\n")
 			   $template = substr($template, 0, -1);
 			$template = explode("\n", $template);
+            for($i = 0; $i < count($template); $i++) {
+                if(substr($template[$i], -1) == "\r")
+                    $template[$i] = substr($template[$i], 0, -1);
+            }
 		}
 		if($this->inputLines == Null) {
 			$this->inputLines = $template;
