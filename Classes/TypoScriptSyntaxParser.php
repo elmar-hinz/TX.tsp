@@ -8,17 +8,22 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptParser
 	/**
 	 * Parse the lines to check and highlight the syntax
 	 *
-	 * Conditions are highlighted, but not evaluated in any way,
-	 * because all lines need highlighting.
+	 * Conditions are highlighted, but not evaluated in any way, because all
+	 * lines need highlighting. For the production TypoScript parser,
+	 * conditions are prprocessed. To refelect this overall priority of
+	 * conditions here they are processed before branching into contexts.
 	 *
-	 * Brace level errors are tracked:
+	 * Whenever a condition line is matched, the other states must be in their
+	 * default state. Otherwise they are reset and an error is reported:
 	 *
-	 * - if a closing brace is in excess.
-	 * - if not all braces are closed at a condition.
-	 * - if not all braces are closed at the end of the script.
+	 * - if a mulitline comment was not closed
+	 * - if a mulitline value was not closed
+	 * - if braces were not closed.
 	 *
-	 * In case of a brace level error, the brace level is reset to zero
-	 * at that line.
+	 * The same checks are done at the and of the stript.
+	 *
+	 * If a closing brace is in excess anywhere an error is reported
+	 * and the brace level is set to zero.
 	 *
 	 * @return void
 	 */
@@ -28,6 +33,23 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptParser
 		$f = $this->formatter;
 		$context = self::DEFAULT_CONTEXT;
 		foreach($this->inputLines as $line) {
+			if(preg_match(self::CONDITION_REGEX, $line, $matches)) {
+				list(,$prespace, $condition) = $matches;
+				$f->pushToken(self::PRESPACE_TOKEN, $prespace);
+				$f->pushToken(self::CONDITION_TOKEN, $condition);
+				if($braceLevel > 0) {
+					$f->pushError(
+						self::POSITIVE_KEYS_LEVEL_AT_CONDITION_ERROR,
+						$braceLevel
+					);
+				}
+				if($context == self::VALUE_CONTEXT) $f->pushError(
+					self::UNCLOSED_VALUE_CONTEXT_AT_CONDITION_ERROR);
+				if($context == self::COMMENT_CONTEXT) $f->pushError(
+					self::UNCLOSED_COMMENT_CONTEXT_AT_CONDITION_ERROR);
+				$braceLevel = 0;
+				$context = self::DEFAULT_CONTEXT;
+			}
 			switch($context) {
 			case self::DEFAULT_CONTEXT:
 				if(preg_match(self::OPERATOR_REGEX, $line, $matches)) {
@@ -37,26 +59,29 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptParser
 					$f->pushToken(self::KEYS_TOKEN, $keys);
 					$f->pushToken(self::KEYS_POSTSPACE_TOKEN, $space2);
 					$f->pushToken(self::OPERATOR_TOKEN, $operator);
-					$f->pushToken(self::OPERATOR_POSTSPACE_TOKEN, $space3);
 					switch($operator) {
 					case self::VALUE_CONTEXT_OPEN_OPERATOR:
-						$f->pushToken(self::IGNORED_TOKEN, $value);
+						$f->pushToken(self::IGNORED_TOKEN, $space3 . $value);
 						$context = self::VALUE_CONTEXT;
 						break;
 					case self::LEVEL_OPEN_OPERATOR:
 						$braceLevel++;
-						$f->pushToken(self::IGNORED_TOKEN, $value);
+						$f->pushToken(self::IGNORED_TOKEN, $space3 . $value);
 						break;
 					case self::ASSIGN_OPERATOR:
+						$f->pushToken(self::OPERATOR_POSTSPACE_TOKEN, $space3);
 						$f->pushToken(self::VALUE_TOKEN, $value);
 						break;
 					case self::COPY_OPERATOR:
+						$f->pushToken(self::OPERATOR_POSTSPACE_TOKEN, $space3);
 						$f->pushToken(self::VALUE_COPY_TOKEN, $value);
 						break;
 					case self::MODIFY_OPERATOR:
+						$f->pushToken(self::OPERATOR_POSTSPACE_TOKEN, $space3);
 						$f->pushToken(self::VALUE_TOKEN, $value);
 						break;
 					case self::UNSET_OPERATOR:
+						$f->pushToken(self::OPERATOR_POSTSPACE_TOKEN, $space3);
 						$f->pushToken(self::IGNORED_TOKEN, $value);
 						break;
 					}
@@ -65,29 +90,17 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptParser
 					list(,$prespace, $operator, $excess) = $matches;
 					$f->pushToken(self::PRESPACE_TOKEN, $prespace);
 					$f->pushToken(self::OPERATOR_TOKEN, $operator);
-					$f->pushToken(self::IGNORED_TOKEN, $value);
+					$f->pushToken(self::IGNORED_TOKEN, $excess);
 					if($braceLevel < 0) {
 						$f->pushError(self::NEGATIVE_KEYS_LEVEL_ERRROR);
 						$braceLevel = 0;
 					}
-				} elseif(preg_match(self::VOID_REGEX, $line, $matches)) {
-					list(,$prespace) = $matches;
-					$f->pushToken(self::PRESPACE_TOKEN, $prespace);
+				} elseif(preg_match(self::VOID_REGEX, $line)) {
+					$f->pushToken(self::PRESPACE_TOKEN, $line);
 				} elseif(preg_match(self::COMMENT_REGEX, $line, $matches)) {
 					list(,$prespace, $operator, $comment) = $matches;
 					$f->pushToken(self::PRESPACE_TOKEN, $prespace);
 					$f->pushToken(self::COMMENT_TOKEN, $operator . $comment);
-				} elseif(preg_match(self::CONDITION_REGEX, $line, $matches)) {
-					list(,$prespace, $condition) = $matches;
-					$f->pushToken(self::PRESPACE_TOKEN, $prespace);
-					$f->pushToken(self::CONDITION_TOKEN, $condition);
-					if($braceLevel > 0) {
-						$f->pushError(
-							self::POSITIVE_KEYS_LEVEL_AT_CONDITION_ERROR,
-							$braceLevel
-						);
-						$braceLevel = 0;
-					}
 				} elseif(preg_match(self::COMMENT_CONTEXT_OPEN_REGEX, $line,
 					$matches)) {
 					list(,$prespace, $operator, $comment) = $matches;
@@ -103,10 +116,9 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptParser
 			case self::COMMENT_CONTEXT:
 				if(preg_match(self::COMMENT_CONTEXT_CLOSE_REGEX, $line,
 					$matches)) {
-					list(,$space1, $operator, $space2, $excess) = $matches;
+					list(,$space1, $operator, $excess) = $matches;
 					$f->pushToken(self::COMMENT_CONTEXT_TOKEN,
 						$space1.$operator);
-					$f->pushToken(self::OPERATOR_POSTSPACE_TOKEN, $space2);
 					$f->pushToken(self::IGNORED_TOKEN, $excess);
 					$context = self::DEFAULT_CONTEXT;
 				} else {
@@ -116,10 +128,9 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptParser
 			case self::VALUE_CONTEXT:
 				if(preg_match(self::VALUE_CONTEXT_CLOSE_REGEX, $line,
 					$matches)) {
-					list(,$space1, $operator, $space2, $excess) = $matches;
+					list(,$space1, $operator, $excess) = $matches;
 					$f->pushToken(self::PRESPACE_TOKEN, $space1);
 					$f->pushToken(self::OPERATOR_TOKEN, $operator);
-					$f->pushToken(self::OPERATOR_POSTSPACE_TOKEN, $space2);
 					$f->pushToken(self::IGNORED_TOKEN, $excess);
 					$context = self::DEFAULT_CONTEXT;
 				} else {

@@ -5,27 +5,31 @@ namespace ElmarHinz\TypoScript;
 abstract class AbstractTypoScriptParser
 {
 
-	/**
-	 * The lines to parse.
-	 */
-	protected $inputLines = Null;
+	/*******************************************************
+	 * Constants
+	 *******************************************************/
 
-	// Constants
 	const DOT = '.';
 	const NL = "\n";
 	const EMPTY_STRING = '';
 
-	// Matchers
-	const COMMENT_CONTEXT_CLOSE_REGEX = '|^(\s*)(\*/)(\s*)(.*)$|';
+	/*******************************************************
+	 * Regular expressions to tokenize TypoScript
+	 *******************************************************/
+
+	const COMMENT_CONTEXT_CLOSE_REGEX = '|^(\s*)(\*/)(.*)$|';
 	const COMMENT_CONTEXT_OPEN_REGEX = '|^(\s*)(/\*)(.*)$|';
 	const COMMENT_REGEX = '/^(\s*)(#|\/[^\*])(.*)$/';
 	const CONDITION_REGEX = '|^(\s*)(\[.*)$|';
 	const LEVEL_CLOSE_REGEX = '|^(\s*)(})(.*)$|';
 	const OPERATOR_REGEX = '/^(\s*)([[:alnum:].\\\\_-]*[[:alnum:]\\\\_-])(\s*)(:=|[=<>{(])(\s*)(.*)$/';
-	const VALUE_CONTEXT_CLOSE_REGEX = '|^(\s*)(\))(\s*)(.*)$|';
-	const VOID_REGEX = '|^(\s*)$|';
+	const VALUE_CONTEXT_CLOSE_REGEX = '|^(\s*)(\))(.*)$|';
+	const VOID_REGEX = '|^\s*$|';
 
-	// Operators
+	/*******************************************************
+	 * TypoSciript operators
+	 *******************************************************/
+
 	const ASSIGN_OPERATOR = '=';
 	const COPY_OPERATOR = '<';
 	const LEVEL_OPEN_OPERATOR = '{';
@@ -33,12 +37,18 @@ abstract class AbstractTypoScriptParser
 	const UNSET_OPERATOR = '>';
 	const VALUE_CONTEXT_OPEN_OPERATOR = '(';
 
-	// Contexts
+	/*******************************************************
+	 * TypoSciript multiline contexts
+	 *******************************************************/
+
 	const COMMENT_CONTEXT = 1;
 	const DEFAULT_CONTEXT = 2;
-	const VALUE_CONTEXT = 3;
+	const VALUE_CONTEXT   = 3;
 
-	// Syntax token classes
+	/*******************************************************
+	 * Syntax token classes
+	 *******************************************************/
+
 	const COMMENT_CONTEXT_TOKEN    = 1;
 	const COMMENT_TOKEN            = 2;
 	const CONDITION_TOKEN          = 3;
@@ -52,12 +62,65 @@ abstract class AbstractTypoScriptParser
 	const VALUE_COPY_TOKEN         = 11;
 	const VALUE_TOKEN              = 12;
 
-	// Errors
-	const NEGATIVE_KEYS_LEVEL_ERRROR             = 1;
-	const POSITIVE_KEYS_LEVEL_AT_CONDITION_ERROR = 2; // arguments: braceLevel
-	const POSITIVE_KEYS_LEVEL_AT_END_ERROR       = 3; // arguments: braceLevel
-	const UNCLOSED_COMMENT_CONTEXT_AT_END_ERROR  = 4;
-	const UNCLOSED_VALUE_CONTEXT_AT_END_ERROR    = 5;
+	/*******************************************************
+	 * Errors
+	 *******************************************************/
+
+	/**
+	 * Unexpected closing brace.
+	 */
+	const NEGATIVE_KEYS_LEVEL_ERRROR = 1;
+
+	/**
+	 * Braces are not closed at condition.
+	 *
+	 * pushToken() parameters:
+	 *
+	 * @param: integer The brace level.
+	 */
+	const POSITIVE_KEYS_LEVEL_AT_CONDITION_ERROR = 2;
+
+	/**
+	 * Braces are not closed at end of template.
+	 *
+	 * pushToken() parameters:
+	 *
+	 * @param: integer The brace level.
+	 */
+	const POSITIVE_KEYS_LEVEL_AT_END_ERROR  = 3;
+
+	/**
+	 * Multiline comment not closed at condition.
+	 */
+	const UNCLOSED_COMMENT_CONTEXT_AT_CONDITION_ERROR = 4;
+
+	/**
+	 * Multiline comment not closed at end of template.
+	 */
+	const UNCLOSED_COMMENT_CONTEXT_AT_END_ERROR = 5;
+
+	/**
+	 * Multiline value not closed at condition.
+	 */
+	const UNCLOSED_VALUE_CONTEXT_AT_CONDITION_ERROR = 6;
+
+	/**
+	 * Multiline value not closed at end of template.
+	 */
+	const UNCLOSED_VALUE_CONTEXT_AT_END_ERROR = 7;
+
+	/*******************************************************
+	 * Instance variables
+	 *******************************************************/
+
+	/**
+	 * The lines to parse.
+	 */
+	protected $inputLines = Null;
+
+	/*******************************************************
+	 * Methods
+	 *******************************************************/
 
 	/**
 	 * Join multiple templates before parsing them.
