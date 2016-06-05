@@ -11,17 +11,17 @@
 Administration
 ==============
 
-Install the extension, clear caches and check of your frontend is rendered  as
-expected.
+Install the extension, clear caches and check of your frontend is rendered as
+expected and if you get the advance error feedback in the backend.
 
-If things go wrong, uninstall.
+If anything goes wrong, uninstall and report the issue.
 
+https://github.com/elmar-hinz/TX.tsp/issues
 
 Technical Implementation
 ========================
 
 The origional parser is not fully replaced but extended by XCLASS registration.
-This registration is only done in FE mode. The extended class serves as
-adapter to the standalone classes.
+The extended class serves as adapter to the standalone classes.
 
 
