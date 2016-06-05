@@ -1,14 +1,14 @@
 <?php
 
-namespace ElmarHinz\TypoScript\Tests\Unit;
+namespace ElmarHinz\TypoScriptParser\Tests\Unit;
 
-use \ElmarHinz\TypoScript\Tests\Unit\Fixtures\TypoScriptExamples as Examples;
-use \ElmarHinz\TypoScript\TypoScriptSyntaxParser as Parser;
-use \ElmarHinz\TypoScript\AbstractTypoScriptParser as AP;
+use \ElmarHinz\TypoScriptParser\Tests\Unit\Fixtures\TypoScriptExamples as Examples;
+use \ElmarHinz\TypoScriptParser\TypoScriptSyntaxParser as Parser;
+use \ElmarHinz\TypoScriptParser\AbstractTypoScriptParser as AP;
 
 class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 {
-	const FORMATTER = '\\ElmarHinz\\TypoScript\\TypoScriptFormatterInterface';
+	const FORMATTER = '\\ElmarHinz\\TypoScriptParser\\TypoScriptFormatterInterface';
 
 	public function setup()
 	{

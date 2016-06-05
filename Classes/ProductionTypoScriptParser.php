@@ -1,8 +1,8 @@
 <?php
 
-namespace ElmarHinz\TypoScript;
+namespace ElmarHinz\TypoScriptParser;
 
-class TypoScriptParser extends AbstractTypoScriptParser
+class ProductionTypoScriptParser extends AbstractTypoScriptParser
 {
 
 	protected $valueModifier;

@@ -1,6 +1,6 @@
 <?php
 
-namespace ElmarHinz\TypoScript\Tests\Unit\Fixtures;
+namespace ElmarHinz\TypoScriptParser\Tests\Unit\Fixtures;
 
 class TypoScriptExamples {
 

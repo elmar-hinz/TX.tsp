@@ -26,12 +26,12 @@
     },
     "autoload": {
         "psr-4" : {
-            "ElmarHinz\\TypoScript\\": "Classes/"
+            "ElmarHinz\\TypoScriptParser\\": "Classes/"
         }
     },
     "autoload-dev": {
         "psr-4" : {
-            "ElmarHinz\\TypoScript\\Tests\\": "Tests/",
+            "ElmarHinz\\TypoScriptParser\\Tests\\": "Tests/",
             "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/"
         }
     },

@@ -1,8 +1,8 @@
 <?php
 
-namespace ElmarHinz\TypoScript\Tests\Unit;
+namespace ElmarHinz\TypoScriptParser\Tests\Unit;
 
-use \ElmarHinz\TypoScript\Tests\Unit\Fixtures\TypoScriptExamples as Examples;
+use \ElmarHinz\TypoScriptParser\Tests\Unit\Fixtures\TypoScriptExamples as Examples;
 
 if(!defined("LF")) define("LF", "\n");
 if(!defined("TAB")) define("TAB", "\t");

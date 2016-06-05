@@ -1,13 +1,13 @@
 <?php
 
-namespace ElmarHinz\TypoScript\Tests\Unit;
+namespace ElmarHinz\TypoScriptParser\Tests\Unit;
 
-use \ElmarHinz\TypoScript\Tests\Unit\Fixtures\TypoScriptExamples as Examples;
-use \ElmarHinz\TypoScript\TypoScriptParser as Parser;
+use \ElmarHinz\TypoScriptParser\Tests\Unit\Fixtures\TypoScriptExamples as Examples;
+use \ElmarHinz\TypoScriptParser\ProductionTypoScriptParser as Parser;
 
-class TypoScriptParserTest extends \PHPUnit_Framework_TestCase
+class ProductionTypoScriptParserTest extends \PHPUnit_Framework_TestCase
 {
-	const MODIFIER_INTERFACE = '\\ElmarHinz\\TypoScript\\ValueModifierInterface';
+	const MODIFIER_INTERFACE = '\\ElmarHinz\\TypoScriptParser\\ValueModifierInterface';
 
 	public function setup()
 	{

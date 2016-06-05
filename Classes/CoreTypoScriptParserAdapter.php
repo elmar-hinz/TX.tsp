@@ -1,12 +1,12 @@
 <?php
 
-namespace ElmarHinz\TypoScript;
+namespace ElmarHinz\TypoScriptParser;
 
 use	\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser as CoreParser;
-use	\ElmarHinz\TypoScript\TypoScriptParser as NewParser;
-use	\ElmarHinz\TypoScript\TypoScriptConditionsProcessor as ConditionsProcessor;
-use	\ElmarHinz\TypoScript\TypoScriptSyntaxParser as SyntaxParser;
-use	\ElmarHinz\TypoScript\TypoScriptFormatter as Formatter;
+use	\ElmarHinz\TypoScriptParser\ProductionTypoScriptParser as NewParser;
+use	\ElmarHinz\TypoScriptParser\TypoScriptConditionsProcessor as ConditionsProcessor;
+use	\ElmarHinz\TypoScriptParser\TypoScriptSyntaxParser as SyntaxParser;
+use	\ElmarHinz\TypoScriptParser\TypoScriptFormatter as Formatter;
 
 class CoreTypoScriptParserAdapter extends CoreParser implements ValueModifierInterface
 {

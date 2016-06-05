@@ -1,8 +1,8 @@
 <?php
 
-namespace ElmarHinz\TypoScript\Tests\Unit;
+namespace ElmarHinz\TypoScriptParser\Tests\Unit;
 
-use \ElmarHinz\TypoScript\TypoScriptConditionsProcessor;
+use \ElmarHinz\TypoScriptParser\TypoScriptConditionsProcessor;
 
 class TypoScriptConditionsProcessorTest extends \PHPUnit_Framework_TestCase
 {

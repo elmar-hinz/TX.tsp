@@ -1,6 +1,6 @@
 <?php
 
-namespace ElmarHinz\TypoScript;
+namespace ElmarHinz\TypoScriptParser;
 
 /**
  * Interface of TypoScript formatters
