@@ -38,20 +38,18 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 	const LINE_NUMBER_FORMAT
 		= '<span class="ts-linenum">%4d:</span> ';
 
-	const NEGATIVE_KEYS_LEVEL_FORMAT
-		= 'a closing brace to much';
+    const INVALID_LINE_FORMAT
+        = 'The syntax of this line is invalid.';
+    const NEGATIVE_KEYS_LEVEL_FORMAT
+        = 'A closing brace in excess.';
 	const POSITIVE_KEYS_LEVEL_AT_CONDITION_FORMAT
-		= '%d closing braces missing at condition line';
+		= '%d closing brace(s) missing at condition.';
 	const POSITIVE_KEYS_LEVEL_AT_END_FORMAT
-		= '%d closing braces missing at end of template';
-	const UNCLOSED_VALUE_CONTEXT_AT_CONDITION_FORMAT
-		= 'unclosed multiline value at condition line';
-	const UNCLOSED_VALUE_CONTEXT_AT_END_FORMAT
-		= 'unclosed multiline value at end of template';
-	const UNCLOSED_COMMENT_CONTEXT_AT_CONDITION_FORMAT
-		= 'unclosed multiline comment at condition line';
-	const UNCLOSED_COMMENT_CONTEXT_AT_END_FORMAT
-		= 'unclosed multiline comment at end of template';
+		= '%d closing brace(s) missing.';
+    const UNCLOSED_COMMENT_CONTEXT_FORMAT
+        = 'Unclosed multiline comment.';
+    const UNCLOSED_VALUE_CONTEXT_FORMAT
+        = 'Unclosed multiline value.';
 
 
 	/**
@@ -97,20 +95,18 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 	 * Error to message map
 	 */
 	protected $errorToMessageMap = [
-		AP::NEGATIVE_KEYS_LEVEL_ERRROR
-		=> self::NEGATIVE_KEYS_LEVEL_FORMAT,
-		AP::POSITIVE_KEYS_LEVEL_AT_CONDITION_ERROR
-		=> self::POSITIVE_KEYS_LEVEL_AT_CONDITION_FORMAT,
-		AP::POSITIVE_KEYS_LEVEL_AT_END_ERROR
-		=> self::POSITIVE_KEYS_LEVEL_AT_END_FORMAT,
-		AP::UNCLOSED_COMMENT_CONTEXT_AT_CONDITION_ERROR
-		=> self::UNCLOSED_COMMENT_CONTEXT_AT_CONDITION_FORMAT,
-		AP::UNCLOSED_COMMENT_CONTEXT_AT_END_ERROR
-		=> self::UNCLOSED_COMMENT_CONTEXT_AT_END_FORMAT,
-		AP::UNCLOSED_VALUE_CONTEXT_AT_CONDITION_ERROR
-		=> self::UNCLOSED_VALUE_CONTEXT_AT_CONDITION_FORMAT,
-		AP::UNCLOSED_VALUE_CONTEXT_AT_END_ERROR
-		=> self::UNCLOSED_VALUE_CONTEXT_AT_END_FORMAT,
+        AP::INVALID_LINE_ERROR
+        => self::INVALID_LINE_FORMAT,
+        AP::NEGATIVE_KEYS_LEVEL_ERROR
+        => self::NEGATIVE_KEYS_LEVEL_FORMAT,
+        AP::POSITIVE_KEYS_LEVEL_AT_CONDITION_ERROR
+        => self::POSITIVE_KEYS_LEVEL_AT_CONDITION_FORMAT,
+        AP::POSITIVE_KEYS_LEVEL_AT_END_ERROR
+        => self::POSITIVE_KEYS_LEVEL_AT_END_FORMAT,
+        AP::UNCLOSED_COMMENT_CONTEXT_ERROR
+        => self::UNCLOSED_COMMENT_CONTEXT_FORMAT,
+        AP::UNCLOSED_VALUE_CONTEXT_ERROR
+        => self::UNCLOSED_VALUE_CONTEXT_FORMAT,
 	];
 
 	/**
@@ -254,7 +250,7 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 			$elements = implode('', $this->currentElements);
 		}
 		if($this->currentErrors) {
-			$errors = implode('; ', $this->currentErrors);
+			$errors = implode(' ', $this->currentErrors);
 			$errors = sprintf(self::ERROR_FORMAT, $errors);
 		}
         if($this->hideLineNumbers) {
@@ -273,7 +269,7 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 	{
 		$errors = '';
 		if($this->currentErrors) {
-			$errors = implode('; ', $this->currentErrors);
+			$errors = implode(' ', $this->currentErrors);
 			$errors = "\n" . sprintf(self::FINAL_ERROR_FORMAT, $errors);
 		}
 		return sprintf(self::COMPOSE_FORMAT,

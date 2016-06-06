@@ -3,9 +3,9 @@
 namespace ElmarHinz\TypoScriptParser\Tests\Unit;
 
 use \ElmarHinz\TypoScriptParser\Tests\Unit\Fixtures\TypoScriptExamples as Examples;
-use \ElmarHinz\TypoScriptParser\ProductionTypoScriptParser as Parser;
+use \ElmarHinz\TypoScriptParser\TypoScriptProductionParser as Parser;
 
-class ProductionTypoScriptParserTest extends \PHPUnit_Framework_TestCase
+class TypoScriptProductionParserTest extends \PHPUnit_Framework_TestCase
 {
 	const MODIFIER_INTERFACE = '\\ElmarHinz\\TypoScriptParser\\ValueModifierInterface';
 

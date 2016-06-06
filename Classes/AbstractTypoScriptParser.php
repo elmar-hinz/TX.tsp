@@ -69,7 +69,7 @@ abstract class AbstractTypoScriptParser
 	/**
 	 * Unexpected closing brace.
 	 */
-	const NEGATIVE_KEYS_LEVEL_ERRROR = 1;
+	const NEGATIVE_KEYS_LEVEL_ERROR = 1;
 
 	/**
 	 * Braces are not closed at condition.
@@ -90,24 +90,19 @@ abstract class AbstractTypoScriptParser
 	const POSITIVE_KEYS_LEVEL_AT_END_ERROR  = 3;
 
 	/**
-	 * Multiline comment not closed at condition.
-	 */
-	const UNCLOSED_COMMENT_CONTEXT_AT_CONDITION_ERROR = 4;
-
-	/**
 	 * Multiline comment not closed at end of template.
 	 */
-	const UNCLOSED_COMMENT_CONTEXT_AT_END_ERROR = 5;
-
-	/**
-	 * Multiline value not closed at condition.
-	 */
-	const UNCLOSED_VALUE_CONTEXT_AT_CONDITION_ERROR = 6;
+	const UNCLOSED_COMMENT_CONTEXT_ERROR= 4;
 
 	/**
 	 * Multiline value not closed at end of template.
 	 */
-	const UNCLOSED_VALUE_CONTEXT_AT_END_ERROR = 7;
+	const UNCLOSED_VALUE_CONTEXT_ERROR = 5;
+
+    /**
+     * Invalid line in given context.
+     */
+    const INVALID_LINE_ERROR = 6;
 
 	/*******************************************************
 	 * Instance variables

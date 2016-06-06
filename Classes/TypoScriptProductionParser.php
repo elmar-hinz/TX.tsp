@@ -2,7 +2,7 @@
 
 namespace ElmarHinz\TypoScriptParser;
 
-class ProductionTypoScriptParser extends AbstractTypoScriptParser
+class TypoScriptProductionParser extends AbstractTypoScriptParser
 {
 
 	protected $valueModifier;

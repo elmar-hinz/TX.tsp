@@ -89,8 +89,8 @@ class TypoScriptFormatterTest extends \PHPUnit_Framework_TestCase
 	public function oneError()
 	{
 		$expect = '<span class="ts-error">'
-			. '<strong> - ERROR:</strong> a closing brace to much</span>';
-		$this->subject->pushError(AP::NEGATIVE_KEYS_LEVEL_ERRROR);
+			. '<strong> - ERROR:</strong> A closing brace in excess.</span>';
+		$this->subject->pushError(AP::NEGATIVE_KEYS_LEVEL_ERROR);
 		$this->subject->finishLine();
 		$this->assertContains($expect, $this->subject->finish());
 	}
@@ -100,9 +100,9 @@ class TypoScriptFormatterTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function twoErrors()
 	{
-		$expect = 'a closing brace to much; a closing brace to much';
-		$this->subject->pushError(AP::NEGATIVE_KEYS_LEVEL_ERRROR);
-		$this->subject->pushError(AP::NEGATIVE_KEYS_LEVEL_ERRROR);
+		$expect = 'A closing brace in excess. A closing brace in excess.';
+		$this->subject->pushError(AP::NEGATIVE_KEYS_LEVEL_ERROR);
+		$this->subject->pushError(AP::NEGATIVE_KEYS_LEVEL_ERROR);
 		$this->subject->finishLine();
 		$this->assertContains($expect, $this->subject->finish());
 	}
@@ -122,10 +122,10 @@ class TypoScriptFormatterTest extends \PHPUnit_Framework_TestCase
 	public function finalErrors()
 	{
 		$expect1 = 'FINAL ERROR';
-		$expect2 = ';';
+		$expect2 = '. ';
 		$expect3 = '3';
 		$this->subject->finishLine();
-		$this->subject->pushError(AP::UNCLOSED_COMMENT_CONTEXT_AT_END_ERROR);
+		$this->subject->pushError(AP::UNCLOSED_COMMENT_CONTEXT_ERROR);
 		$this->subject->pushError(AP::POSITIVE_KEYS_LEVEL_AT_END_ERROR, 3);
 		$result = $this->subject->finish();
 		$this->assertContains($expect1, $result);
@@ -197,7 +197,11 @@ class TypoScriptFormatterTest extends \PHPUnit_Framework_TestCase
 	{
 		return [
 			[
-				AP::NEGATIVE_KEYS_LEVEL_ERRROR, [],
+				AP::INVALID_LINE_ERROR, [],
+				Formatter::INVALID_LINE_FORMAT
+			],
+			[
+				AP::NEGATIVE_KEYS_LEVEL_ERROR, [],
 				Formatter::NEGATIVE_KEYS_LEVEL_FORMAT
 			],
 			[
@@ -209,20 +213,12 @@ class TypoScriptFormatterTest extends \PHPUnit_Framework_TestCase
 				Formatter::POSITIVE_KEYS_LEVEL_AT_END_FORMAT
 			],
 			[
-				AP::UNCLOSED_COMMENT_CONTEXT_AT_CONDITION_ERROR, [],
-				Formatter::UNCLOSED_COMMENT_CONTEXT_AT_CONDITION_FORMAT
+				AP::UNCLOSED_COMMENT_CONTEXT_ERROR, [],
+				Formatter::UNCLOSED_COMMENT_CONTEXT_FORMAT
 			],
 			[
-				AP::UNCLOSED_COMMENT_CONTEXT_AT_END_ERROR, [],
-				Formatter::UNCLOSED_COMMENT_CONTEXT_AT_END_FORMAT
-			],
-			[
-				AP::UNCLOSED_VALUE_CONTEXT_AT_CONDITION_ERROR, [],
-				Formatter::UNCLOSED_VALUE_CONTEXT_AT_CONDITION_FORMAT
-			],
-			[
-				AP::UNCLOSED_VALUE_CONTEXT_AT_END_ERROR, [],
-				Formatter::UNCLOSED_VALUE_CONTEXT_AT_END_FORMAT
+				AP::UNCLOSED_VALUE_CONTEXT_ERROR, [],
+				Formatter::UNCLOSED_VALUE_CONTEXT_FORMAT
 			],
 		];
 	}

@@ -260,7 +260,7 @@ class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @test
 	 */
-	public function negative_keys_level_errror()
+	public function negative_keys_level_error()
 	{
 		$typoScript = [
 			' one.two { ',
@@ -270,7 +270,7 @@ class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 		];
 		$this->parser->appendTemplate($typoScript);
 		$this->formatter->expects($this->exactly(2))->method('pushError')
-			->with(AP::NEGATIVE_KEYS_LEVEL_ERRROR);
+			->with(AP::NEGATIVE_KEYS_LEVEL_ERROR);
 		$this->formatter->expects($this->exactly(4))->method('finishLine');
 		$this->formatter->expects($this->exactly(1))->method('finish');
 		$this->parser->parse();
@@ -326,26 +326,8 @@ class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 		];
 		$this->parser->appendTemplate($typoScript);
 		$this->formatter->expects($this->exactly(1))->method('pushError')
-			->with(AP::UNCLOSED_VALUE_CONTEXT_AT_END_ERROR);
+			->with(AP::UNCLOSED_VALUE_CONTEXT_ERROR);
 		$this->formatter->expects($this->exactly(2))->method('finishLine');
-		$this->formatter->expects($this->exactly(1))->method('finish');
-		$this->parser->parse();
-	}
-
-	/**
-	 * @test
-	 */
-	public function unclosed_value_context_at_condition_error()
-	{
-		$typoScript = [
-			' one ( ',
-			'   content',
-			' [ELSE] ',
-		];
-		$this->parser->appendTemplate($typoScript);
-		$this->formatter->expects($this->exactly(1))->method('pushError')
-			->with(AP::UNCLOSED_VALUE_CONTEXT_AT_CONDITION_ERROR);
-		$this->formatter->expects($this->exactly(3))->method('finishLine');
 		$this->formatter->expects($this->exactly(1))->method('finish');
 		$this->parser->parse();
 	}
@@ -361,26 +343,8 @@ class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 		];
 		$this->parser->appendTemplate($typoScript);
 		$this->formatter->expects($this->exactly(1))->method('pushError')
-			->with(AP::UNCLOSED_COMMENT_CONTEXT_AT_END_ERROR);
+			->with(AP::UNCLOSED_COMMENT_CONTEXT_ERROR);
 		$this->formatter->expects($this->exactly(2))->method('finishLine');
-		$this->formatter->expects($this->exactly(1))->method('finish');
-		$this->parser->parse();
-	}
-
-	/**
-	 * @test
-	 */
-	public function unclosed_comment_context_at_condition_error()
-	{
-		$typoScript = [
-			' /* content ',
-			'   content',
-			' [ELSE] ',
-		];
-		$this->parser->appendTemplate($typoScript);
-		$this->formatter->expects($this->exactly(1))->method('pushError')
-			->with(AP::UNCLOSED_COMMENT_CONTEXT_AT_CONDITION_ERROR);
-		$this->formatter->expects($this->exactly(3))->method('finishLine');
 		$this->formatter->expects($this->exactly(1))->method('finish');
 		$this->parser->parse();
 	}

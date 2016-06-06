@@ -3,7 +3,7 @@
 namespace ElmarHinz\TypoScriptParser;
 
 use	\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser as CoreParser;
-use	\ElmarHinz\TypoScriptParser\ProductionTypoScriptParser as NewParser;
+use	\ElmarHinz\TypoScriptParser\TypoScriptProductionParser as ProductionParser;
 use	\ElmarHinz\TypoScriptParser\TypoScriptConditionsProcessor as ConditionsProcessor;
 use	\ElmarHinz\TypoScriptParser\TypoScriptSyntaxParser as SyntaxParser;
 use	\ElmarHinz\TypoScriptParser\TypoScriptFormatter as Formatter;
@@ -15,7 +15,7 @@ class CoreTypoScriptParserAdapter extends CoreParser implements ValueModifierInt
     {
 		$preProcessor = new ConditionsProcessor();
 		$preProcessor->setMatcher($matchObj);
-		$parser = new NewParser();
+		$parser = new ProductionParser();
 		$parser->setValueModifier($this);
 		$parser->presetTree($this->setup);
 		$preProcessor->appendTemplate($string);
