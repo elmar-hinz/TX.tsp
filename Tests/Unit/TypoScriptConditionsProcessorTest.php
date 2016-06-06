@@ -20,11 +20,11 @@ class TypoScriptConditionsProcessorTest extends \PHPUnit_Framework_TestCase
 	 * @dataProvider tsProvider
 	 * @test
 	 */
-	public function parseTyposcript($dirty, $clean)
+	public function parseTyposcript($input, $expect)
 	{
-		$this->parser->appendTemplate($dirty);
+		$this->parser->appendTemplate($input);
 		$result = implode("\n", $this->parser->parse());
-		$this->assertSame($clean, $result);
+		$this->assertSame($expect, $result);
 	}
 
 	public function tsProvider()
@@ -133,6 +133,40 @@ class TypoScriptConditionsProcessorTest extends \PHPUnit_Framework_TestCase
 				'second' . PHP_EOL .
 				'after'
 			],
+			'conditions in comment context' => [
+                ' /* multi line comment ' . PHP_EOL .
+				'before' . PHP_EOL .
+				'[TRUE]' . PHP_EOL .
+					'first' . PHP_EOL .
+				'[GLOBAL]' . PHP_EOL .
+				'after' . PHP_EOL .
+                ' */ end' . PHP_EOL,
+
+                ' /* multi line comment ' . PHP_EOL .
+				'before' . PHP_EOL .
+				'[TRUE]' . PHP_EOL .
+					'first' . PHP_EOL .
+				'[GLOBAL]' . PHP_EOL .
+				'after' . PHP_EOL .
+                ' */ end',
+            ],
+			'conditions in value context' => [
+                'multi.line.value ( ' . PHP_EOL .
+				'before' . PHP_EOL .
+				'[TRUE]' . PHP_EOL .
+					'first' . PHP_EOL .
+				'[GLOBAL]' . PHP_EOL .
+				'after' . PHP_EOL .
+                ' ) end' .PHP_EOL,
+
+                'multi.line.value ( ' . PHP_EOL .
+				'before' . PHP_EOL .
+				'[TRUE]' . PHP_EOL .
+					'first' . PHP_EOL .
+				'[GLOBAL]' . PHP_EOL .
+				'after' . PHP_EOL .
+                ' ) end',
+            ],
 		);
 	}
 

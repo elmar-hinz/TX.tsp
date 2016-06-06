@@ -23,6 +23,7 @@ abstract class AbstractTypoScriptParser
 	const CONDITION_REGEX = '|^(\s*)(\[.*)$|';
 	const LEVEL_CLOSE_REGEX = '|^(\s*)(})(.*)$|';
 	const OPERATOR_REGEX = '/^(\s*)([[:alnum:].\\\\_-]*[[:alnum:]\\\\_-])(\s*)(:=|[=<>{(])(\s*)(.*)$/';
+	const VALUE_CONTEXT_OPEN_REGEX = '/^(\s*)([[:alnum:].\\\\_-]*[[:alnum:]\\\\_-])(\s*)[(].*$/';
 	const VALUE_CONTEXT_CLOSE_REGEX = '|^(\s*)(\))(.*)$|';
 	const VOID_REGEX = '|^\s*$|';
 
