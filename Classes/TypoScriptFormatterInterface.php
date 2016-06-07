@@ -13,13 +13,11 @@ namespace ElmarHinz\TypoScriptParser;
  * - Token formatting
  * - Line formatting
  * - Final document formatting
- * - Line number tracking
  *
  * Elements are specified by token classes. The token classes are defined as
  * constants in AbstractTypoScriptParser.
  *
- * If a number for the first line is not set, lines shall start with 1. By
- * default line numbering shall be enabled.
+ * If a number for the base line is not set, counting shall start with 1.
  */
 interface TypoScriptFormatterInterface
 {
@@ -39,14 +37,14 @@ interface TypoScriptFormatterInterface
     public function showLineNumbers();
 
 	/**
-	 * Set number first line.
+	 * Set line number to count from
 	 *
 	 * If called, it shall be called before parsing.
 	 *
-	 * @param integer The line number.
+	 * @param integer $number The line number.
 	 * @return void
 	 */
-	public function setNumberOfFirstLine($number);
+	public function setNumberOfBaseLine($number);
 
 	/**
 	 * Get the number of the last line.
@@ -69,28 +67,48 @@ interface TypoScriptFormatterInterface
 	public function getCountOfLines();
 
 	/**
-	 * Push a token string for the current line.
+	 * Push a token.
 	 *
 	 * The token classes are defined as constants in AbstractTypoScriptParser.
+     * The $lineNumber is the number within the template without offeset.
+     * The first line starts with zero.
 	 *
-	 * @param integer The token class.
-	 * @param string The token string.
+	 * @param integer $tokenClass The token class.
+	 * @param integer $lineNumber the line number.
+	 * @param string $string The token string.
 	 * @return void
 	 */
-	public function pushToken($tokenClass, $string);
+	public function pushToken($lineNumber, $tokenClass, $string);
 
 	/**
-	 * Push an error message fo the current line.
+	 * Push an error.
+	 *
+	 * The type and order of further arguments must matcht the $errorClass. In
+	 * case there are further arguments this is documented with the error class
+	 * constant in AbstractTypoScriptParser.
+     *
+     * The line number is the number within the template without offset.
+     * The first line starts with zero.
+	 *
+	 * @param integer The line number.
+     * @param int Error class.
+	 * @param mixed Further arguments.
+	 * @return void
+	 */
+	public function pushError();
+
+	/**
+	 * Push final error.
 	 *
 	 * The type and order of further arguments must matcht the $errorClass. In
 	 * case there are further arguments this is documented with the error class
 	 * constant in AbstractTypoScriptParser.
 	 *
-	 * @param string The error message.
+     * @param int Error class.
 	 * @param mixed Further arguments.
 	 * @return void
 	 */
-	public function pushError();
+	public function pushFinalError();
 
 	/**
 	 * Handle the line.
@@ -102,9 +120,10 @@ interface TypoScriptFormatterInterface
 	 * - Resetting the line tracking arrays
 	 * - Line number counting
 	 *
+	 * @param integer $lineNumber the line number.
 	 * @return void
 	 */
-	public function finishLine();
+	public function finishLine($lineNumber);
 
 	/**
 	 * Finish and return the document.

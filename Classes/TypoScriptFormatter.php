@@ -26,7 +26,7 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 	 * Formatter strings
 	 */
 	const COMPOSE_FORMAT
-		= '<pre class="ts-hl">%s</pre>';
+		= '<pre class="ts-hl">%s%s</pre>';
 	const TOKEN_FORMAT
 		= '<span class="%s">%s</span>';
 	const ERROR_FORMAT
@@ -71,7 +71,7 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 	 * Exceptions
 	 */
 	const PUSH_ERROR_ARGUMENTS_EXCEPTION
-		= 'The upper bound of arguments is three.';
+		= 'The upper bound of arguments is four.';
 
 	/**
 	 * Token to class map
@@ -115,29 +115,38 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 	protected $hideLineNumbers = false;
 
 	/**
-	 * Number of first line
+	 * Number to count from
 	 */
-	protected $numberOfFirstLine = 1;
+	protected $numberOfBaseLine = 1;
 
 	/**
-	 * Line counter
+	 * Number of last line seen
 	 */
-	protected $lineCounter = 0;
+	protected $numberOfLastLineSeen = null;
 
 	/**
-	 * Collect the elements of the current line.
+	 * Collect the tokens per line.
+     *
+     * $tokens[$lineNumber][]['class'] = $tokenClass;
+     * $tokens[$lineNumber][]['value'] = $tokenValue
 	 */
-	protected $currentElements = [];
+	protected $tokens = [];
 
 	/**
-	 * Collect the errors of the current line or the final errors.
+	 * Collect the errors per line.
+     *
+     * $errors[$lineNumber][]['class'] = $errorClass;
+     * $errors[$lineNumber][]['arguments'] = array(...);
 	 */
-	protected $currentErrors = [];
+	protected $errors = [];
 
 	/**
-	 * Collect the lines.
+	 * Collect the final errors
+     *
+     * $errors[$lineNumber]['class'] = $errorClass;
+     * $errors[$lineNumber]['arguments'] = array(...);
 	 */
-	protected $lines = [];
+	protected $finalErrors = [];
 
 	/**
      * Hide line numbers
@@ -167,9 +176,9 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 	 * @param integer The line number.
 	 * @return void
 	 */
-	public function setNumberOfFirstLine($number)
+	public function setNumberOfBaseLine($number)
 	{
-		$this->numberOfFirstLine = $number;
+		$this->numberOfBaseLine = $number;
 	}
 
 	/**
@@ -182,7 +191,7 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 	 */
 	public function getNumberOfLastLine()
 	{
-		return $this->numberOfFirstLine + $this->lineCounter - 1;
+		return $this->numberOfLastLineSeen;
 	}
 
 	/**
@@ -195,86 +204,162 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 	 */
 	public function getCountOfLines()
 	{
-		return $this->lineCounter;
-	}
-
-	public function pushToken($tokenClass, $element)
-	{
-		$class = $this->tokenToClassMap[$tokenClass];
-		$format = self::TOKEN_FORMAT;
-		$element = htmlspecialchars($element);
-		$this->currentElements[] = sprintf($format, $class, $element);
+        if($this->numberOfLastLineSeen)
+            return $this->numberOfLastLineSeen - $this->numberOfBaseLine + 1;
+        else
+            return 0;
 	}
 
 	/**
-	 * Push an error message fo the current line.
+	 * Push a token.
+	 *
+	 * The token classes are defined as constants in AbstractTypoScriptParser.
+	 *
+     * @see TypoScriptFormatterInterface::pushToken()
+	 * @param integer $lineNumber the line number.
+	 * @param integer $tokenClass The token class.
+	 * @param string $string The token string.
+	 * @return void
+	 */
+	public function pushToken($lineNumber, $tokenClass, $token)
+	{
+        $this->tokens[$lineNumber][]
+            = array( 'class' => $tokenClass, 'value' => $token);
+	}
+
+	/**
+	 * Push an error.
 	 *
 	 * The type and order of further arguments must matcht the $errorClass. In
 	 * case there are further arguments this is documented with the error class
 	 * constant in AbstractTypoScriptParser.
 	 *
      * @see TypoScriptFormatterInterface::pushError()
-	 * @param string The error message.
+	 * @param integer The line number.
+     * @param integer Error class.
 	 * @param mixed Further arguments.
 	 * @return void
 	 */
 	public function pushError()
 	{
         $arguments = func_get_args();
+        $lineNumber = $arguments[0];
+        $errorClass = $arguments[1];
+        $furtherArguments = array_splice($arguments, 2);
+        if(count($furtherArguments) > 2) {
+            throw new \OutOfBoundsException(
+                self::PUSH_ERROR_ARGUMENTS_EXCEPTION, 1484191758);
+        }
+        $this->errors[$lineNumber][]
+            = ['class' => $errorClass, 'arguments' => $furtherArguments];
+	}
+
+	/**
+	 * Push final error.
+	 *
+	 * The type and order of further arguments must matcht the $errorClass. In
+	 * case there are further arguments this is documented with the error class
+	 * constant in AbstractTypoScriptParser.
+	 *
+     * @param int Error class.
+	 * @param mixed Further arguments.
+	 * @return void
+	 */
+	public function pushFinalError()
+    {
+        $arguments = func_get_args();
         $errorClass = $arguments[0];
         $furtherArguments = array_splice($arguments, 1);
-		$format = $this->errorToMessageMap[$errorClass];
-		switch(count($furtherArguments)) {
+        $this->finalErrors[]
+            = ['class' => $errorClass, 'arguments' => $furtherArguments];
+    }
+
+    /**
+     * Track the last line seen to find the number of lines.
+     *
+     * $lineNumber starts by 1 for the first line of the template.
+     *
+     * @param int $lineNumber The current line number.
+     * @return void
+     */
+    public function finishLine($lineNumber) {
+        $this->numberOfLastLineSeen
+            = $this->numberOfBaseLine + $lineNumber - 1;
+    }
+
+	public function finish()
+	{
+        $lines = [];
+        for($i = 1; $i <= $this->getCountOfLines(); $i++)
+            $lines[] = $this->buildLine($i);
+        $finalErrors = '';
+        if(count($this->finalErrors) > 0) {
+            $errors = [];
+            foreach($this->finalErrors as $error)
+                $errors[] = $this->buildErrorMessage($error);
+            $finalErrors = "\n" . sprintf(
+                self::FINAL_ERROR_FORMAT, implode(' ' , $errors));
+        }
+        return sprintf(self::COMPOSE_FORMAT,
+            implode("\n", $lines), $finalErrors);
+	}
+
+    /**
+     * Create a string of the given line.
+     *
+     * @param integer $lineNumber Line number starting with one.
+     * @return string The line.
+     */
+	protected function buildLine($lineNumber)
+	{
+		$tokens = '';
+		if(array_key_exists($lineNumber, $this->tokens)) {
+            $tokens = [];
+            foreach($this->tokens[$lineNumber] as $token)
+                $tokens[] = $this->buildToken($token);
+			$tokens = implode('', $tokens);
+		}
+		$errors = '';
+		if(array_key_exists($lineNumber, $this->errors)) {
+            $errors = [];
+            foreach($this->errors[$lineNumber] as $error)
+                $errors[] = $this->buildErrorMessage($error);
+			$errors = sprintf(self::ERROR_FORMAT, implode(' ', $errors));
+		}
+        $nr = '';
+        if(!$this->hideLineNumbers) {
+            $nr = $this->numberOfBaseLine + $lineNumber - 1;
+            $nr = sprintf(self::LINE_NUMBER_FORMAT, $nr);
+        }
+	    return sprintf(self::LINE_FORMAT, $nr, $tokens, $errors);
+	}
+
+    protected function buildToken($token)
+    {
+		$class = $this->tokenToClassMap[$token['class']];
+        return sprintf(self::TOKEN_FORMAT, $class,
+            htmlspecialchars($token['value']));
+    }
+
+    protected function buildErrorMessage($error)
+    {
+		$format = $this->errorToMessageMap[$error['class']];
+        $arguments = $error['arguments'];
+		switch(count($arguments)) {
 		case 0:
 			$message = sprintf($format);
 			break;
 		case 1:
-			$message = sprintf($format, $furtherArguments[0]);
+			$message = sprintf($format, $arguments[0]);
 			break;
 		case 2:
-			$message = sprintf($format,
-				$furtherArguments[0], $furtherArguments[1]);
+			$message = sprintf($format, $arguments[0], $arguments[1]);
 			break;
 		default:
 			throw new \OutOfBoundsException(
 				self::PUSH_ERROR_ARGUMENTS_EXCEPTION, 1484191758);
 		}
-		$this->currentErrors[] = $message;
-	}
-
-	public function finishLine()
-	{
-		$elements = '';
-		$errors = '';
-		if($this->currentElements) {
-			$elements = implode('', $this->currentElements);
-		}
-		if($this->currentErrors) {
-			$errors = implode(' ', $this->currentErrors);
-			$errors = sprintf(self::ERROR_FORMAT, $errors);
-		}
-        if($this->hideLineNumbers) {
-            $nr = '';
-        } else {
-            $nr = $this->numberOfFirstLine + $this->lineCounter;
-            $nr = sprintf(self::LINE_NUMBER_FORMAT, $nr);
-        }
-		$this->lines[] = sprintf(self::LINE_FORMAT, $nr, $elements, $errors);
-		$this->currentElements = [];
-		$this->currentErrors = [];
-		$this->lineCounter++;
-	}
-
-	public function finish()
-	{
-		$errors = '';
-		if($this->currentErrors) {
-			$errors = implode(' ', $this->currentErrors);
-			$errors = "\n" . sprintf(self::FINAL_ERROR_FORMAT, $errors);
-		}
-		return sprintf(self::COMPOSE_FORMAT,
-			implode("\n", $this->lines) . $errors);
-	}
-
+        return $message;
+    }
 }
 
