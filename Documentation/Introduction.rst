@@ -25,32 +25,32 @@ What it is not
 No Boost in Performance
 -----------------------
 
-The parser is approximately twice as fast as the origional parser, but there
-will be no boost of performance, as TypoScript parsing takes just a few
-milliseconds at all. You won't feel a difference in speed.
+The parsing of TypoScript just takes a few milliseconds. Hence, it's not the
+primary goal to speed up the performance but to improve the architecture.
+The algorithm is twice as fast as the original algorithm, but with the
+split into conditions proprocessor and processor the time is about the same
+again.
 
 What it is
 ==========
 
-Better error detection of the syntax parser
--------------------------------------------
+Standalone Usage
+----------------
 
-The syntax parser does already a more precise error detection, than the
-origional parser, although the goal of the current milistone is to substitute
-the functionality of the original.
+It's possible to use the TypoScript parser standalone outside of the TYPO3 CMS
+if you like the TypoScript syntax and want to use it for configuration in other
+fields. This is possible with or without the conditions preprocessor.
 
-   * Closing brace in excess.
-   * Unclosed braces at condition line.
-   * Unclosed multiline comment at condition line.
-   * Unclosed multiline value at condition line.
-   * Unclosed braces at end of template.
-   * Unclosed multiline comment at end of template.
-   * Unclosed multiline value at  end of template.
+Improving the error detection
+-----------------------------
 
-Having done the prove of concept that the replacement can be, advanced
-debugging features are planned:
+The error detection covers the error detection of the origional parser and
+tries be be a little better already. Also the displaying
+of the line numbers has been worked upon. See Screenshots!
 
-   * What aditional types of errors can be detected at parsetime already?
+Having done this prove of concept that the replacement of the original syntax
+highlighter can be done further debugging features are planned:
+
    * Do syntax highlighting of conditions, instead of printing them in one
      color.
    * Detect the difference of objects and properties, because only objects are
@@ -71,13 +71,6 @@ for it:
 A modern parser makes it more easy to get rid of flaws in TypoScript and to add
 new features like if-else conditions, that work the way you are used to from
 other languages or enhance error debugging.
-
-Standalone Usage
-----------------
-
-It's possible to use the TypoScript parser standalone outside of the TYPO3 CMS
-if you like the TypoScript syntax and want to use it for configuration in other
-fields.
 
 Condition Preprocessor
 ----------------------

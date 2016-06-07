@@ -12,7 +12,7 @@ Administration
 ==============
 
 Install the extension, clear caches and check of your frontend is rendered as
-expected and if you get the advance error feedback in the backend.
+expected and if you get the advanced error feedback in the backend.
 
 If anything goes wrong, uninstall and report the issue.
 
