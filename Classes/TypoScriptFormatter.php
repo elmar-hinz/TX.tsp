@@ -30,13 +30,17 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 	const TOKEN_FORMAT
 		= '<span class="%s">%s</span>';
 	const ERROR_FORMAT
-		= ' <span class="ts-error"><strong> - ERROR:</strong> %s</span>';
-	const FINAL_ERROR_FORMAT
-		=  '      <span class="ts-error"><strong> - FINAL ERROR:</strong> %s</span>';
+		= ' <span class="ts-error"><strong> ERROR:</strong> %s</span>';
+	const EXTENDED_ERROR_FORMAT
+		= ' <span class="ts-error"><strong> ERROR (line %s):</strong> %s</span>';
+    const TEMPLATE_ERROR_FORMAT
+        =  '          <span class="ts-error"><strong> ERROR AT END OF TEMPLATE:</strong> %s</span>';
 	const LINE_FORMAT
 		= '%s%s%s';
 	const LINE_NUMBER_FORMAT
-		= '<span class="ts-linenum">%4d:</span> ';
+		= '<span class="ts-linenum">%4d</span> ';
+	const EXTENDED_LINE_NUMBER_FORMAT
+		= '<span class="ts-linenum">%4d|%04d</span> ';
 
     const INVALID_LINE_FORMAT
         = 'The syntax of this line is invalid.';
@@ -298,7 +302,7 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
             foreach($this->finalErrors as $error)
                 $errors[] = $this->buildErrorMessage($error);
             $finalErrors = "\n" . sprintf(
-                self::FINAL_ERROR_FORMAT, implode(' ' , $errors));
+                self::TEMPLATE_ERROR_FORMAT, implode(' ' , $errors));
         }
         return sprintf(self::COMPOSE_FORMAT,
             implode("\n", $lines), $finalErrors);
@@ -324,12 +328,22 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
             $errors = [];
             foreach($this->errors[$lineNumber] as $error)
                 $errors[] = $this->buildErrorMessage($error);
-			$errors = sprintf(self::ERROR_FORMAT, implode(' ', $errors));
+            if($this->hideLineNumbers) {
+                $errors = sprintf(self::EXTENDED_ERROR_FORMAT,
+                    $lineNumber, implode(' ', $errors));
+            } else {
+                $errors = sprintf(self::ERROR_FORMAT, implode(' ', $errors));
+            }
 		}
         $nr = '';
         if(!$this->hideLineNumbers) {
-            $nr = $this->numberOfBaseLine + $lineNumber - 1;
-            $nr = sprintf(self::LINE_NUMBER_FORMAT, $nr);
+            if($this->numberOfBaseLine == 1) {
+                $nr = sprintf(self::LINE_NUMBER_FORMAT, $lineNumber);
+            } else {
+                $fullNumber = $this->numberOfBaseLine + $lineNumber - 1;
+                $nr = sprintf(self::EXTENDED_LINE_NUMBER_FORMAT,
+                    $lineNumber, $fullNumber);
+            }
         }
 	    return sprintf(self::LINE_FORMAT, $nr, $tokens, $errors);
 	}

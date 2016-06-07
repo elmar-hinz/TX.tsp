@@ -45,7 +45,7 @@ class CoreTypoScriptParserAdapter extends CoreParser implements ValueModifierInt
     {
         $formatter = new Formatter();
         if(is_array($numbers) && count($numbers) > 0 && is_int($numbers[0])) {
-            $formatter->setNumberOfFirstLine($numbers[0]);
+            $formatter->setNumberOfBaseLine($numbers[0]);
         } else {
             $formatter->hideLineNumbers();
         }

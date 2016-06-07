@@ -87,8 +87,8 @@ class TypoScriptFormatterTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function oneError()
 	{
-		$expect = '<span class="ts-error">'
-			. '<strong> - ERROR:</strong> A closing brace in excess.</span>';
+        $expect = '<span class="ts-error"><strong>'
+            . ' - ERROR (line 9):</strong> A closing brace in excess.</span>';
 		$this->subject->pushError(9, AP::NEGATIVE_KEYS_LEVEL_ERROR);
 		$this->subject->finishLine(9);
 		$this->assertContains($expect, $this->subject->finish());

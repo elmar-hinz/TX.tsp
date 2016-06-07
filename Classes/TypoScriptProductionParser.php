@@ -52,6 +52,14 @@ class TypoScriptProductionParser extends AbstractTypoScriptParser
 	 */
 	public function parse()
 	{
+        try {
+            return $this->doParse();
+        } catch (\Exception $e) {
+        }
+    }
+
+	protected function doParse()
+	{
 		$tree =& $this->tree;
 		$stack[] =& $tree;
 		$pointer = null;
@@ -118,7 +126,7 @@ class TypoScriptProductionParser extends AbstractTypoScriptParser
 					$message  = 'TypoScript Parse exception' . self::NL;
 					$message .= 'Line '.$nr. self::NL;
 					$message .= '" '.$line. ' "' . self::NL;
-					throw new \Exception($message);
+					/* throw new \Exception($message); */
 				}
 				break;
 			case self::COMMENT_CONTEXT:
