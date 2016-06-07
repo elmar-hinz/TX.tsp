@@ -28,6 +28,22 @@ abstract class AbstractTypoScriptParser
 	const VOID_REGEX = '|^\s*$|';
 
 	/*******************************************************
+	 * Regular expressions to debug TypoSciript
+	 *******************************************************/
+
+    /* Valid Key:
+     *
+     * Terminated by:
+     *
+     * EOL
+     * whitespace
+     * valid operator
+     */
+    const VALID_KEY_REGEX = '/^(\s*)([[:alnum:].\\\\_-]*[[:alnum:]\\\\_-])((\s|:=|[=<>{(]).*)?$/';
+
+    const VALID_OPERATOR_REGEX = '/(:=|[=<>{(])/';
+
+	/*******************************************************
 	 * TypoSciript operators
 	 *******************************************************/
 
@@ -104,6 +120,16 @@ abstract class AbstractTypoScriptParser
      * Invalid line in given context.
      */
     const INVALID_LINE_ERROR = 6;
+
+    /**
+     * A valid key is missing.
+     */
+    const VALID_KEY_MISSING_ERROR = 7;
+
+    /**
+     * A valid operator is missing.
+     */
+    const VALID_OPERATOR_MISSING_ERROR = 8;
 
 	/*******************************************************
 	 * Instance variables

@@ -54,7 +54,10 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
         = 'Unclosed multiline comment.';
     const UNCLOSED_VALUE_CONTEXT_FORMAT
         = 'Unclosed multiline value.';
-
+    const VALID_KEY_MISSING_FORMAT
+        = 'Missng valid key, limited to alphanumeric and ".-_\\".';
+    const VALID_OPERATOR_MISSING_FORMAT
+        = 'Missing valid operator, one of "=<>{(" or ":=".';
 
 	/**
 	 * CSS classes of highligthed elements and errors
@@ -111,6 +114,10 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
         => self::UNCLOSED_COMMENT_CONTEXT_FORMAT,
         AP::UNCLOSED_VALUE_CONTEXT_ERROR
         => self::UNCLOSED_VALUE_CONTEXT_FORMAT,
+        AP::VALID_KEY_MISSING_ERROR
+        => self::VALID_KEY_MISSING_FORMAT,
+        AP::VALID_OPERATOR_MISSING_ERROR
+        => self::VALID_OPERATOR_MISSING_FORMAT,
 	];
 
 	/**

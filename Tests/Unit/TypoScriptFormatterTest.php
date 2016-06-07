@@ -54,7 +54,7 @@ class TypoScriptFormatterTest extends \PHPUnit_Framework_TestCase
 	public function OneEmptyLine()
 	{
 		$expect = '<pre class="ts-hl">'
-			. '<span class="ts-linenum">   1:</span> </pre>';
+			. '<span class="ts-linenum">   1</span> </pre>';
 		$this->subject->finishLine(1);
 		$this->assertContains($expect, $this->subject->finish());
 	}
@@ -64,8 +64,8 @@ class TypoScriptFormatterTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function TwoLines()
 	{
-		$expect = '<span class="ts-linenum">   1:</span> '
-			. "\n" .  '<span class="ts-linenum">   2:</span> ';
+		$expect = '<span class="ts-linenum">   1</span> '
+			. "\n" .  '<span class="ts-linenum">   2</span> ';
 		$this->subject->finishLine(1);
 		$this->subject->finishLine(2);
 		$this->assertContains($expect, $this->subject->finish());
@@ -76,7 +76,7 @@ class TypoScriptFormatterTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function LineNumberOfThreeDigets()
 	{
-		$expect = '<span class="ts-linenum"> 111:</span> ';
+		$expect = '<span class="ts-linenum">   1|0111</span> ';
 		$this->subject->setNumberOfBaseLine(111);
 		$this->subject->finishLine(1);
 		$this->assertContains($expect, $this->subject->finish());
@@ -88,7 +88,7 @@ class TypoScriptFormatterTest extends \PHPUnit_Framework_TestCase
 	public function oneError()
 	{
         $expect = '<span class="ts-error"><strong>'
-            . ' - ERROR (line 9):</strong> A closing brace in excess.</span>';
+            . ' ERROR:</strong> A closing brace in excess.</span>';
 		$this->subject->pushError(9, AP::NEGATIVE_KEYS_LEVEL_ERROR);
 		$this->subject->finishLine(9);
 		$this->assertContains($expect, $this->subject->finish());
@@ -120,7 +120,7 @@ class TypoScriptFormatterTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function finalErrors()
 	{
-		$expect1 = 'FINAL ERROR';
+		$expect1 = 'ERROR AT END OF TEMPLATE:';
 		$expect2 = '. ';
 		$expect3 = '3';
 		$this->subject->finishLine(2);

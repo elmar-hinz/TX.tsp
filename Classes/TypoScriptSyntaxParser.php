@@ -106,8 +106,7 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptParser
                 } elseif(preg_match(self::VOID_REGEX, $line)) {
                     $f->pushToken($nr, self::PRESPACE_TOKEN, $line);
                 } else {
-                    $f->pushToken($nr, self::IGNORED_TOKEN, $line);
-                    $f->pushError($nr, self::INVALID_LINE_ERROR);
+                    $this->handleInvalidLineInDefaultContext($nr, $line);
                 }
                 break;
             case self::COMMENT_CONTEXT:
@@ -145,6 +144,25 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptParser
 			$f->pushFinalError(self::UNCLOSED_COMMENT_CONTEXT_ERROR);
 		return $f->finish();
 	}
+
+    /**
+     * Handle invalid line.
+     *
+     * The function is to be called as fallback in the
+     * default context. It is assumed that the user was trying
+     * to enter some keys/operator line and checks for both.
+     */
+    protected function handleInvalidLineInDefaultContext($nr, $line)
+    {
+		$f = $this->formatter;
+        $f->pushToken($nr, self::IGNORED_TOKEN, $line);
+        if(!preg_match(self::VALID_KEY_REGEX, $line, $matches)) {
+            $f->pushError($nr, self::VALID_KEY_MISSING_ERROR);
+        }
+        if(!preg_match(self::VALID_OPERATOR_REGEX, $line, $matches)) {
+            $f->pushError($nr, self::VALID_OPERATOR_MISSING_ERROR);
+        }
+    }
 
 }
 
