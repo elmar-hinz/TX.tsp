@@ -7,7 +7,7 @@ $EM_CONF[$_EXTKEY] = array (
 	'author' => 'Elmar Hinz',
 	'author_email' => 't3elmar@gmail.com',
 	'state' => 'alpha',
-	'version' => '0.1.0',
+	'version' => '1.0.0',
 	'constraints' =>
 	array (
 		'depends' =>

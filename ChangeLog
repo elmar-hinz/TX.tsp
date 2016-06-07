@@ -1,6 +1,11 @@
 
 Change log
 
+2016-06-07  Elmar Hinz <t3elmar@gmail.com>
+
+	* version 1.0.0
+    * BE syntax highlighter
+
 2016-05-30  Elmar Hinz <t3elmar@gmail.com>
 
 	* version 0.1.0
