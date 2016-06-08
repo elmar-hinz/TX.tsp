@@ -4,7 +4,7 @@ namespace ElmarHinz\TypoScriptParser;
 
 use \ElmarHinz\TypoScriptParser\Exceptions\TypoScriptException;
 
-class ExceptionTracker
+class TypoScriptExceptionTracker
 {
 
     protected $lineExceptions = [];

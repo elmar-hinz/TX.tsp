@@ -6,15 +6,12 @@ use \ElmarHinz\TypoScriptParser\Exceptions\TypoScriptParsetimeException as Excep
 
 class TypoScriptParsetimeExceptionTest extends \PHPUnit_Framework_TestCase
 {
-    const THECLASS = '\ElmarHinz\TypoScriptParser\Exceptions\TypoScriptParsetimeException';
 
     public function setup()
     {
-        /* $this->exception = new Exception(10); */
-        /* $this->templateExecption = new Exception(false); */
-        $this->exception = $this->getMockBuilder(self::THECLASS)
+        $this->exception = $this->getMockBuilder(Exception::class)
              ->setMethods(null)->setConstructorArgs([10])->getMock();
-        $this->templateExecption = $this->getMockBuilder(self::THECLASS)
+        $this->templateExecption = $this->getMockBuilder(Exception::class)
             ->setMethods(null)->setConstructorArgs([false])->getMock();
     }
 

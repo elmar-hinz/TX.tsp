@@ -4,16 +4,14 @@ namespace ElmarHinz\TypoScriptParser\Tests\Unit;
 
 use \ElmarHinz\TypoScriptParser\Tests\Unit\Fixtures\TypoScriptExamples as Examples;
 use \ElmarHinz\TypoScriptParser\TypoScriptProductionParser as Parser;
-
+use \ElmarHinz\TypoScriptParser\ValueModifierInterface as ValueModifier;
 class TypoScriptProductionParserTest extends \PHPUnit_Framework_TestCase
 {
-	const MODIFIER_INTERFACE = '\\ElmarHinz\\TypoScriptParser\\ValueModifierInterface';
 
 	public function setup()
 	{
-		$modifier = $this->getMockBuilder(self::MODIFIER_INTERFACE)->getMock();
-		$modifier->method('modifyValue')->willReturn(
-			'pre_value');
+		$modifier = $this->getMockBuilder(ValueModifier::class)->getMock();
+		$modifier->method('modifyValue')->willReturn('pre_value');
 		$this->parser = new Parser();
 		$this->parser->setValueModifier($modifier);
 	}

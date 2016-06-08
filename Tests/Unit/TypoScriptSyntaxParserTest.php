@@ -5,14 +5,14 @@ namespace ElmarHinz\TypoScriptParser\Tests\Unit;
 use \ElmarHinz\TypoScriptParser\Tests\Unit\Fixtures\TypoScriptExamples as Examples;
 use \ElmarHinz\TypoScriptParser\TypoScriptSyntaxParser as Parser;
 use \ElmarHinz\TypoScriptParser\AbstractTypoScriptParser as AP;
+use \ElmarHinz\TypoScriptParser\TypoScriptFormatterInterface as Formatter;
 
 class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 {
-	const FORMATTER = '\\ElmarHinz\\TypoScriptParser\\TypoScriptFormatterInterface';
 
 	public function setup()
 	{
-		$this->formatter = $this->getMockBuilder(self::FORMATTER)->getMock();
+		$this->formatter = $this->getMockBuilder(Formatter::class)->getMock();
 		$this->parser = new Parser();
 		$this->parser->injectFormatter($this->formatter);
 	}
