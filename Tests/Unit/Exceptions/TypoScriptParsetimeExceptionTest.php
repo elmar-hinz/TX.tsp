@@ -2,11 +2,11 @@
 
 namespace ElmarHinz\TypoScriptParser\Tests\Unit\Exceptions;
 
-use \ElmarHinz\TypoScriptParser\Exceptions\AbstractTypoScriptParsetimeException as Exception;
+use \ElmarHinz\TypoScriptParser\Exceptions\TypoScriptParsetimeException as Exception;
 
-class AbstractTypoScriptParsetimeExceptionTest extends \PHPUnit_Framework_TestCase
+class TypoScriptParsetimeExceptionTest extends \PHPUnit_Framework_TestCase
 {
-    const THECLASS = '\ElmarHinz\TypoScriptParser\Exceptions\AbstractTypoScriptParsetimeException';
+    const THECLASS = '\ElmarHinz\TypoScriptParser\Exceptions\TypoScriptParsetimeException';
 
     public function setup()
     {

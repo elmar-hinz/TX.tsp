@@ -2,7 +2,7 @@
 
 namespace ElmarHinz\TypoScriptParser\Exceptions;
 
-class TypoScriptUnclosedConditionException extends AbstractTypoScriptParsetimeException
+class TypoScriptUnclosedConditionException extends TypoScriptParsetimeException
 {
     const CODE = 1465385313;
     const MESSAGE = 'Open condition.';

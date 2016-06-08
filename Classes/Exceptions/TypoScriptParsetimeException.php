@@ -2,7 +2,7 @@
 
 namespace ElmarHinz\TypoScriptParser\Exceptions;
 
-abstract class AbstractTypoScriptParsetimeException extends \Exception
+abstract class TypoScriptParsetimeException extends TypoScriptException
 {
     const CODE = 1465381339;
     const MESSAGE = 'A parsetime exception occured.';

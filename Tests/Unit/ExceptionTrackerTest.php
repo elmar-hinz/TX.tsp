@@ -6,7 +6,7 @@ use \ElmarHinz\TypoScriptParser\ExceptionTracker;
 
 class ExceptionTrackerTest extends \PHPUnit_Framework_TestCase
 {
-    const EXCEPTION = '\ElmarHinz\TypoScriptParser\Exceptions\AbstractTypoScriptParsetimeException';
+    const EXCEPTION = '\ElmarHinz\TypoScriptParser\Exceptions\TypoScriptParsetimeException';
 
     protected $tracker;
     protected $templateException;
