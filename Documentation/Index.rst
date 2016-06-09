@@ -56,6 +56,7 @@ Next Generation TypoScript Parser
     Introduction
     Screenshots
     Administration
+    Exceptions
     Research
     LessonsLearned
     KnownIssues
