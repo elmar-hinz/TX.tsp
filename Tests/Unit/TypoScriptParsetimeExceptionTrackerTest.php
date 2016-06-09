@@ -2,10 +2,10 @@
 
 namespace ElmarHinz\TypoScriptParser\Tests\Unit;
 
-use \ElmarHinz\TypoScriptParser\TypoScriptExceptionTracker as ExceptionTracker;
+use \ElmarHinz\TypoScriptParser\TypoScriptParsetimeExceptionTracker as ExceptionTracker;
 use \ElmarHinz\TypoScriptParser\Exceptions\TypoScriptParsetimeException;
 
-class TypoScriptExceptionTrackerTest extends \PHPUnit_Framework_TestCase
+class TypoScriptParsetimeExceptionTrackerTest extends \PHPUnit_Framework_TestCase
 {
 
     protected $tracker;
