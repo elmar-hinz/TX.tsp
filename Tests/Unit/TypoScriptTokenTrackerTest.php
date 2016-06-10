@@ -17,8 +17,9 @@ class TypoScriptTokenTrackerTest extends \PHPUnit_Framework_TestCase
      */
     public function testInitialState()
     {
-        $this->assertSame(0, $this->tracker->getCountOfLines());
-        $this->assertSame([], $this->tracker->getByLine(1));
+        $tokens = [];
+        foreach($this->tracker as $key => $value) $tokens[$key] = $value;
+        $this->assertSame([], $tokens);
     }
 
     /**
@@ -34,17 +35,13 @@ class TypoScriptTokenTrackerTest extends \PHPUnit_Framework_TestCase
             ->setConstructorArgs(['value3'])->getMock();
         $this->tracker->push($token1);
         $this->tracker->push($token2);
-        $this->assertSame(1, $this->tracker->getCountOfLines());
         $this->tracker->nextLine();
         $this->tracker->push($token3);
-        $this->assertSame(2, $this->tracker->getCountOfLines());
         $this->tracker->nextLine();
-        $this->assertSame(2, $this->tracker->getCountOfLines());
         $tokens = [];
         foreach($this->tracker as $key => $value) $tokens[$key] = $value;
         $expected = [ 1 => [$token1, $token2], 2 => [$token3] ];
         $this->assertSame($expected, $tokens);
-        $this->assertSame(2,$this->tracker->getCountOfLines());
     }
 }
 

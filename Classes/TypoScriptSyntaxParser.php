@@ -2,7 +2,20 @@
 
 namespace ElmarHinz\TypoScriptParser;
 
-class TypoScriptSyntaxParser extends AbstractTypoScriptParser
+use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptBraceInExcessException as BraceInExcessException;
+use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptKeysException as KeysException;
+use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptUnclosedCommentException as UnclosedCommentException;
+use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptBracesMissingAtConditionException
+    as BracesMissingAtConditionException;
+use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptOperatorException as OperatorException;
+use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptUnclosedConditionException
+    as UnclosedConditionException;
+use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptBracesMissingAtEndOfTemplateException
+    as BracesMissingAtEndOfTemplateException;
+use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptParsetimeException as ParsetimeException;
+use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptUnclosedValueException as UnclosedValueException;
+
+class TypoScriptSyntaxParser extends AbstractTypoScriptSyntaxParser
 {
 
 	/**

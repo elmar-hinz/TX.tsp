@@ -24,7 +24,9 @@ use \ElmarHinz\TypoScriptParser\Tokens\AbstractTypoScriptToken;
  *
  * The internal line pointer starts with 1 for the first line.
  */
-class TypoScriptTokenTracker implements \Iterator
+class TypoScriptTokenTracker
+    implements TypoScriptTokenTrackerPushInterface,
+        TypoScriptTokenTrackerPullInterface
 {
 
     protected $tokens = [];
@@ -57,34 +59,6 @@ class TypoScriptTokenTracker implements \Iterator
     public function nextLine()
     {
         $this->line++;
-    }
-
-    /**
-     * Get the tokens for the given line number.
-     *
-     * @param integer $line The line number.
-     * @return array The tokens of the given line or empty array.
-     */
-    public function getByLine($line)
-    {
-        if(isset($this->tokens[$line])) {
-            return $this->tokens[$line];
-        } else {
-            return [];
-        }
-    }
-
-    /**
-     * Get the count of lines
-     *
-     * The count of lines is equal to the number of the last line,
-     * as counting starts with 1.
-     *
-     * @return integer The count of lines.
-     */
-    public function getCountOfLines()
-    {
-        return count($this->tokens);
     }
 
     /**********************************************************************

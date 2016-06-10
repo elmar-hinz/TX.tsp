@@ -5,6 +5,8 @@ namespace ElmarHinz\TypoScriptParser;
 use \ElmarHinz\TypoScriptParser\Exceptions\TypoScriptParsetimeException;
 
 class TypoScriptParsetimeExceptionTracker
+    implements TypoScriptParsetimeExceptionTrackerPushInterface,
+     TypoScriptParsetimeExceptionTrackerPullInterface
 {
 
     protected $lineExceptions = [];
@@ -20,10 +22,16 @@ class TypoScriptParsetimeExceptionTracker
         }
     }
 
-    public function getByLine($lineNumber)
+    /**
+     * Return the exceptions of the given line.
+     *
+     * @see TypoScriptParsetimeExceptionTrackerPullInterface
+     * @param integer $number The line number.
+     */
+    public function getByLineNumber($number)
     {
-        if(isset($this->lineExceptions[$lineNumber])) {
-            return $this->lineExceptions[$lineNumber];
+        if(isset($this->lineExceptions[$number])) {
+            return $this->lineExceptions[$number];
         } else {
             return [];
         }

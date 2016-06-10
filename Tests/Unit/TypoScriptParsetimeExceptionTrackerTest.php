@@ -2,8 +2,8 @@
 
 namespace ElmarHinz\TypoScriptParser\Tests\Unit;
 
-use \ElmarHinz\TypoScriptParser\TypoScriptParsetimeExceptionTracker as ExceptionTracker;
-use \ElmarHinz\TypoScriptParser\Exceptions\TypoScriptParsetimeException;
+use ElmarHinz\TypoScriptParser\TypoScriptParsetimeExceptionTracker as ExceptionTracker;
+use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptParsetimeException;
 
 class TypoScriptParsetimeExceptionTrackerTest extends \PHPUnit_Framework_TestCase
 {
@@ -47,10 +47,10 @@ class TypoScriptParsetimeExceptionTrackerTest extends \PHPUnit_Framework_TestCas
      */
     public function lineException()
     {
-        $this->assertSame([], $this->tracker->getByLine(10));
+        $this->assertSame([], $this->tracker->getByLineNumber(10));
         $this->tracker->push($this->lineException);
         $this->assertSame([$this->lineException],
-            $this->tracker->getByLine(10));
+            $this->tracker->getByLineNumber(10));
     }
 
 }
