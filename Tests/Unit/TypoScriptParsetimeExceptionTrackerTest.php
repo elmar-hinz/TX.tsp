@@ -36,10 +36,10 @@ class TypoScriptParsetimeExceptionTrackerTest extends \PHPUnit_Framework_TestCas
      */
     public function templateException()
     {
-        $this->assertSame([], $this->tracker->getEndOfTemplateExceptions());
+        $this->assertSame([], $this->tracker->getFinalExceptions());
         $this->tracker->push($this->templateException);
         $this->assertSame([$this->templateException],
-            $this->tracker->getEndOfTemplateExceptions());
+            $this->tracker->getFinalExceptions());
     }
 
     /**
@@ -47,10 +47,10 @@ class TypoScriptParsetimeExceptionTrackerTest extends \PHPUnit_Framework_TestCas
      */
     public function lineException()
     {
-        $this->assertSame([], $this->tracker->getExceptionsOfLine(10));
+        $this->assertSame([], $this->tracker->getByLine(10));
         $this->tracker->push($this->lineException);
         $this->assertSame([$this->lineException],
-            $this->tracker->getExceptionsOfLine(10));
+            $this->tracker->getByLine(10));
     }
 
 }

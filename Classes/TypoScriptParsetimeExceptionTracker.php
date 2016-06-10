@@ -20,18 +20,18 @@ class TypoScriptParsetimeExceptionTracker
         }
     }
 
-    public function getEndOfTemplateExceptions()
+    public function getByLine($lineNumber)
     {
-        return $this->templateExceptions;
-    }
-
-    public function getExceptionsOfLine($lineNumber)
-    {
-        if(array_key_exists($lineNumber, $this->lineExceptions)) {
+        if(isset($this->lineExceptions[$lineNumber])) {
             return $this->lineExceptions[$lineNumber];
         } else {
             return [];
         }
+    }
+
+    public function getFinalExceptions()
+    {
+        return $this->templateExceptions;
     }
 
 }

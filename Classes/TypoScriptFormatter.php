@@ -324,14 +324,14 @@ class TypoScriptFormatter implements TypoScriptFormatterInterface
 	protected function buildLine($lineNumber)
 	{
 		$tokens = '';
-		if(array_key_exists($lineNumber, $this->tokens)) {
+        if(isset($this->tokens[$lineNumber])) {
             $tokens = [];
             foreach($this->tokens[$lineNumber] as $token)
                 $tokens[] = $this->buildToken($token);
 			$tokens = implode('', $tokens);
 		}
 		$errors = '';
-		if(array_key_exists($lineNumber, $this->errors)) {
+        if(isset($this->errors[$lineNumber])) {
             $errors = [];
             foreach($this->errors[$lineNumber] as $error)
                 $errors[] = $this->buildErrorMessage($error);

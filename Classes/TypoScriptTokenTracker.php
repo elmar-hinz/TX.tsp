@@ -67,7 +67,7 @@ class TypoScriptTokenTracker implements \Iterator
      */
     public function getByLine($line)
     {
-        if(array_key_exists($line, $this->tokens)) {
+        if(isset($this->tokens[$line])) {
             return $this->tokens[$line];
         } else {
             return [];
