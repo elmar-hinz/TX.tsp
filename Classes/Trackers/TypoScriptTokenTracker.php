@@ -1,8 +1,12 @@
 <?php
 
-namespace ElmarHinz\TypoScriptParser;
+namespace ElmarHinz\TypoScriptParser\Trackers;
 
 use \ElmarHinz\TypoScriptParser\Tokens\AbstractTypoScriptToken;
+use \ElmarHinz\TypoScriptParser\Interfaces
+    \TypoScriptTokenTrackerPushInterface;
+use \ElmarHinz\TypoScriptParser\Interfaces
+    \TypoScriptTokenTrackerPullInterface;
 
 /**
  * Tracker of the tokens while parsing a TypoScript Template.

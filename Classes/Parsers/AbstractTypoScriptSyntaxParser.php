@@ -1,10 +1,10 @@
 <?php
 
-namespace ElmarHinz\TypoScriptParser;
+namespace ElmarHinz\TypoScriptParser\Parsers;
 
-use ElmarHinz\TypoScriptParser\TypoScriptTokenTrackerPushInterface
+use ElmarHinz\TypoScriptParser\Interfaces\TypoScriptTokenTrackerPushInterface
     as TokenTracker;
-use ElmarHinz\TypoScriptParser\TypoScriptPasetimeExceptionTrackerPushInterface
+use ElmarHinz\TypoScriptParser\Interfaces\TypoScriptPasetimeExceptionTrackerPushInterface
     as ExceptionTracker;
 
 abstract class AbstractTypoScriptSyntaxParser extends AbstractTypoScriptParser
@@ -33,6 +33,18 @@ abstract class AbstractTypoScriptSyntaxParser extends AbstractTypoScriptParser
 	{
 		$this->tokenTracker = $tracker;
 	}
+
+    /**
+     * Push a line or finale exception to the exception tracker.
+     *
+     * @param mixed $lineNumberOrFalse False for final tempalte exceptions.
+     * @param class $class  Full qualified or defined alias.
+     */
+    protected function pushException($lineNumberOrFalse, $class)
+    {
+        $exception = new $class($lineNumber);
+        $this->exceptionTracker->push($exception);
+    }
 
 }
 

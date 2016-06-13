@@ -1,19 +1,23 @@
 <?php
 
-namespace ElmarHinz\TypoScriptParser\Tests\Unit;
+namespace ElmarHinz\TypoScriptParser\Tests\Unit\Main;
 
-use \ElmarHinz\TypoScriptParser\Tests\Unit\Fixtures\TypoScriptExamples as Examples;
-use \ElmarHinz\TypoScriptParser\CoreTypoScriptParserAdapter as Adapter;
+use ElmarHinz\TypoScriptParser\Main\CoreTypoScriptParserAdapter
+    as Adapter;
+use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching
+    \ConditionMatcher as Matcher;
+use ElmarHinz\TypoScriptParser\Tests\Unit\Fixtures\TypoScriptExamples
+    as Examples;
 
-if(!defined("LF")) define("LF", "\n");
-if(!defined("TAB")) define("TAB", "\t");
+if (!defined("LF")) define("LF", "\n");
+if (!defined("TAB")) define("TAB", "\t");
 
 class CoreTypoScriptParserAdapterTest extends \PHPUnit_Framework_TestCase
 {
+
 	public function setup()
 	{
-		$matchClass = '\\TYPO3\\CMS\\Backend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher';
-		$matcher = $this->getMockBuilder($matchClass)->getMock();
+		$matcher = $this->getMockBuilder(Matcher::class)->getMock();
 		$matcher->method('match')->will($this->returnCallback(
 			function($condition) { return $condition == '[TRUE]'; }));
 		$this->matcher = $matcher;

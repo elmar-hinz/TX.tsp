@@ -1,8 +1,9 @@
 <?php
 
-namespace ElmarHinz\TypoScriptParser;
+namespace ElmarHinz\TypoScriptParser\Formatters;
 
-use \ElmarHinz\TypoScriptParser\AbstractTypoScriptParser as AP;
+use ElmarHinz\TypoScriptParser\Parsers\AbstractTypoScriptParser as AP;
+use ElmarHinz\TypoScriptParser\Interfaces\TypoScriptFormatterInterface;
 
 /**
  * TypoScript syntax formatter

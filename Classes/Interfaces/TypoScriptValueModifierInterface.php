@@ -1,9 +1,10 @@
 <?php
 
-namespace ElmarHinz\TypoScriptParser;
+namespace ElmarHinz\TypoScriptParser\Interfaces;
 
-interface ValueModifierInterface
+interface TypoScriptValueModifierInterface
 {
+
 	/**
 	 * Modify the input string by the given operation.
 	 *

@@ -1,6 +1,6 @@
 <?php
 
-namespace ElmarHinz\TypoScriptParser;
+namespace ElmarHinz\TypoScriptParser\Parsers;
 
 class TypoScriptConditionsProcessor extends AbstractTypoScriptParser
 {

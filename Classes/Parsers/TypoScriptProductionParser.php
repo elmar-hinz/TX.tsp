@@ -1,6 +1,8 @@
 <?php
 
-namespace ElmarHinz\TypoScriptParser;
+namespace ElmarHinz\TypoScriptParser\Parsers;
+
+use ElmarHinz\TypoScriptParser\Parsers\AbstractTypoScriptParser;
 
 class TypoScriptProductionParser extends AbstractTypoScriptParser
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace ElmarHinz\TypoScriptParser;
+namespace ElmarHinz\TypoScriptParser\Interfaces;
 
 use \ElmarHinz\TypoScriptParser\Exceptions\TypoScriptParsetimeException;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace ElmarHinz\TypoScriptParser;
+namespace ElmarHinz\TypoScriptParser\Interfaces;
 
 /**
  * Tracker of the exceptions while parsing a TypoScript Template.

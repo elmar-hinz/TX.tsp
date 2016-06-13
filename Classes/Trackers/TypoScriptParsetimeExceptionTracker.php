@@ -1,8 +1,12 @@
 <?php
 
-namespace ElmarHinz\TypoScriptParser;
+namespace ElmarHinz\TypoScriptParser\Trackers;
 
 use \ElmarHinz\TypoScriptParser\Exceptions\TypoScriptParsetimeException;
+use \ElmarHinz\TypoScriptParser\Interfaces
+    \TypoScriptParsetimeExceptionTrackerPushInterface;
+use \ElmarHinz\TypoScriptParser\Interfaces
+    \TypoScriptParsetimeExceptionTrackerPullInterface;
 
 class TypoScriptParsetimeExceptionTracker
     implements TypoScriptParsetimeExceptionTrackerPushInterface,

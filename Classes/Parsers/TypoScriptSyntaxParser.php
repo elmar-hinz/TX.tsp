@@ -1,6 +1,6 @@
 <?php
 
-namespace ElmarHinz\TypoScriptParser;
+namespace ElmarHinz\TypoScriptParser\Parsers;
 
 use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptBraceInExcessException as BraceInExcessException;
 use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptKeysException as KeysException;

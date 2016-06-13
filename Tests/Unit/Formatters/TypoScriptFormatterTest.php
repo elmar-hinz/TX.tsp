@@ -1,9 +1,9 @@
 <?php
 
-namespace ElmarHinz\TypoScriptParser\Tests\Unit;
+namespace ElmarHinz\TypoScriptParser\Tests\Unit\Formatters;
 
-use \ElmarHinz\TypoScriptParser\TypoScriptFormatter as Formatter;
-use \ElmarHinz\TypoScriptParser\AbstractTypoScriptParser as AP;
+use ElmarHinz\TypoScriptParser\Formatters\TypoScriptFormatter as Formatter;
+use ElmarHinz\TypoScriptParser\Parsers\AbstractTypoScriptParser as AP;
 
 class TypoScriptFormatterTest extends \PHPUnit_Framework_TestCase
 {

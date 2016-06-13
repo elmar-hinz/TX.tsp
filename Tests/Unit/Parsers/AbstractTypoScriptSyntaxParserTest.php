@@ -1,13 +1,13 @@
 <?php
 
-namespace ElmarHinz\TypoScriptParser\Tests\Unit;
+namespace ElmarHinz\TypoScriptParser\Tests\Unit\Parsers;
 
-use ElmarHinz\TypoScriptParser\AbstractTypoScriptSyntaxParser
+use ElmarHinz\TypoScriptParser\Parsers\AbstractTypoScriptSyntaxParser
     as Parser;
-use ElmarHinz\TypoScriptParser\TypoScriptTokenTrackerPushInterface
-    as TokenTracker;
-use ElmarHinz\TypoScriptParser\TypoScriptPasetimeExceptionTrackerPushInterface
-    as ExceptionTracker;
+use ElmarHinz\TypoScriptParser\Interfaces
+    \TypoScriptTokenTrackerPushInterface as TokenTracker;
+use ElmarHinz\TypoScriptParser\Interfaces
+    \TypoScriptPasetimeExceptionTrackerPushInterface as ExceptionTracker;
 
 class AbstractTypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 {

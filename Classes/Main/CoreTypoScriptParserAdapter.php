@@ -1,14 +1,21 @@
 <?php
 
-namespace ElmarHinz\TypoScriptParser;
+namespace ElmarHinz\TypoScriptParser\Main;
 
-use	\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser as CoreParser;
-use	\ElmarHinz\TypoScriptParser\TypoScriptProductionParser as ProductionParser;
-use	\ElmarHinz\TypoScriptParser\TypoScriptConditionsProcessor as ConditionsProcessor;
-use	\ElmarHinz\TypoScriptParser\TypoScriptSyntaxParser as SyntaxParser;
-use	\ElmarHinz\TypoScriptParser\TypoScriptFormatter as Formatter;
+use	TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
+    as CoreParser;
+use	ElmarHinz\TypoScriptParser\Parsers\TypoScriptProductionParser
+    as ProductionParser;
+use	ElmarHinz\TypoScriptParser\Parsers\TypoScriptConditionsProcessor
+    as ConditionsProcessor;
+use	ElmarHinz\TypoScriptParser\Parsers\TypoScriptSyntaxParser
+    as SyntaxParser;
+use	ElmarHinz\TypoScriptParser\TypoScriptFormatter
+    as Formatter;
+use ElmarHinz\TypoScriptParser\Interfaces\TypoScriptValueModifierInterface;
 
-class CoreTypoScriptParserAdapter extends CoreParser implements ValueModifierInterface
+class CoreTypoScriptParserAdapter extends CoreParser
+    implements TypoScriptValueModifierInterface
 {
 
     public function parse($string, $matchObj = '')
@@ -26,9 +33,10 @@ class CoreTypoScriptParserAdapter extends CoreParser implements ValueModifierInt
 	public function modifyValue($value, $operation)
 	{
 		$pattern = '/^([[:alpha:]]+)\\s*\\((.*)\\).*/';
-		if(preg_match($pattern, $operation, $matches)) {
+		if (preg_match($pattern, $operation, $matches)) {
 			list(,$modifier, $argument) = $matches;
-				return (string)$this->executeValueModifier($modifier, $argument, $value);
+            return (string)$this->executeValueModifier(
+                $modifier, $argument, $value);
 		} else {
 			// Error handling: not well formatted modifier
 		}
@@ -41,10 +49,12 @@ class CoreTypoScriptParserAdapter extends CoreParser implements ValueModifierInt
      * @param array The first entry is the line number offset.
      * @param bool Toggle blockmode.
      */
-    public function doSyntaxHighlight($template, $numbers = null, $blockmode = false)
+    public function doSyntaxHighlight($template, $numbers = null,
+        $blockmode = false)
     {
         $formatter = new Formatter();
-        if(is_array($numbers) && count($numbers) > 0 && is_int($numbers[0])) {
+        if (is_array($numbers) && count($numbers) > 0
+            && is_int($numbers[0])) {
             $formatter->setNumberOfBaseLine($numbers[0]);
         } else {
             $formatter->hideLineNumbers();

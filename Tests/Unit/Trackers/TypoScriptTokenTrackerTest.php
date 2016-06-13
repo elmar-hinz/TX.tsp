@@ -1,9 +1,9 @@
 <?php
 
-namespace ElmarHinz\TypoScriptParser\Tests\Unit;
+namespace ElmarHinz\TypoScriptParser\Tests\Unit\Trackers;
 
-use \ElmarHinz\TypoScriptParser\TypoScriptTokenTracker as Tracker;
-use \ElmarHinz\TypoScriptParser\Tokens\AbstractTypoScriptToken  as Token;
+use ElmarHinz\TypoScriptParser\Trackers\TypoScriptTokenTracker as Tracker;
+use ElmarHinz\TypoScriptParser\Tokens\AbstractTypoScriptToken  as Token;
 
 class TypoScriptTokenTrackerTest extends \PHPUnit_Framework_TestCase
 {

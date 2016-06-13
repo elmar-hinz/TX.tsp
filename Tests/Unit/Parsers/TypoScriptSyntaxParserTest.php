@@ -1,11 +1,15 @@
 <?php
 
-namespace ElmarHinz\TypoScriptParser\Tests\Unit;
+namespace ElmarHinz\TypoScriptParser\Tests\Unit\Parsers;
 
-use \ElmarHinz\TypoScriptParser\Tests\Unit\Fixtures\TypoScriptExamples as Examples;
-use \ElmarHinz\TypoScriptParser\TypoScriptSyntaxParser as Parser;
-use \ElmarHinz\TypoScriptParser\AbstractTypoScriptParser as AP;
-use \ElmarHinz\TypoScriptParser\TypoScriptFormatterInterface as Formatter;
+use ElmarHinz\TypoScriptParser\Tests\Unit\Fixtures\TypoScriptExamples
+    as Examples;
+use ElmarHinz\TypoScriptParser\Parsers\TypoScriptSyntaxParser
+    as Parser;
+use ElmarHinz\TypoScriptParser\Parsers\AbstractTypoScriptParser
+    as AP;
+use ElmarHinz\TypoScriptParser\Interfaces\TypoScriptFormatterInterface
+    as Formatter;
 
 class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 {

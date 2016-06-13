@@ -1,10 +1,14 @@
 <?php
 
-namespace ElmarHinz\TypoScriptParser\Tests\Unit;
+namespace ElmarHinz\TypoScriptParser\Tests\Unit\Parsers;
 
-use \ElmarHinz\TypoScriptParser\Tests\Unit\Fixtures\TypoScriptExamples as Examples;
-use \ElmarHinz\TypoScriptParser\TypoScriptProductionParser as Parser;
-use \ElmarHinz\TypoScriptParser\ValueModifierInterface as ValueModifier;
+use ElmarHinz\TypoScriptParser\Parsers\TypoScriptProductionParser
+    as Parser;
+use ElmarHinz\TypoScriptParser\Interfaces\TypoScriptValueModifierInterface
+    as ValueModifier;
+use ElmarHinz\TypoScriptParser\Tests\Unit\Fixtures\TypoScriptExamples
+    as Examples;
+
 class TypoScriptProductionParserTest extends \PHPUnit_Framework_TestCase
 {
 

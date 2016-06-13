@@ -1,8 +1,9 @@
 <?php
 
-namespace ElmarHinz\TypoScriptParser\Tests\Unit;
+namespace ElmarHinz\TypoScriptParser\Tests\Unit\Trackers;
 
-use ElmarHinz\TypoScriptParser\TypoScriptParsetimeExceptionTracker as ExceptionTracker;
+use ElmarHinz\TypoScriptParser\Trackers\TypoScriptParsetimeExceptionTracker
+    as ExceptionTracker;
 use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptParsetimeException;
 
 class TypoScriptParsetimeExceptionTrackerTest extends \PHPUnit_Framework_TestCase

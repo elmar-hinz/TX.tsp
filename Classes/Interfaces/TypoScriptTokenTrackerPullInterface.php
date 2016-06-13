@@ -1,6 +1,6 @@
 <?php
 
-namespace ElmarHinz\TypoScriptParser;
+namespace ElmarHinz\TypoScriptParser\Interfaces;
 
 /**
  * Pull the tokens from parsing a TypoScript template.
