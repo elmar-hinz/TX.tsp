@@ -2,7 +2,7 @@
 
 namespace ElmarHinz\TypoScriptParser\Tests\Unit\Tokens;
 
-use \ElmarHinz\TypoScriptParser\Tokens\TypoScriptIgnoredToken as Token;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptIgnoredToken as Token;
 
 class TypoScriptIgnoredTokenTest extends \PHPUnit_Framework_TestCase
 {

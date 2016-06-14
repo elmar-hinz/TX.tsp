@@ -2,7 +2,7 @@
 
 namespace ElmarHinz\TypoScriptParser\Tests\Unit\Tokens;
 
-use \ElmarHinz\TypoScriptParser\Tokens\TypoScriptPrespaceToken as Token;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptPrespaceToken as Token;
 
 class TypoScriptPrespaceTokenTest extends \PHPUnit_Framework_TestCase
 {

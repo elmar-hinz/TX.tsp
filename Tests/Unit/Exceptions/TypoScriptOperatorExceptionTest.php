@@ -2,7 +2,8 @@
 
 namespace ElmarHinz\TypoScriptParser\Tests\Unit\Exceptions;
 
-use \ElmarHinz\TypoScriptParser\Exceptions\TypoScriptOperatorException as Exception;
+use ElmarHinz\TypoScriptParser\Exceptions\
+    TypoScriptOperatorException as Exception;
 
 class TypoScriptOperatorExceptionTest extends \PHPUnit_Framework_TestCase
 {

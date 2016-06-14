@@ -2,7 +2,7 @@
 
 namespace ElmarHinz\TypoScriptParser\Tests\Unit\Tokens;
 
-use \ElmarHinz\TypoScriptParser\Tokens\TypoScriptConditionToken as Token;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptConditionToken as Token;
 
 class TypoScriptConditionTokenTest extends \PHPUnit_Framework_TestCase
 {

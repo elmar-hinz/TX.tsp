@@ -2,10 +2,13 @@
 
 namespace ElmarHinz\TypoScriptParser\Trackers;
 
-use \ElmarHinz\TypoScriptParser\Exceptions\TypoScriptParsetimeException;
-use \ElmarHinz\TypoScriptParser\Interfaces
+use ElmarHinz\TypoScriptParser\Interfaces
+    \TypoScriptParsetimeExceptionInterface;
+
+use ElmarHinz\TypoScriptParser\Interfaces
     \TypoScriptParsetimeExceptionTrackerPushInterface;
-use \ElmarHinz\TypoScriptParser\Interfaces
+
+use ElmarHinz\TypoScriptParser\Interfaces
     \TypoScriptParsetimeExceptionTrackerPullInterface;
 
 class TypoScriptParsetimeExceptionTracker
@@ -16,7 +19,7 @@ class TypoScriptParsetimeExceptionTracker
     protected $lineExceptions = [];
     protected $templateExceptions = [];
 
-    public function push(TypoScriptParsetimeException $exception)
+    public function push(TypoScriptParsetimeExceptionInterface $exception)
     {
         if($exception->isEndOfTemplateException()) {
             $this->templateExceptions[] = $exception;

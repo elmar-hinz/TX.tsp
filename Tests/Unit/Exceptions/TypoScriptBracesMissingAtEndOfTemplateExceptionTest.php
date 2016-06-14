@@ -2,7 +2,8 @@
 
 namespace ElmarHinz\TypoScriptParser\Tests\Unit\Exceptions;
 
-use \ElmarHinz\TypoScriptParser\Exceptions\TypoScriptBracesMissingAtEndOfTemplateException as Exception;
+use ElmarHinz\TypoScriptParser\Exceptions\
+    TypoScriptBracesMissingAtEndOfTemplateException as Exception;
 
 class TypoScriptBracesMissingAtEndOfTemplateExceptionTest
     extends \PHPUnit_Framework_TestCase

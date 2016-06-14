@@ -2,9 +2,11 @@
 
 namespace ElmarHinz\TypoScriptParser\Tests\Unit\Exceptions;
 
-use \ElmarHinz\TypoScriptParser\Exceptions\TypoScriptParsetimeException as Exception;
+use ElmarHinz\TypoScriptParser\Exceptions\
+    AbstractTypoScriptParsetimeException as Exception;
 
-class TypoScriptParsetimeExceptionTest extends \PHPUnit_Framework_TestCase
+class AbstractTypoScriptParsetimeExceptionTest
+    extends \PHPUnit_Framework_TestCase
 {
 
     public function setup()

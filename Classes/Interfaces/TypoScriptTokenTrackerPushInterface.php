@@ -2,8 +2,6 @@
 
 namespace ElmarHinz\TypoScriptParser\Interfaces;
 
-use \ElmarHinz\TypoScriptParser\Tokens\AbstractTypoScriptToken;
-
 /**
  * Tracker of the tokens while parsing a TypoScript Template.
  *
@@ -21,10 +19,10 @@ interface TypoScriptTokenTrackerPushInterface
 	/**
 	 * Push a token for the current line.
 	 *
-	 * @param AbstractTypoScriptToken $token The token to push.
+	 * @param TypoScriptTokenInterface $token The token to push.
 	 * @return void
 	 */
-	public function push(AbstractTypoScriptToken $token);
+	public function push(TypoScriptTokenInterface $token);
 
     /**
      * Increase the current line number.

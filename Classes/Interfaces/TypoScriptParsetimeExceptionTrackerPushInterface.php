@@ -2,8 +2,6 @@
 
 namespace ElmarHinz\TypoScriptParser\Interfaces;
 
-use \ElmarHinz\TypoScriptParser\Exceptions\TypoScriptParsetimeException;
-
 /**
  * Tracker of the exceptions while parsing a TypoScript Template.
  *
@@ -24,7 +22,7 @@ interface TypoScriptParsetimeExceptionTrackerPushInterface
      * @param TypoScriptParsetimeException $exception The exception.
      * @return void
      */
-    public function push(TypoScriptParsetimeException $exception);
+    public function push(TypoScriptParsetimeExceptionInterface $exception);
 
 }
 

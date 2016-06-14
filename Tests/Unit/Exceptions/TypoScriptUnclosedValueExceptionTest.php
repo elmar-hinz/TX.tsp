@@ -2,7 +2,8 @@
 
 namespace ElmarHinz\TypoScriptParser\Tests\Unit\Exceptions;
 
-use \ElmarHinz\TypoScriptParser\Exceptions\TypoScriptUnclosedValueException as Exception;
+use ElmarHinz\TypoScriptParser\Exceptions\
+    TypoScriptUnclosedValueException as Exception;
 
 class TypoScriptUnclosedValueExceptionTest extends \PHPUnit_Framework_TestCase
 {

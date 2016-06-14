@@ -2,7 +2,8 @@
 
 namespace ElmarHinz\TypoScriptParser\Tests\Unit\Exceptions;
 
-use \ElmarHinz\TypoScriptParser\Exceptions\TypoScriptUnclosedCommentException as Exception;
+use ElmarHinz\TypoScriptParser\Exceptions\
+    TypoScriptUnclosedCommentException as Exception;
 
 class TypoScriptUnclosedCommentExceptionTest extends \PHPUnit_Framework_TestCase
 {

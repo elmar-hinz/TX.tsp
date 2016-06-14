@@ -2,7 +2,7 @@
 
 namespace ElmarHinz\TypoScriptParser\Tests\Unit\Tokens;
 
-use \ElmarHinz\TypoScriptParser\Tokens\TypoScriptKeysToken as Token;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptKeysToken as Token;
 
 class TypoScriptKeysTokenTest extends \PHPUnit_Framework_TestCase
 {

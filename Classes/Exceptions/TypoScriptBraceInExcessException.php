@@ -2,7 +2,8 @@
 
 namespace ElmarHinz\TypoScriptParser\Exceptions;
 
-class TypoScriptBraceInExcessException extends TypoScriptParsetimeException
+class TypoScriptBraceInExcessException
+    extends AbstractTypoScriptParsetimeException
 {
     const CODE = 1465381176;
     const MESSAGE = 'A closing brace in excess.';

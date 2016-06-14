@@ -2,7 +2,7 @@
 
 namespace ElmarHinz\TypoScriptParser\Tests\Unit\Tokens;
 
-use \ElmarHinz\TypoScriptParser\Tokens\TypoScriptValueContextToken as Token;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptValueContextToken as Token;
 
 class TypoScriptValueContextTokenTest extends \PHPUnit_Framework_TestCase
 {

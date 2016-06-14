@@ -2,7 +2,11 @@
 
 namespace ElmarHinz\TypoScriptParser\Tokens;
 
+use ElmarHinz\TypoScriptParser\Interfaces\TypoScriptTokenInterface;
+use ElmarHinz\TypoScriptParser\Interfaces\TypoScriptTokenTagInterface;
+
 abstract class AbstractTypoScriptToken
+    implements TypoScriptTokenInterface, TypoScriptTokenTagInterface
 {
     CONST FORMAT = '<%1$s class="%2$s">%3$s</%1$s>';
 

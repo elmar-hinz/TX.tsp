@@ -2,7 +2,7 @@
 
 namespace ElmarHinz\TypoScriptParser\Exceptions;
 
-class TypoScriptOperatorException extends TypoScriptParsetimeException
+class TypoScriptOperatorException extends AbstractTypoScriptParsetimeException
 {
     const CODE = 1465381315;
     const MESSAGE = 'Missing valid operator, one of "=<>{(" or ":=";';

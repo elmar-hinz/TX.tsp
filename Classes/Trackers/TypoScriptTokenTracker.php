@@ -2,11 +2,9 @@
 
 namespace ElmarHinz\TypoScriptParser\Trackers;
 
-use \ElmarHinz\TypoScriptParser\Tokens\AbstractTypoScriptToken;
-use \ElmarHinz\TypoScriptParser\Interfaces
-    \TypoScriptTokenTrackerPushInterface;
-use \ElmarHinz\TypoScriptParser\Interfaces
-    \TypoScriptTokenTrackerPullInterface;
+use ElmarHinz\TypoScriptParser\Interfaces\TypoScriptTokenInterface;
+use ElmarHinz\TypoScriptParser\Interfaces\TypoScriptTokenTrackerPushInterface;
+use ElmarHinz\TypoScriptParser\Interfaces\TypoScriptTokenTrackerPullInterface;
 
 /**
  * Tracker of the tokens while parsing a TypoScript Template.
@@ -39,10 +37,10 @@ class TypoScriptTokenTracker
 	/**
 	 * Push a token for the current line.
 	 *
-	 * @param AbstractTypoScriptToken $token The token to push.
+	 * @param TypoScriptTokenInterface $token The token to push.
 	 * @return void
 	 */
-	public function push(AbstractTypoScriptToken $token)
+	public function push(TypoScriptTokenInterface $token)
 	{
         $this->tokens[$this->line][] = $token;
 	}

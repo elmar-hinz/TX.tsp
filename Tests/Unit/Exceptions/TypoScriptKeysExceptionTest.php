@@ -2,7 +2,8 @@
 
 namespace ElmarHinz\TypoScriptParser\Tests\Unit\Exceptions;
 
-use \ElmarHinz\TypoScriptParser\Exceptions\TypoScriptKeysException as Exception;
+use ElmarHinz\TypoScriptParser\Exceptions\
+    TypoScriptKeysException as Exception;
 
 class TypoScriptKeysExceptionTest extends \PHPUnit_Framework_TestCase
 {

@@ -2,7 +2,7 @@
 
 namespace ElmarHinz\TypoScriptParser\Tests\Unit\Tokens;
 
-use \ElmarHinz\TypoScriptParser\Tokens\TypoScriptKeysPostspaceToken as Token;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptKeysPostspaceToken as Token;
 
 class TypoScriptKeysPostspaceTokenTest extends \PHPUnit_Framework_TestCase
 {

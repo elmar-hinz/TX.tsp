@@ -2,7 +2,8 @@
 
 namespace ElmarHinz\TypoScriptParser\Exceptions;
 
-class TypoScriptBracesMissingAtConditionException extends TypoScriptParsetimeException
+class TypoScriptBracesMissingAtConditionException
+    extends AbstractTypoScriptParsetimeException
 {
     const CODE = 1465381231;
     const MESSAGE = '%s closing brace(s) missing at condition.';

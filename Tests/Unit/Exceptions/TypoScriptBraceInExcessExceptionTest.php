@@ -2,7 +2,8 @@
 
 namespace ElmarHinz\TypoScriptParser\Tests\Unit\Exceptions;
 
-use \ElmarHinz\TypoScriptParser\Exceptions\TypoScriptBraceInExcessException as Exception;
+use ElmarHinz\TypoScriptParser\Exceptions\
+    TypoScriptBraceInExcessException as Exception;
 
 class TypoScriptBraceInExcessExceptionTest extends \PHPUnit_Framework_TestCase
 {

@@ -2,7 +2,7 @@
 
 namespace ElmarHinz\TypoScriptParser\Tests\Unit\Tokens;
 
-use \ElmarHinz\TypoScriptParser\Tokens\TypoScriptValueCopyToken as Token;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptValueCopyToken as Token;
 
 class TypoScriptValueCopyTokenTest extends \PHPUnit_Framework_TestCase
 {

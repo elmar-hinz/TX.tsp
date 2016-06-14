@@ -2,7 +2,8 @@
 
 namespace ElmarHinz\TypoScriptParser\Tests\Unit\Exceptions;
 
-use \ElmarHinz\TypoScriptParser\Exceptions\TypoScriptUnclosedConditionException as Exception;
+use ElmarHinz\TypoScriptParser\Exceptions\
+    TypoScriptUnclosedConditionException as Exception;
 
 class TypoScriptUnclosedConditionExceptionTest extends \PHPUnit_Framework_TestCase
 {

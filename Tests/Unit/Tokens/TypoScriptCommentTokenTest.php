@@ -2,7 +2,7 @@
 
 namespace ElmarHinz\TypoScriptParser\Tests\Unit\Tokens;
 
-use \ElmarHinz\TypoScriptParser\Tokens\TypoScriptCommentToken as Token;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptCommentToken as Token;
 
 class TypoScriptCommentTokenTest extends \PHPUnit_Framework_TestCase
 {

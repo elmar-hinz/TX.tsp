@@ -4,9 +4,11 @@ namespace ElmarHinz\TypoScriptParser\Tests\Unit\Trackers;
 
 use ElmarHinz\TypoScriptParser\Trackers\TypoScriptParsetimeExceptionTracker
     as ExceptionTracker;
-use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptParsetimeException;
+use ElmarHinz\TypoScriptParser\Exceptions\AbstractTypoScriptParsetimeException
+    as ParsetimeException;
 
-class TypoScriptParsetimeExceptionTrackerTest extends \PHPUnit_Framework_TestCase
+class TypoScriptParsetimeExceptionTrackerTest
+    extends \PHPUnit_Framework_TestCase
 {
 
     protected $tracker;
@@ -17,10 +19,10 @@ class TypoScriptParsetimeExceptionTrackerTest extends \PHPUnit_Framework_TestCas
     {
         $this->tracker = new ExceptionTracker();
         $this->templateException
-            = $this->getMockBuilder(TypoScriptParsetimeException::class)
+            = $this->getMockBuilder(ParsetimeException::class)
             ->setMethods(null)->setConstructorArgs([false])->getMock();
         $this->lineException
-            = $this->getMockBuilder(TypoScriptParsetimeException::class)
+            = $this->getMockBuilder(ParsetimeException::class)
             ->setMethods(null)->setConstructorArgs([10])->getMock();
     }
 
