@@ -16,7 +16,7 @@ abstract class AbstractTypoScriptToken
 
     public function __construct($value)
     {
-        $this->value = $value;
+        $this->setValue($value);
     }
 
     public function setTag($tag)

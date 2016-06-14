@@ -16,9 +16,9 @@ abstract class AbstractTypoScriptParsetimeException extends \Exception
     /**
      * Constructor
      *
-     * Parameter is the template line number of error detection where the first
-     * line of the template is starting with 1. If the error is detected at
-     * the end of the template, false must be given instead.
+     * Parameter is the template line number of error detection, where the
+     * first line of the template is starting with 1. If the error is detected
+     * at the end of the template, false must be given instead.
      *
      * @parem mixed $templateLineNumberOrFalse See description above.
      */

@@ -2,7 +2,7 @@
 
 namespace ElmarHinz\TypoScriptParser\Tokens;
 
-class TypoScriptCommentToken extends AbstractTypoScriptToken
+final class TypoScriptCommentToken extends AbstractTypoScriptToken
 {
     CONST TYPE = 'comment';
     protected $classes = 'ts-comment';

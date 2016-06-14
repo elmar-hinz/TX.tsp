@@ -2,7 +2,7 @@
 
 namespace ElmarHinz\TypoScriptParser\Exceptions;
 
-class TypoScriptUnclosedConditionException
+final class TypoScriptUnclosedConditionException
     extends AbstractTypoScriptParsetimeException
 {
     const CODE = 1465385313;

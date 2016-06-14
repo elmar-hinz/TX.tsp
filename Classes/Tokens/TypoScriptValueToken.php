@@ -2,7 +2,7 @@
 
 namespace ElmarHinz\TypoScriptParser\Tokens;
 
-class TypoScriptValueToken extends AbstractTypoScriptToken
+final class TypoScriptValueToken extends AbstractTypoScriptToken
 {
     CONST TYPE = 'value';
     protected $classes = 'ts-value';

@@ -2,7 +2,7 @@
 
 namespace ElmarHinz\TypoScriptParser\Exceptions;
 
-class TypoScriptUnclosedCommentException
+final class TypoScriptUnclosedCommentException
     extends AbstractTypoScriptParsetimeException
 {
     const CODE = 1465385300;

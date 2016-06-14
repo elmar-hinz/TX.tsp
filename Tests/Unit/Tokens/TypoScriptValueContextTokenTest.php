@@ -9,8 +9,7 @@ class TypoScriptValueContextTokenTest extends \PHPUnit_Framework_TestCase
 
     public function setup()
     {
-        $this->token = $this->getMockBuilder(Token::class)
-             ->setMethods(null)->setConstructorArgs(['value'])->getMock();
+        $this->token = new Token('value');
     }
 
     /**

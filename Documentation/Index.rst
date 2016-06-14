@@ -56,6 +56,7 @@ Next Generation TypoScript Parser
     Introduction
     Screenshots
     Administration
+    Architecture
     Exceptions
     Tokens
     Research
