@@ -4,23 +4,28 @@ namespace ElmarHinz\TypoScriptParser\Main;
 
 use	TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
     as CoreParser;
+use ElmarHinz\TypoScriptParser\Interfaces\TypoScriptValueModifierInterface
+    as Modificator;
 use	ElmarHinz\TypoScriptParser\Parsers\TypoScriptProductionParser
     as ProductionParser;
 use	ElmarHinz\TypoScriptParser\Parsers\TypoScriptConditionsProcessor
-    as ConditionsProcessor;
+    as ConditionsPreProcessor;
 use	ElmarHinz\TypoScriptParser\Parsers\TypoScriptSyntaxParser
     as SyntaxParser;
-use	ElmarHinz\TypoScriptParser\TypoScriptFormatter
+use	ElmarHinz\TypoScriptParser\Formatters\TypoScriptFormatter
     as Formatter;
-use ElmarHinz\TypoScriptParser\Interfaces\TypoScriptValueModifierInterface;
+use	ElmarHinz\TypoScriptParser\Trackers\TypoScriptParsetimeExceptionTracker
+    as ExceptionTracker;
+use	ElmarHinz\TypoScriptParser\Trackers\TypoScriptTokenTracker
+    as TokenTracker;
 
 class CoreTypoScriptParserAdapter extends CoreParser
-    implements TypoScriptValueModifierInterface
+    implements Modificator
 {
 
     public function parse($string, $matchObj = '')
     {
-		$preProcessor = new ConditionsProcessor();
+		$preProcessor = new ConditionsPreProcessor();
 		$preProcessor->setMatcher($matchObj);
 		$parser = new ProductionParser();
 		$parser->setValueModifier($this);
@@ -52,6 +57,8 @@ class CoreTypoScriptParserAdapter extends CoreParser
     public function doSyntaxHighlight($template, $numbers = null,
         $blockmode = false)
     {
+        $exceptionTracker = new ExceptionTracker();
+        $tokenTracker = new TokenTracker();
         $formatter = new Formatter();
         if (is_array($numbers) && count($numbers) > 0
             && is_int($numbers[0])) {
