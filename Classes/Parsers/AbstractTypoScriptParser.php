@@ -42,7 +42,6 @@ abstract class AbstractTypoScriptParser implements TypoScriptParserInterface
      * valid operator
      */
     const VALID_KEY_REGEX = '/^(\s*)([[:alnum:].\\\\_-]*[[:alnum:]\\\\_-])((\s|:=|[=<>{(]).*)?$/';
-
     const VALID_OPERATOR_REGEX = '/(:=|[=<>{(])/';
 
 	/*******************************************************
@@ -63,75 +62,6 @@ abstract class AbstractTypoScriptParser implements TypoScriptParserInterface
 	const COMMENT_CONTEXT = 1;
 	const DEFAULT_CONTEXT = 2;
 	const VALUE_CONTEXT   = 3;
-
-	/*******************************************************
-	 * Syntax token classes
-	 *******************************************************/
-
-	const COMMENT_CONTEXT_TOKEN    = 1;
-	const COMMENT_TOKEN            = 2;
-	const CONDITION_TOKEN          = 3;
-	const IGNORED_TOKEN            = 4;
-	const KEYS_POSTSPACE_TOKEN     = 5;
-	const KEYS_TOKEN               = 6;
-	const OPERATOR_POSTSPACE_TOKEN = 7;
-	const OPERATOR_TOKEN           = 8;
-	const PRESPACE_TOKEN           = 9;
-	const VALUE_CONTEXT_TOKEN      = 10;
-	const VALUE_COPY_TOKEN         = 11;
-	const VALUE_TOKEN              = 12;
-
-	/*******************************************************
-	 * Errors
-	 *******************************************************/
-
-	/**
-	 * Unexpected closing brace.
-	 */
-	const NEGATIVE_KEYS_LEVEL_ERROR = 1;
-
-	/**
-	 * Braces are not closed at condition.
-	 *
-	 * pushToken() parameters:
-	 *
-	 * @param: integer The brace level.
-	 */
-	const POSITIVE_KEYS_LEVEL_AT_CONDITION_ERROR = 2;
-
-	/**
-	 * Braces are not closed at end of template.
-	 *
-	 * pushToken() parameters:
-	 *
-	 * @param: integer The brace level.
-	 */
-	const POSITIVE_KEYS_LEVEL_AT_END_ERROR  = 3;
-
-	/**
-	 * Multiline comment not closed at end of template.
-	 */
-	const UNCLOSED_COMMENT_CONTEXT_ERROR= 4;
-
-	/**
-	 * Multiline value not closed at end of template.
-	 */
-	const UNCLOSED_VALUE_CONTEXT_ERROR = 5;
-
-    /**
-     * Invalid line in given context.
-     */
-    const INVALID_LINE_ERROR = 6;
-
-    /**
-     * A valid key is missing.
-     */
-    const VALID_KEY_MISSING_ERROR = 7;
-
-    /**
-     * A valid operator is missing.
-     */
-    const VALID_OPERATOR_MISSING_ERROR = 8;
 
 	/*******************************************************
 	 * Instance variables

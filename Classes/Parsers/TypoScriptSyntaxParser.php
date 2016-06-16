@@ -2,18 +2,53 @@
 
 namespace ElmarHinz\TypoScriptParser\Parsers;
 
-use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptBraceInExcessException as BraceInExcessException;
-use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptKeysException as KeysException;
-use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptUnclosedCommentException as UnclosedCommentException;
-use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptBracesMissingAtConditionException
-    as BracesMissingAtConditionException;
-use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptOperatorException as OperatorException;
+// Tokens
+
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptCommentContextToken
+    as CommentContextToken;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptCommentToken
+    as CommentToken;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptConditionToken
+    as ConditionToken;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptIgnoredToken
+    as IgnoredToken;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptKeysPostspaceToken
+    as KeysPostspaceToken;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptKeysToken
+    as KeysToken;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptOperatorPostspaceToken
+    as OperatorPostspaceToken;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptOperatorToken
+    as OperatorToken;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptPrespaceToken
+    as PrespaceToken;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptValueContextToken
+    as ValueContextToken;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptValueCopyToken
+    as ValueCopyToken;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptValueToken
+    as ValueToken;
+
+// Exceptions
+
+use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptBraceInExcessException
+    as BraceInExcessException;
+use ElmarHinz\TypoScriptParser\Exceptions\
+    TypoScriptBracesMissingAtConditionException
+    as ConditionBracesException;
+use ElmarHinz\TypoScriptParser\Exceptions\
+    TypoScriptBracesMissingAtEndOfTemplateException
+    as FinalBracesException;
+use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptKeysException
+    as KeysException;
+use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptOperatorException
+    as OperatorException;
+use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptUnclosedCommentException
+    as UnclosedCommentException;
 use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptUnclosedConditionException
     as UnclosedConditionException;
-use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptBracesMissingAtEndOfTemplateException
-    as BracesMissingAtEndOfTemplateException;
-use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptParsetimeException as ParsetimeException;
-use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptUnclosedValueException as UnclosedValueException;
+use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptUnclosedValueException
+    as UnclosedValueException;
 
 class TypoScriptSyntaxParser extends AbstractTypoScriptSyntaxParser
 {
@@ -45,7 +80,8 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptSyntaxParser
 	public function parse()
 	{
 		$braceLevel = 0;
-		$f = $this->formatter;
+        $tt = $this->tokenTracker;
+        $et = $this->exceptionTracker;
 		$context = self::DEFAULT_CONTEXT;
         for($nr = 1; $nr <= count($this->inputLines); $nr++) {
             $line = $this->inputLines[$nr - 1];
@@ -53,71 +89,67 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptSyntaxParser
             case self::DEFAULT_CONTEXT:
                 if(preg_match(self::CONDITION_REGEX, $line, $matches)) {
                     list(,$prespace, $condition) = $matches;
-                    $f->pushToken($nr, self::PRESPACE_TOKEN, $prespace);
-                    $f->pushToken($nr, self::CONDITION_TOKEN, $condition);
-                    if($braceLevel > 0) {
-                        $f->pushError($nr,
-                            self::POSITIVE_KEYS_LEVEL_AT_CONDITION_ERROR,
-                            $braceLevel
-                        );
-                    }
+                    $tt->push(new PrespaceToken($prespace));
+                    $tt->push(new ConditionToken($condition));
+                    if($braceLevel > 0) $et->push(new ConditionBracesException(
+                        $nr, $braceLevel));
                     $braceLevel = 0;
                 } elseif(preg_match(self::COMMENT_REGEX, $line, $matches)) {
                     list(,$prespace, $operator, $comment) = $matches;
-                    $f->pushToken($nr, self::PRESPACE_TOKEN, $prespace);
-                    $f->pushToken($nr, self::COMMENT_TOKEN, $operator . $comment);
+                    $tt->push(new PrespaceToken($prespace));
+                    $tt->push(new CommentToken($operator . $comment));
                 } elseif(preg_match(self::COMMENT_CONTEXT_OPEN_REGEX, $line,
                     $matches)) {
                     list(,$prespace, $operator, $comment) = $matches;
-                    $f->pushToken($nr, self::PRESPACE_TOKEN, $prespace);
-                    $f->pushToken($nr, self::COMMENT_CONTEXT_TOKEN, $operator
-                        . $comment);
+                    $tt->push(new PrespaceToken($prespace));
+                    $tt->push(new CommentContextToken($operator . $comment));
                     $context = self::COMMENT_CONTEXT;
                 } elseif(preg_match(self::OPERATOR_REGEX, $line, $matches)) {
                     list(,$prespace ,$keys, $space2, $operator, $space3,
                         $value) = $matches;
-                    $f->pushToken($nr, self::PRESPACE_TOKEN, $prespace);
-                    $f->pushToken($nr, self::KEYS_TOKEN, $keys);
-                    $f->pushToken($nr, self::KEYS_POSTSPACE_TOKEN, $space2);
-                    $f->pushToken($nr, self::OPERATOR_TOKEN, $operator);
+                    $tt->push(new PrespaceToken($prespace));
+                    $tt->push(new KeysToken($keys));
+                    $tt->push(new KeysPostspaceToken($space2));
+                    $tt->push(new OperatorToken($operator));
                     switch($operator) {
                     case self::VALUE_CONTEXT_OPEN_OPERATOR:
-                        $f->pushToken($nr, self::IGNORED_TOKEN, $space3 . $value);
+                        $tt->push(new IgnoredToken($space3 . $value));
                         $context = self::VALUE_CONTEXT;
                         break;
                     case self::LEVEL_OPEN_OPERATOR:
                         $braceLevel++;
-                        $f->pushToken($nr, self::IGNORED_TOKEN, $space3 . $value);
+                        $tt->push(new IgnoredToken($space3 . $value));
                         break;
                     case self::ASSIGN_OPERATOR:
-                        $f->pushToken($nr, self::OPERATOR_POSTSPACE_TOKEN, $space3);
-                        $f->pushToken($nr, self::VALUE_TOKEN, $value);
+                        $tt->push(new OperatorPostspaceToken($space3));
+                        $tt->push(new ValueToken($value));
                         break;
                     case self::COPY_OPERATOR:
-                        $f->pushToken($nr, self::OPERATOR_POSTSPACE_TOKEN, $space3);
-                        $f->pushToken($nr, self::VALUE_COPY_TOKEN, $value);
+                        $tt->push(new OperatorPostspaceToken($space3));
+                        $tt->push(new ValueCopyToken($value));
                         break;
                     case self::MODIFY_OPERATOR:
-                        $f->pushToken($nr, self::OPERATOR_POSTSPACE_TOKEN, $space3);
-                        $f->pushToken($nr, self::VALUE_TOKEN, $value);
+                        $tt->push(new OperatorPostspaceToken($space3));
+                        $tt->push(new ValueToken($value));
                         break;
                     case self::UNSET_OPERATOR:
-                        $f->pushToken($nr, self::OPERATOR_POSTSPACE_TOKEN, $space3);
-                        $f->pushToken($nr, self::IGNORED_TOKEN, $value);
+                        $tt->push(new OperatorPostspaceToken($space3));
+                        $tt->push(new IgnoredToken($value));
                         break;
                     }
                 } elseif(preg_match(self::LEVEL_CLOSE_REGEX, $line, $matches)) {
                     $braceLevel--;
                     list(,$prespace, $operator, $excess) = $matches;
-                    $f->pushToken($nr, self::PRESPACE_TOKEN, $prespace);
-                    $f->pushToken($nr, self::OPERATOR_TOKEN, $operator);
-                    $f->pushToken($nr, self::IGNORED_TOKEN, $excess);
+                    $tt->push(new PrespaceToken($prespace));
+                    $tt->push(new OperatorToken($operator));
+                    $tt->push(new IgnoredToken($excess));
                     if($braceLevel < 0) {
-                        $f->pushError($nr, self::NEGATIVE_KEYS_LEVEL_ERROR);
+                        $et->push(new BraceInExcessException($nr));
+
                         $braceLevel = 0;
                     }
                 } elseif(preg_match(self::VOID_REGEX, $line)) {
-                    $f->pushToken($nr, self::PRESPACE_TOKEN, $line);
+                    $tt->push(new PrespaceToken($line));
                 } else {
                     $this->handleInvalidLineInDefaultContext($nr, $line);
                 }
@@ -126,36 +158,34 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptSyntaxParser
                 if(preg_match(self::COMMENT_CONTEXT_CLOSE_REGEX, $line,
                     $matches)) {
                     list(,$space1, $operator, $excess) = $matches;
-                    $f->pushToken($nr, self::COMMENT_CONTEXT_TOKEN,
-                        $space1.$operator);
-                    $f->pushToken($nr, self::IGNORED_TOKEN, $excess);
+                    $tt->push(new CommentContextToken($space1 . $operator));
+                    $tt->push(new IgnoredToken($excess));
                     $context = self::DEFAULT_CONTEXT;
                 } else {
-                    $f->pushToken($nr, self::COMMENT_CONTEXT_TOKEN, $line);
+                    $tt->push(new CommentContextToken($line));
                 }
                 break;
             case self::VALUE_CONTEXT:
                 if(preg_match(self::VALUE_CONTEXT_CLOSE_REGEX, $line,
                     $matches)) {
                     list(,$space1, $operator, $excess) = $matches;
-                    $f->pushToken($nr, self::PRESPACE_TOKEN, $space1);
-                    $f->pushToken($nr, self::OPERATOR_TOKEN, $operator);
-                    $f->pushToken($nr, self::IGNORED_TOKEN, $excess);
+                    $tt->push(new PrespaceToken($space1));
+                    $tt->push(new OperatorToken($operator));
+                    $tt->push(new IgnoredToken($excess));
                     $context = self::DEFAULT_CONTEXT;
                 } else {
-                    $f->pushToken($nr, self::VALUE_CONTEXT_TOKEN, $line);
+                    $tt->push(new ValueContextToken($line));
                 }
                 break;
             }
-			$f->finishLine($nr);
+            $tt->nextLine();
 		}
-		if($braceLevel > 0)
-			$f->pushFinalError(self::POSITIVE_KEYS_LEVEL_AT_END_ERROR, $braceLevel);
-		if($context == self::VALUE_CONTEXT)
-			$f->pushFinalError(self::UNCLOSED_VALUE_CONTEXT_ERROR);
+        if($braceLevel > 0)
+            $et->push(new FinalBracesException(2));
+        if($context == self::VALUE_CONTEXT)
+            $et->push(new UnclosedValueException());
 		if($context == self::COMMENT_CONTEXT)
-			$f->pushFinalError(self::UNCLOSED_COMMENT_CONTEXT_ERROR);
-		return $f->finish();
+            $et->push(new UnclosedCommentException());
 	}
 
     /**
@@ -167,13 +197,14 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptSyntaxParser
      */
     protected function handleInvalidLineInDefaultContext($nr, $line)
     {
-		$f = $this->formatter;
-        $f->pushToken($nr, self::IGNORED_TOKEN, $line);
+        $tt = $this->tokenTracker;
+        $et = $this->exceptionTracker;
+        $tt->push(new IgnoredToken($line));
         if(!preg_match(self::VALID_KEY_REGEX, $line, $matches)) {
-            $f->pushError($nr, self::VALID_KEY_MISSING_ERROR);
+            $et->push(new KeysException($nr));
         }
         if(!preg_match(self::VALID_OPERATOR_REGEX, $line, $matches)) {
-            $f->pushError($nr, self::VALID_OPERATOR_MISSING_ERROR);
+            $et->push(new OperatorException($nr));
         }
     }
 

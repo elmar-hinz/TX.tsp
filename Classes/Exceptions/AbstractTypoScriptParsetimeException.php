@@ -8,7 +8,7 @@ use ElmarHinz\TypoScriptParser\Interfaces
 abstract class AbstractTypoScriptParsetimeException extends \Exception
     implements TypoScriptParsetimeExceptionInterface
 {
-    const CODE = 1465381339;
+    const CODE = 999;
     const MESSAGE = 'A parsetime exception occured.';
 
     protected $templateLineNumberOrFalseForEndOfTemplate;

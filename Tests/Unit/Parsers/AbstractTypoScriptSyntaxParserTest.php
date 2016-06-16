@@ -7,7 +7,7 @@ use ElmarHinz\TypoScriptParser\Parsers\AbstractTypoScriptSyntaxParser
 use ElmarHinz\TypoScriptParser\Interfaces
     \TypoScriptTokenTrackerPushInterface as TokenTracker;
 use ElmarHinz\TypoScriptParser\Interfaces
-    \TypoScriptPasetimeExceptionTrackerPushInterface as ExceptionTracker;
+    \TypoScriptParsetimeExceptionTrackerPushInterface as ExceptionTracker;
 
 class AbstractTypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 {

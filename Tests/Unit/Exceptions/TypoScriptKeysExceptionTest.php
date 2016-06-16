@@ -19,7 +19,7 @@ class TypoScriptKeysExceptionTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 'alphanumeric';
         $this->assertContains($expected, $this->exception->getMessage());
-        $expected = '.-_';
+        $expected = '".-:_\\"';
         $this->assertContains($expected, $this->exception->getMessage());
     }
 

@@ -2,23 +2,74 @@
 
 namespace ElmarHinz\TypoScriptParser\Tests\Unit\Parsers;
 
-use ElmarHinz\TypoScriptParser\Tests\Unit\Fixtures\TypoScriptExamples
-    as Examples;
+// Pasrser and trackers
+
 use ElmarHinz\TypoScriptParser\Parsers\TypoScriptSyntaxParser
     as Parser;
-use ElmarHinz\TypoScriptParser\Parsers\AbstractTypoScriptParser
-    as AP;
-use ElmarHinz\TypoScriptParser\Interfaces\TypoScriptFormatterInterface
-    as Formatter;
+use ElmarHinz\TypoScriptParser\Interfaces\TypoScriptTokenTrackerPushInterface
+    as TokenTracker;
+use ElmarHinz\TypoScriptParser\Interfaces\
+    TypoScriptParsetimeExceptionTrackerPushInterface
+    as ExceptionTracker;
+
+// Tokens
+
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptCommentContextToken
+    as CommentContextToken;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptCommentToken
+    as CommentToken;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptConditionToken
+    as ConditionToken;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptIgnoredToken
+    as IgnoredToken;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptKeysPostspaceToken
+    as KeysPostspaceToken;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptKeysToken
+    as KeysToken;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptOperatorPostspaceToken
+    as OperatorPostspaceToken;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptOperatorToken
+    as OperatorToken;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptPrespaceToken
+    as PrespaceToken;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptValueContextToken
+    as ValueContextToken;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptValueCopyToken
+    as ValueCopyToken;
+use ElmarHinz\TypoScriptParser\Tokens\TypoScriptValueToken
+    as ValueToken;
+
+// Exceptions
+
+use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptBraceInExcessException
+    as BraceInExcessException;
+use ElmarHinz\TypoScriptParser\Exceptions\
+    TypoScriptBracesMissingAtConditionException
+    as ConditionBracesException;
+use ElmarHinz\TypoScriptParser\Exceptions\
+    TypoScriptBracesMissingAtEndOfTemplateException
+    as FinalBracesException;
+use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptKeysException
+    as KeysException;
+use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptOperatorException
+    as OperatorException;
+use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptUnclosedCommentException
+    as UnclosedCommentException;
+use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptUnclosedConditionException
+    as UnclosedConditionException;
+use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptUnclosedValueException
+    as UnclosedValueException;
 
 class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 {
 
 	public function setup()
 	{
-		$this->formatter = $this->getMockBuilder(Formatter::class)->getMock();
 		$this->parser = new Parser();
-		$this->parser->injectFormatter($this->formatter);
+        $this->tokenTracker  = $this->getMock(TokenTracker::class);
+        $this->parser->injectTokenTracker($this->tokenTracker);
+        $this->exceptionTracker  = $this->getMock(ExceptionTracker::class);
+        $this->parser->injectExceptionTracker($this->exceptionTracker);
 	}
 
 	/**
@@ -28,13 +79,12 @@ class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 	{
 		$typoScript = ''; // matched by VOID_REGEX
 		$this->parser->appendTemplate($typoScript);
-		$this->formatter->method('pushToken')->withConsecutive(
-			[1, AP::PRESPACE_TOKEN, '']
-		);
-		$this->formatter->expects($this->exactly(0))->method('pushError');
-        $this->formatter->expects($this->exactly(1))->method('finishLine')
-            ->with(1);
-		$this->formatter->expects($this->exactly(1))->method('finish');
+        $this->tokenTracker->expects($this->exactly(1))->method('push')
+            ->withConsecutive(
+                [new PrespaceToken('')]
+            );
+        $this->tokenTracker->expects($this->exactly(1))->method('nextLine');
+        $this->exceptionTracker->expects($this->exactly(0))->method('push');
 		$this->parser->parse();
 	}
 
@@ -45,14 +95,13 @@ class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 	{
 		$typoScript = ' [CONDITION]';
 		$this->parser->appendTemplate($typoScript);
-		$this->formatter->method('pushToken')->withConsecutive(
-			[1, AP::PRESPACE_TOKEN, ' '],
-			[1, AP::CONDITION_TOKEN, '[CONDITION]']
-		);
-		$this->formatter->expects($this->exactly(0))->method('pushError');
-        $this->formatter->expects($this->exactly(1))->method('finishLine')
-            ->with(1);
-		$this->formatter->expects($this->exactly(1))->method('finish');
+        $this->tokenTracker->expects($this->exactly(2))->method('push')
+            ->withConsecutive(
+                [new PrespaceToken(' ')],
+                [new ConditionToken('[CONDITION]')]
+            );
+        $this->tokenTracker->expects($this->exactly(1))->method('nextLine');
+        $this->exceptionTracker->expects($this->exactly(0))->method('push');
 		$this->parser->parse();
 	}
 
@@ -63,14 +112,13 @@ class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 	{
 		$typoScript = ' # comment';
 		$this->parser->appendTemplate($typoScript);
-		$this->formatter->method('pushToken')->withConsecutive(
-			[1,AP::PRESPACE_TOKEN, ' '],
-			[1,AP::COMMENT_TOKEN, '# comment']
-		);
-		$this->formatter->expects($this->exactly(0))->method('pushError');
-        $this->formatter->expects($this->exactly(1))->method('finishLine')
-            ->with(1);
-		$this->formatter->expects($this->exactly(1))->method('finish');
+        $this->tokenTracker->expects($this->exactly(2))->method('push')
+            ->withConsecutive(
+                [new PrespaceToken(' ')],
+                [new CommentToken('# comment')]
+            );
+        $this->tokenTracker->expects($this->exactly(1))->method('nextLine');
+        $this->exceptionTracker->expects($this->exactly(0))->method('push');
 		$this->parser->parse();
 	}
 
@@ -81,18 +129,17 @@ class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 	{
 		$typoScript = 'one = 1 ';
 		$this->parser->appendTemplate($typoScript);
-		$this->formatter->method('pushToken')->withConsecutive(
-			[1, AP::PRESPACE_TOKEN, ''],
-			[1, AP::KEYS_TOKEN, 'one'],
-			[1, AP::KEYS_POSTSPACE_TOKEN, ' '],
-			[1, AP::OPERATOR_TOKEN, '='],
-			[1, AP::OPERATOR_POSTSPACE_TOKEN, ' '],
-			[1, AP::VALUE_TOKEN, '1 ']
-		);
-		$this->formatter->expects($this->exactly(0))->method('pushError');
-        $this->formatter->expects($this->exactly(1))->method('finishLine')
-            ->with(1);
-		$this->formatter->expects($this->exactly(1))->method('finish');
+        $this->tokenTracker->expects($this->exactly(6))->method('push')
+            ->withConsecutive(
+                [new PrespaceToken('')],
+                [new KeysToken('one')],
+                [new KeysPostspaceToken(' ')],
+                [new OperatorToken('=')],
+                [new OperatorPostspaceToken(' ')],
+                [new ValueToken('1 ')]
+            );
+        $this->tokenTracker->expects($this->exactly(1))->method('nextLine');
+        $this->exceptionTracker->expects($this->exactly(0))->method('push');
 		$this->parser->parse();
 	}
 
@@ -103,18 +150,17 @@ class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 	{
 		$typoScript = ' one = 1 ';
 		$this->parser->appendTemplate($typoScript);
-		$this->formatter->method('pushToken')->withConsecutive(
-			[1, AP::PRESPACE_TOKEN, ' '],
-			[1, AP::KEYS_TOKEN, 'one'],
-			[1, AP::KEYS_POSTSPACE_TOKEN, ' '],
-			[1, AP::OPERATOR_TOKEN, '='],
-			[1, AP::OPERATOR_POSTSPACE_TOKEN, ' '],
-			[1, AP::VALUE_TOKEN, '1 ']
-		);
-		$this->formatter->expects($this->exactly(0))->method('pushError');
-        $this->formatter->expects($this->exactly(1))->method('finishLine')
-            ->with(1);
-		$this->formatter->expects($this->exactly(1))->method('finish');
+        $this->tokenTracker->expects($this->exactly(6))->method('push')
+            ->withConsecutive(
+                [new PrespaceToken(' ')],
+                [new KeysToken('one')],
+                [new KeysPostspaceToken(' ')],
+                [new OperatorToken('=')],
+                [new OperatorPostspaceToken(' ')],
+                [new ValueToken('1 ')]
+            );
+        $this->tokenTracker->expects($this->exactly(1))->method('nextLine');
+        $this->exceptionTracker->expects($this->exactly(0))->method('push');
 		$this->parser->parse();
 	}
 
@@ -129,26 +175,25 @@ class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 			' } ',
 		];
 		$this->parser->appendTemplate($typoScript);
-		$this->formatter->method('pushToken')->withConsecutive(
-			[1, AP::PRESPACE_TOKEN, ' '],
-			[1, AP::KEYS_TOKEN, 'one.two'],
-			[1, AP::KEYS_POSTSPACE_TOKEN, ' '],
-			[1, AP::OPERATOR_TOKEN, '{'],
-			[1, AP::IGNORED_TOKEN, ' '],
-			[2, AP::PRESPACE_TOKEN, '     '],
-			[2, AP::KEYS_TOKEN, 'three'],
-			[2, AP::KEYS_POSTSPACE_TOKEN, ' '],
-			[2, AP::OPERATOR_TOKEN, '='],
-			[2, AP::OPERATOR_POSTSPACE_TOKEN, ' '],
-			[2, AP::VALUE_TOKEN, '3 '],
-			[3, AP::PRESPACE_TOKEN, ' '],
-			[3, AP::OPERATOR_TOKEN, '}'],
-			[3, AP::IGNORED_TOKEN, ' ']
-		);
-		$this->formatter->expects($this->exactly(0))->method('pushError');
-        $this->formatter->expects($this->exactly(3))->method('finishLine')
-            ->withConsecutive([1],[2],[3]);
-		$this->formatter->expects($this->exactly(1))->method('finish');
+        $this->tokenTracker->expects($this->exactly(14))->method('push')
+            ->withConsecutive(
+                [new PrespaceToken(' ')],
+                [new KeysToken('one.two')],
+                [new KeysPostspaceToken(' ')],
+                [new OperatorToken('{')],
+                [new IgnoredToken(' ')],
+                [new PrespaceToken('     ')],
+                [new KeysToken('three')],
+                [new KeysPostspaceToken(' ')],
+                [new OperatorToken('=')],
+                [new OperatorPostspaceToken(' ')],
+                [new ValueToken('3 ')],
+                [new PrespaceToken(' ')],
+                [new OperatorToken('}')],
+                [new IgnoredToken(' ')]
+            );
+        $this->tokenTracker->expects($this->exactly(3))->method('nextLine');
+        $this->exceptionTracker->expects($this->exactly(0))->method('push');
 		$this->parser->parse();
 	}
 
@@ -157,20 +202,19 @@ class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function modify()
 	{
-		$typoScript = 'one := append(xxx)';
+		$typoScript = 'one := append(xxx)  ';
 		$this->parser->appendTemplate($typoScript);
-		$this->formatter->method('pushToken')->withConsecutive(
-			[1, AP::PRESPACE_TOKEN, ''],
-			[1, AP::KEYS_TOKEN, 'one'],
-			[1, AP::KEYS_POSTSPACE_TOKEN, ' '],
-			[1, AP::OPERATOR_TOKEN, ':='],
-			[1, AP::OPERATOR_POSTSPACE_TOKEN, ' '],
-			[1, AP::VALUE_TOKEN, 'append(xxx)']
-		);
-		$this->formatter->expects($this->exactly(0))->method('pushError');
-        $this->formatter->expects($this->exactly(1))->method('finishLine')
-            ->with(1);
-		$this->formatter->expects($this->exactly(1))->method('finish');
+        $this->tokenTracker->expects($this->exactly(6))->method('push')
+            ->withConsecutive(
+                [new PrespaceToken('')],
+                [new KeysToken('one')],
+                [new KeysPostspaceToken(' ')],
+                [new OperatorToken(':=')],
+                [new OperatorPostspaceToken(' ')],
+                [new ValueToken('append(xxx)  ')]
+            );
+        $this->tokenTracker->expects($this->exactly(1))->method('nextLine');
+        $this->exceptionTracker->expects($this->exactly(0))->method('push');
 		$this->parser->parse();
 	}
 
@@ -179,20 +223,19 @@ class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function copy()
 	{
-		$typoScript = 'one < .two';
+		$typoScript = 'one < .two ';
 		$this->parser->appendTemplate($typoScript);
-		$this->formatter->method('pushToken')->withConsecutive(
-			[1, AP::PRESPACE_TOKEN, ''],
-			[1, AP::KEYS_TOKEN, 'one'],
-			[1, AP::KEYS_POSTSPACE_TOKEN, ' '],
-			[1, AP::OPERATOR_TOKEN, '<'],
-			[1, AP::OPERATOR_POSTSPACE_TOKEN, ' '],
-			[1, AP::VALUE_COPY_TOKEN, '.two']
-		);
-		$this->formatter->expects($this->exactly(0))->method('pushError');
-        $this->formatter->expects($this->exactly(1))->method('finishLine')
-            ->with(1);
-		$this->formatter->expects($this->exactly(1))->method('finish');
+        $this->tokenTracker->expects($this->exactly(6))->method('push')
+            ->withConsecutive(
+                [new PrespaceToken('')],
+                [new KeysToken('one')],
+                [new KeysPostspaceToken(' ')],
+                [new OperatorToken('<')],
+                [new OperatorPostspaceToken(' ')],
+                [new ValueCopyToken('.two ')]
+            );
+        $this->tokenTracker->expects($this->exactly(1))->method('nextLine');
+        $this->exceptionTracker->expects($this->exactly(0))->method('push');
 		$this->parser->parse();
 	}
 
@@ -201,20 +244,19 @@ class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function delete()
 	{
-		$typoScript = 'one > exess';
+		$typoScript = ' one > excess ';
 		$this->parser->appendTemplate($typoScript);
-		$this->formatter->method('pushToken')->withConsecutive(
-			[1, AP::PRESPACE_TOKEN, ''],
-			[1, AP::KEYS_TOKEN, 'one'],
-			[1, AP::KEYS_POSTSPACE_TOKEN, ' '],
-			[1, AP::OPERATOR_TOKEN, '>'],
-			[1, AP::OPERATOR_POSTSPACE_TOKEN, ' '],
-			[1, AP::IGNORED_TOKEN, 'exess']
-		);
-		$this->formatter->expects($this->exactly(0))->method('pushError');
-        $this->formatter->expects($this->exactly(1))->method('finishLine')
-            ->with(1);
-		$this->formatter->expects($this->exactly(1))->method('finish');
+        $this->tokenTracker->expects($this->exactly(6))->method('push')
+            ->withConsecutive(
+                [new PrespaceToken(' ')],
+                [new KeysToken('one')],
+                [new KeysPostspaceToken(' ')],
+                [new OperatorToken('>')],
+                [new OperatorPostspaceToken(' ')],
+                [new IgnoredToken('excess ')]
+            );
+        $this->tokenTracker->expects($this->exactly(1))->method('nextLine');
+        $this->exceptionTracker->expects($this->exactly(0))->method('push');
 		$this->parser->parse();
 	}
 
@@ -224,25 +266,25 @@ class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 	public function value_context()
 	{
 		$typoScript = [
-			' key ( excess1',
+			' key ( excess1 ',
 			'     content line  ',
-			' ) excess2',
+			' ) excess2 ',
 		];
 		$this->parser->appendTemplate($typoScript);
-		$this->formatter->method('pushToken')->withConsecutive(
-			[1, AP::PRESPACE_TOKEN, ' '],
-			[1, AP::KEYS_TOKEN, 'key'],
-			[1, AP::KEYS_POSTSPACE_TOKEN, ' '],
-			[1, AP::OPERATOR_TOKEN, '('],
-			[1, AP::IGNORED_TOKEN, ' excess1'],
-			[2, AP::VALUE_CONTEXT_TOKEN, '     content line  '],
-			[3, AP::PRESPACE_TOKEN, ' '],
-			[3, AP::OPERATOR_TOKEN, ')'],
-			[3, AP::IGNORED_TOKEN, ' excess2']
-		);
-		$this->formatter->expects($this->exactly(0))->method('pushError');
-		$this->formatter->expects($this->exactly(3))->method('finishLine');
-		$this->formatter->expects($this->exactly(1))->method('finish');
+        $this->tokenTracker->expects($this->exactly(9))->method('push')
+            ->withConsecutive(
+                [new PrespaceToken(' ')],
+                [new KeysToken('key')],
+                [new KeysPostspaceToken(' ')],
+                [new OperatorToken('(')],
+                [new IgnoredToken(' excess1 ')],
+                [new ValueContextToken( '     content line  ')],
+                [new PrespaceToken(' ')],
+                [new OperatorToken(')')],
+                [new IgnoredToken(' excess2 ')]
+            );
+        $this->tokenTracker->expects($this->exactly(3))->method('nextLine');
+        $this->exceptionTracker->expects($this->exactly(0))->method('push');
 		$this->parser->parse();
 	}
 
@@ -251,29 +293,29 @@ class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function comment_context()
 	{
-		$typoScript = [
-			' /* opening',
-			'     content line  ',
-			' */ excess2',
+        $typoScript = [
+            ' /* opening ',
+            '     content line  ',
+            ' */ excess2 ',
 		];
 		$this->parser->appendTemplate($typoScript);
-		$this->formatter->method('pushToken')->withConsecutive(
-			[1, AP::PRESPACE_TOKEN, ' '],
-			[1, AP::COMMENT_CONTEXT_TOKEN, '/* opening'],
-			[2, AP::COMMENT_CONTEXT_TOKEN, '     content line  '],
-			[3, AP::COMMENT_CONTEXT_TOKEN, ' */'],
-			[3, AP::IGNORED_TOKEN, ' excess2']
-		);
-		$this->formatter->expects($this->exactly(0))->method('pushError');
-		$this->formatter->expects($this->exactly(3))->method('finishLine');
-		$this->formatter->expects($this->exactly(1))->method('finish');
+        $this->tokenTracker->expects($this->exactly(5))->method('push')
+            ->withConsecutive(
+                [new PrespaceToken(' ')],
+                [new CommentContextToken('/* opening ')],
+                [new CommentContextToken('     content line  ' )],
+                [new CommentContextToken(' */')],
+                [new IgnoredToken(' excess2 ')]
+            );
+        $this->tokenTracker->expects($this->exactly(3))->method('nextLine');
+        $this->exceptionTracker->expects($this->exactly(0))->method('push');
 		$this->parser->parse();
 	}
 
 	/**
 	 * @test
 	 */
-	public function negative_keys_level_error()
+	public function bracesInExesss()
 	{
 		$typoScript = [
 			' one.two { ',
@@ -282,20 +324,19 @@ class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 			' } ',
 		];
 		$this->parser->appendTemplate($typoScript);
-		$this->formatter->expects($this->exactly(2))->method('pushError')
+        $this->exceptionTracker->expects($this->exactly(2))->method('push')
             ->withConsecutive(
-                [3, AP::NEGATIVE_KEYS_LEVEL_ERROR],
-                [4, AP::NEGATIVE_KEYS_LEVEL_ERROR]
+                [new BraceInExcessException(3)],
+                [new BraceInExcessException(4)]
             );
-		$this->formatter->expects($this->exactly(4))->method('finishLine');
-		$this->formatter->expects($this->exactly(1))->method('finish');
+        $this->tokenTracker->expects($this->exactly(4))->method('nextLine');
 		$this->parser->parse();
 	}
 
 	/**
 	 * @test
 	 */
-	public function positive_keys_level_at_end_error()
+	public function finalBracesMissing()
 	{
 		$typoScript = [
 			' one.two { ',
@@ -304,17 +345,18 @@ class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 			'         } ',
 		];
 		$this->parser->appendTemplate($typoScript);
-		$this->formatter->expects($this->exactly(1))->method('pushFinalError')
-			->with(AP::POSITIVE_KEYS_LEVEL_AT_END_ERROR, 2);
-		$this->formatter->expects($this->exactly(4))->method('finishLine');
-		$this->formatter->expects($this->exactly(1))->method('finish');
+        $this->exceptionTracker->expects($this->exactly(1))->method('push')
+            ->withConsecutive(
+                [new FinalBracesException(2)]
+            );
+        $this->tokenTracker->expects($this->exactly(4))->method('nextLine');
 		$this->parser->parse();
 	}
 
 	/**
 	 * @test
 	 */
-	public function positive_keys_level_at_condition_error()
+	public function bracesMissingAtCondition()
 	{
 		$typoScript = [
 			' one.two { ',
@@ -324,44 +366,47 @@ class TypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
 			' [ELSE] ',
 		];
 		$this->parser->appendTemplate($typoScript);
-		$this->formatter->expects($this->exactly(1))->method('pushError')
-			->with(5, AP::POSITIVE_KEYS_LEVEL_AT_CONDITION_ERROR, 2);
-		$this->formatter->expects($this->exactly(5))->method('finishLine');
-		$this->formatter->expects($this->exactly(1))->method('finish');
+        $this->exceptionTracker->expects($this->exactly(1))->method('push')
+            ->withConsecutive(
+                [new ConditionBracesException(5, 2)]
+            );
+        $this->tokenTracker->expects($this->exactly(5))->method('nextLine');
 		$this->parser->parse();
 	}
 
 	/**
 	 * @test
 	 */
-	public function unclosed_value_context_at_end_error()
+	public function unclosedValueContext()
 	{
 		$typoScript = [
 			' one ( ',
 			'   content',
 		];
 		$this->parser->appendTemplate($typoScript);
-		$this->formatter->expects($this->exactly(1))->method('pushFinalError')
-			->with(AP::UNCLOSED_VALUE_CONTEXT_ERROR);
-		$this->formatter->expects($this->exactly(2))->method('finishLine');
-		$this->formatter->expects($this->exactly(1))->method('finish');
+        $this->exceptionTracker->expects($this->exactly(1))->method('push')
+            ->withConsecutive(
+                [new UnclosedValueException()]
+            );
+        $this->tokenTracker->expects($this->exactly(2))->method('nextLine');
 		$this->parser->parse();
 	}
 
 	/**
 	 * @test
 	 */
-	public function unclosed_comment_context_at_end_error()
+	public function unclosedCommentContext()
 	{
 		$typoScript = [
 			' /* content ',
 			'   content',
 		];
 		$this->parser->appendTemplate($typoScript);
-		$this->formatter->expects($this->exactly(1))->method('pushFinalError')
-			->with(AP::UNCLOSED_COMMENT_CONTEXT_ERROR);
-		$this->formatter->expects($this->exactly(2))->method('finishLine');
-		$this->formatter->expects($this->exactly(1))->method('finish');
+        $this->exceptionTracker->expects($this->exactly(1))->method('push')
+            ->withConsecutive(
+                [new UnclosedCommentException()]
+            );
+        $this->tokenTracker->expects($this->exactly(2))->method('nextLine');
 		$this->parser->parse();
 	}
 

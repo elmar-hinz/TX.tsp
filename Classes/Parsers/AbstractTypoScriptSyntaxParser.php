@@ -4,7 +4,7 @@ namespace ElmarHinz\TypoScriptParser\Parsers;
 
 use ElmarHinz\TypoScriptParser\Interfaces\TypoScriptTokenTrackerPushInterface
     as TokenTracker;
-use ElmarHinz\TypoScriptParser\Interfaces\TypoScriptPasetimeExceptionTrackerPushInterface
+use ElmarHinz\TypoScriptParser\Interfaces\TypoScriptParsetimeExceptionTrackerPushInterface
     as ExceptionTracker;
 
 abstract class AbstractTypoScriptSyntaxParser extends AbstractTypoScriptParser
