@@ -8,7 +8,7 @@ use ElmarHinz\TypoScriptParser\Interfaces\TypoScriptValueModifierInterface
     as Modificator;
 use	ElmarHinz\TypoScriptParser\Parsers\TypoScriptProductionParser
     as ProductionParser;
-use	ElmarHinz\TypoScriptParser\Parsers\TypoScriptConditionsProcessor
+use	ElmarHinz\TypoScriptParser\Parsers\TypoScriptConditionsPreProcessor
     as ConditionsPreProcessor;
 use	ElmarHinz\TypoScriptParser\Parsers\TypoScriptSyntaxParser
     as SyntaxParser;

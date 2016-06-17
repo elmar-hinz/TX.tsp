@@ -2,17 +2,19 @@
 
 namespace ElmarHinz\TypoScriptParser\Tests\Unit\Parsers;
 
-use ElmarHinz\TypoScriptParser\Parsers\TypoScriptConditionsProcessor;
+use ElmarHinz\TypoScriptParser\Parsers\TypoScriptConditionsPreProcessor
+    as Parser;
+use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\
+    ConditionMatcher as Matcher;
 
-class TypoScriptConditionsProcessorTest extends \PHPUnit_Framework_TestCase
+class TypoScriptConditionsPreProcessorTest extends \PHPUnit_Framework_TestCase
 {
 	public function setup()
 	{
-		$matchClass = '\\TYPO3\\CMS\\Backend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher';
-		$matcher = $this->getMockBuilder($matchClass)->getMock();
+		$this->parser = new Parser();
+		$matcher = $this->getMock(Matcher::class);
 		$matcher->method('match')->will($this->returnCallback(
 			function($condition) { return $condition == '[TRUE]'; }));
-		$this->parser = new TypoScriptConditionsProcessor();
 		$this->parser->setMatcher($matcher);
 	}
 

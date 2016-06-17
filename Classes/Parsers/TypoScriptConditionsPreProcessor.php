@@ -2,7 +2,7 @@
 
 namespace ElmarHinz\TypoScriptParser\Parsers;
 
-class TypoScriptConditionsProcessor extends AbstractTypoScriptParser
+class TypoScriptConditionsPreProcessor extends AbstractTypoScriptParser
 {
 
 	protected $matcher;
