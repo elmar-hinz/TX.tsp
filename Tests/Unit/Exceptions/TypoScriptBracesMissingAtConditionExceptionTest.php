@@ -8,20 +8,29 @@ use ElmarHinz\TypoScriptParser\Exceptions\
 class TypoScriptBracesMissingAtConditionExceptionTest
     extends \PHPUnit_Framework_TestCase
 {
-    public function setup()
+
+    /**
+     * @test
+     */
+    public function getMessage1()
     {
-        $this->exception = new Exception(10, 3);
+        $exception = new Exception(10, 1);
+        $expected = 'A closing brace is missing';
+        $this->assertContains($expected, $exception->getMessage());
+        $expected = 'condition';
+        $this->assertContains($expected, $exception->getMessage());
     }
 
     /**
      * @test
      */
-    public function getMessage()
+    public function getMessage3()
     {
-        $expected = '3 closing brace(s)';
-        $this->assertContains($expected, $this->exception->getMessage());
+        $exception = new Exception(10, 3);
+        $expected = '3 closing braces';
+        $this->assertContains($expected, $exception->getMessage());
         $expected = 'condition';
-        $this->assertContains($expected, $this->exception->getMessage());
+        $this->assertContains($expected, $exception->getMessage());
     }
 
     /**
@@ -29,7 +38,8 @@ class TypoScriptBracesMissingAtConditionExceptionTest
      */
     public function returnsLineNumber()
     {
-        $this->assertSame(10, $this->exception->getTemplateLineNumber());
+        $exception = new Exception(10, 3);
+        $this->assertSame(10, $exception->getTemplateLineNumber());
     }
 
 }

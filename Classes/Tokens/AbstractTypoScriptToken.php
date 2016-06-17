@@ -52,7 +52,7 @@ abstract class AbstractTypoScriptToken
     public function toTag()
     {
         return sprintf(static::FORMAT,
-            $this->tag, $this->classes, $this->value);
+            $this->tag, $this->classes, htmlspecialchars($this->value));
     }
 
 }

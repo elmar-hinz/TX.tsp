@@ -8,18 +8,25 @@ use ElmarHinz\TypoScriptParser\Exceptions\
 class TypoScriptBracesMissingAtEndOfTemplateExceptionTest
     extends \PHPUnit_Framework_TestCase
 {
-    public function setup()
+
+    /**
+     * @test
+     */
+    public function getMessage1()
     {
-        $this->exception = new Exception(4);
+        $exception = new Exception(1);
+        $expected = 'A closing brace is missing.';
+        $this->assertContains($expected, $exception->getMessage());
     }
 
     /**
      * @test
      */
-    public function getMessage()
+    public function getMessage3()
     {
-        $expected = '4 closing brace(s)';
-        $this->assertContains($expected, $this->exception->getMessage());
+        $exception = new Exception(3);
+        $expected = '3 closing braces missing.';
+        $this->assertContains($expected, $exception->getMessage());
     }
 
     /**
@@ -27,7 +34,8 @@ class TypoScriptBracesMissingAtEndOfTemplateExceptionTest
      */
     public function isEndOfTemplateException()
     {
-        $this->assertTrue($this->exception->isEndOfTemplateException());
+        $exception = new Exception(4);
+        $this->assertTrue($exception->isEndOfTemplateException());
     }
 }
 

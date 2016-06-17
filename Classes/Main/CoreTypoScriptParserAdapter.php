@@ -12,7 +12,7 @@ use	ElmarHinz\TypoScriptParser\Parsers\TypoScriptConditionsProcessor
     as ConditionsPreProcessor;
 use	ElmarHinz\TypoScriptParser\Parsers\TypoScriptSyntaxParser
     as SyntaxParser;
-use	ElmarHinz\TypoScriptParser\Formatters\TypoScriptFormatter
+use	ElmarHinz\TypoScriptParser\Formatters\TypoScriptSyntaxHighlightFormatter
     as Formatter;
 use	ElmarHinz\TypoScriptParser\Trackers\TypoScriptParsetimeExceptionTracker
     as ExceptionTracker;
@@ -60,6 +60,8 @@ class CoreTypoScriptParserAdapter extends CoreParser
         $exceptionTracker = new ExceptionTracker();
         $tokenTracker = new TokenTracker();
         $formatter = new Formatter();
+        $formatter->injectExceptionTracker($exceptionTracker);
+        $formatter->injectTokenTracker($tokenTracker);
         if (is_array($numbers) && count($numbers) > 0
             && is_int($numbers[0])) {
             $formatter->setNumberOfBaseLine($numbers[0]);
@@ -67,9 +69,11 @@ class CoreTypoScriptParserAdapter extends CoreParser
             $formatter->hideLineNumbers();
         }
 		$parser = new SyntaxParser();
-        $parser->injectFormatter($formatter);
+        $parser->injectExceptionTracker($exceptionTracker);
+        $parser->injectTokenTracker($tokenTracker);
         $parser->appendTemplate($template);
-        return $parser->parse();
+        $parser->parse();
+        return $formatter->format();
     }
 
 }

@@ -10,7 +10,7 @@ class AbstractTypoScriptTokenTest extends \PHPUnit_Framework_TestCase
     public function setup()
     {
         $this->token = $this->getMockBuilder(Token::class)
-             ->setMethods(null)->setConstructorArgs(['value'])->getMock();
+             ->setMethods(null)->setConstructorArgs(['1 < 2'])->getMock();
     }
 
     /**
@@ -18,7 +18,7 @@ class AbstractTypoScriptTokenTest extends \PHPUnit_Framework_TestCase
      */
     public function getDefaultValue()
     {
-        $this->assertSame('value', $this->token->getValue());
+        $this->assertSame('1 < 2', $this->token->getValue());
     }
 
     /**
@@ -42,7 +42,7 @@ class AbstractTypoScriptTokenTest extends \PHPUnit_Framework_TestCase
      */
     public function toDefaultTag()
     {
-        $this->assertSame('<span class="ts-abstract">value</span>',
+        $this->assertSame('<span class="ts-abstract">1 &lt; 2</span>',
             $this->token->toTag());
     }
 

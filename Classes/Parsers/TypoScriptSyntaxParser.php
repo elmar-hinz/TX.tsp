@@ -181,7 +181,7 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptSyntaxParser
             $tt->nextLine();
 		}
         if($braceLevel > 0)
-            $et->push(new FinalBracesException(2));
+            $et->push(new FinalBracesException($braceLevel));
         if($context == self::VALUE_CONTEXT)
             $et->push(new UnclosedValueException());
 		if($context == self::COMMENT_CONTEXT)

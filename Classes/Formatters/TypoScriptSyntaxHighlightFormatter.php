@@ -174,10 +174,14 @@ class TypoScriptSyntaxHighlightFormatter
 
     protected function buildFinalExceptions()
     {
-        return $this->buildExceptions(
+        $out = $this->buildExceptions(
             self::FINAL_EXCEPTIONS_FORMAT,
             $this->exceptionTracker->getFinalExceptions()
         );
+        if($out)
+            return "\n\n" . $out;
+        else
+            return '';
     }
 
     protected function buildExceptions($format, $exceptions, $nr = null)
