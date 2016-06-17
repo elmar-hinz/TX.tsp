@@ -50,7 +50,7 @@ use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptUnclosedConditionException
 use ElmarHinz\TypoScriptParser\Exceptions\TypoScriptUnclosedValueException
     as UnclosedValueException;
 
-class TypoScriptSyntaxParser extends AbstractTypoScriptSyntaxParser
+class TypoScriptSyntaxParser extends AbstractTypoScriptParser
 {
 
 	/**

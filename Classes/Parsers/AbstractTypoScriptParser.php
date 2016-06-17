@@ -3,6 +3,10 @@
 namespace ElmarHinz\TypoScriptParser\Parsers;
 
 use ElmarHinz\TypoScriptParser\Interfaces\TypoScriptParserInterface;
+use ElmarHinz\TypoScriptParser\Interfaces\
+    TypoScriptParsetimeExceptionTrackerPushInterface as ExceptionTracker;
+use ElmarHinz\TypoScriptParser\Interfaces\TypoScriptTokenTrackerPushInterface
+    as TokenTracker;
 
 abstract class AbstractTypoScriptParser implements TypoScriptParserInterface
 {
@@ -71,6 +75,9 @@ abstract class AbstractTypoScriptParser implements TypoScriptParserInterface
 	 * The lines to parse.
 	 */
 	protected $inputLines = Null;
+    protected $exceptionTracker = null;
+    protected $tokenTracker = null;
+
 
 	/*******************************************************
 	 * Methods
@@ -103,16 +110,25 @@ abstract class AbstractTypoScriptParser implements TypoScriptParserInterface
 	}
 
 	/**
-	 * Inject a syntax formatter
+	 * Inject the exectption tracker
 	 *
-	 * Only to be used by syntax parsers.
-	 *
-	 * @param TypoScriptFormatterInterface The formatter.
+     * @param ExceptionTracker $tracker The exception tracker.
 	 * @return void
 	 */
-	public function injectFormatter($formatter)
+	public function injectExceptionTracker(ExceptionTracker $tracker)
 	{
-		$this->formatter = $formatter;
+		$this->exceptionTracker = $tracker;
+	}
+
+	/**
+	 * Inject the token tracker
+	 *
+     * @param TokenTracker $tracker The token tracker.
+	 * @return void
+	 */
+	public function injectTokenTracker(TokenTracker $tracker)
+	{
+		$this->tokenTracker = $tracker;
 	}
 
 }

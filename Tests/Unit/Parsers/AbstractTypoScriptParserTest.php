@@ -2,14 +2,13 @@
 
 namespace ElmarHinz\TypoScriptParser\Tests\Unit\Parsers;
 
-use ElmarHinz\TypoScriptParser\Parsers\AbstractTypoScriptSyntaxParser
-    as Parser;
-use ElmarHinz\TypoScriptParser\Interfaces
-    \TypoScriptTokenTrackerPushInterface as TokenTracker;
-use ElmarHinz\TypoScriptParser\Interfaces
-    \TypoScriptParsetimeExceptionTrackerPushInterface as ExceptionTracker;
+use ElmarHinz\TypoScriptParser\Parsers\AbstractTypoScriptParser as Parser;
+use ElmarHinz\TypoScriptParser\Interfaces\
+    TypoScriptTokenTrackerPushInterface as TokenTracker;
+use ElmarHinz\TypoScriptParser\Interfaces\
+    TypoScriptParsetimeExceptionTrackerPushInterface as ExceptionTracker;
 
-class AbstractTypoScriptSyntaxParserTest extends \PHPUnit_Framework_TestCase
+class AbstractTypoScriptParserTest extends \PHPUnit_Framework_TestCase
 {
     public function setup()
     {
