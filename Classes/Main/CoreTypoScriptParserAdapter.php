@@ -43,7 +43,7 @@ class CoreTypoScriptParserAdapter extends CoreParser
             return (string)$this->executeValueModifier(
                 $modifier, $argument, $value);
 		} else {
-			// Error handling: not well formatted modifier
+			// Exception handling: not well formatted modifier
 		}
 	}
 

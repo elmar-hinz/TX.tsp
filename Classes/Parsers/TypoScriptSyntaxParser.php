@@ -54,13 +54,12 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptParser
 {
 
 	/**
-	 * Parse the lines to check and highlight the syntax
+	 * Parse the lines to and track tokens end exceptions
 	 *
-	 * Conditions are highlighted, but not evaluated in any way, because all
-     * lines need highlighting.
-	 *
+	 * Conditions are not evaluated, because all lines need highlighting.
+     *
      * Whenever a condition line is matched (including ELSE, END, GLOBAL),
-     * the brace level must be zero, else an error is reported and the
+     * the brace level must be zero, else an exception is reported and the
      * brace leven is set to zero.
 	 *
 	 * At the end of the script following checks are done:
@@ -69,10 +68,10 @@ class TypoScriptSyntaxParser extends AbstractTypoScriptParser
      * - unclosed multiline value
      * - unclosed braces
      *
-     * An error is reported, when a line within the default context doesn't
+     * An exception is reported, when a line within the default context doesn't
      * match any of the expected patterns.
 	 *
-	 * If a closing brace is in excess anywhere an error is reported
+	 * If a closing brace is in excess anywhere an exception is reported
 	 * and the brace level is set to zero.
 	 *
 	 * @return void

@@ -16,9 +16,9 @@ abstract class AbstractTypoScriptParsetimeException extends \Exception
     /**
      * Constructor
      *
-     * Parameter is the template line number of error detection, where the
-     * first line of the template is starting with 1. If the error is detected
-     * at the end of the template, false must be given instead.
+     * Parameter is the template line number of exception detection, where the
+     * first line of the template is starting with 1. If the exception is
+     * detected at the end of the template, false must be given instead.
      *
      * @parem mixed $templateLineNumberOrFalse See description above.
      */
@@ -30,8 +30,9 @@ abstract class AbstractTypoScriptParsetimeException extends \Exception
             = $templateLineNumberOrFalse;
         } else {
             throw new \BadMethodCallException(
-                'The parameter has to be the number of a line (integer) where
-                the error is detected or false for end of template exceptions.'
+                'The parameter has to be the number of the line (integer) ' .
+                'where the exception is detected or false for exceptions at ' .
+                'the end of the template.'
             , 1465382523);
         }
         parent::__construct(static::MESSAGE, static::CODE);
