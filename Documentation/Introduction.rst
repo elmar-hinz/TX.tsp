@@ -15,7 +15,7 @@ This extensions ships a TypoScript parser, that is suited to replace the
 original TypoScript parser for frontend rendering. In fact a family of
 parsers has been introduced, specialized on different tasks.
 
-* FE: TypoScriptConditionsProcessor
+* FE: TypoScriptConditionsPreProcessor
 * FE: TypoScriptProductionParser
 * BE: TypoScriptSyntaxParser
 
@@ -28,29 +28,36 @@ No Boost in Performance
 The parsing of TypoScript just takes a few milliseconds. Hence, it's not the
 primary goal to speed up the performance but to improve the architecture.
 The algorithm is twice as fast as the original algorithm, but with the
-split into conditions proprocessor and processor the time is about the same
+split into conditions preprocessor and processor the time is about the same
 again.
 
 What it is
 ==========
 
+Public Presentation
+-------------------
+
+First of all this extension is a public presentation of the rewritten parser.
+Should it replace the old parser of the core? If yes, it needs to be tested in
+the wild before until it is really stable.
+
 Standalone Usage
 ----------------
 
-It's possible to use the TypoScript parser standalone outside of the TYPO3 CMS
-if you like the TypoScript syntax and want to use it for configuration in other
+It's possible to use the TypoScript parser outside of the TYPO3 CMS, if you
+like the TypoScript syntax and want to use it for configuration in other
 fields. This is possible with or without the conditions preprocessor.
 
 Improving the error detection
 -----------------------------
 
 The error detection covers the error detection of the origional parser and
-tries be be a little better already. Also the displaying
-of the line numbers has been worked upon. See Screenshots!
+tries be be a little better already. Also the displaying of the line numbers
+has been worked upon. See Screenshots!
 
-Having done this prove of concept that the replacement of the original syntax
-highlighter can be done further debugging features are planned:
+Planned improvements in future versions:
 
+   * CLI interface to check TS within continuous integration workflows.
    * Do syntax highlighting of conditions, instead of printing them in one
      color.
    * Detect the difference of objects and properties, because only objects are
@@ -68,37 +75,25 @@ for it:
     * easy to debug
     * easy to extend
 
-A modern parser makes it more easy to get rid of flaws in TypoScript and to add
-new features like if-else conditions, that work the way you are used to from
-other languages or enhance error debugging.
+A modern parser makes it more easy to get rid of flaws in TypoScript, enhance
+error detection and add new features like if-else conditions, that work the way
+you are used to from other languages.
 
 Condition Preprocessor
 ----------------------
 
-Condition evaluation is done by a preprocessor. By separtion of the condition
-preprocessing it becomes possible to use the TypoScript parser without
-bothering with conditions and focus on it's task.
-
-On the other hand by isolating the conditions it becomes possible to enhance
-the condition preprocessing easily. For example it becomes easy to introduce an
-[ELSEIF] element.
+Condition evaluation has been separated into a preprocessor class. It becomes
+possible to use the TypoScript parser without bothering with conditions at all
+or apply different types of preprocessors. It's more simple to enhance the
+condition preprocessing, as an example think of a fullblown
+`IF-ELSEIF-ELSE-END` structure.
 
 As with the old parser the condition matching is handled by a third object.
 Exchanging this object enables the development of conditions, that address a
 completly different field than the TYPO3 CMS.
 
-Public Presentation
--------------------
-
-This is a public presentation of the parser. Should it replace the old
-parser of the core? If yes, it needs to be tested in the wild before until
-it is really stable. This is the extension to do so.
-
 Differences
 ===========
 
-* Backslash doesn't escape anything.
-* Escaping of dots in object keys is not supported.
-* Backslash is an allowed character in the keys (for PHP namespaces).
-
+* Escaping of dots by backslash is not supported.
 

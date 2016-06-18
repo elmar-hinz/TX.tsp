@@ -5,8 +5,6 @@
 
 .. include:: Includes.txt
 
-.. _start:
-
 =================================
 Next Generation TypoScript Parser
 =================================
@@ -47,7 +45,8 @@ Next Generation TypoScript Parser
     The content of this document is related to TYPO3,
     a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_.
 
-    **Table of Contents**
+Table of Contents
+=================
 
 .. toctree::
     :maxdepth: 3
@@ -56,10 +55,18 @@ Next Generation TypoScript Parser
     Introduction
     Screenshots
     Administration
+    KnownIssues
+
+Appendix
+========
+
+.. toctree::
+    :maxdepth: 3
+    :titlesonly:
+
     Architecture
     Exceptions
     Tokens
     Research
     LessonsLearned
-    KnownIssues
-
+    TODO

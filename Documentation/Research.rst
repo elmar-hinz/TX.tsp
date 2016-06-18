@@ -11,9 +11,9 @@
 Research
 ==============================
 
-----------------------------------------
-\Core\TypoScript\Parser\TyposcriptParser
-----------------------------------------
+--------------------------------------------
+\\Core\\TypoScript\\Parser\\TyposcriptParser
+--------------------------------------------
 
 Overview
 ========
@@ -36,23 +36,23 @@ parse into an array tree, when one actually want's a ``HTML`` string as result.
 Conditions
 ==========
 
-Inn the method ``parse()`` the template is branched into rendered and
+In the method ``parse()`` the template is branched into rendered and
 non-rendered parts based on conditions. The condition evalutation is delegated
-to a ``$matchObj`` that is injected by parameter.
+to a ``$matchObj``, that is injected by parameter.
 
 For each condition the method creates a hash and stores it into
-``$this->sections`` array. This are used by the ``TemplateService`` to cache
-the rendered templates matching combinations of conditions that evaluate to
+``$this->sections`` array. This are used by the ``TemplateService``, to cache
+the rendered templates matching combinations of conditions, that evaluate to
 true.
 
 Line numbering
 ==============
 
-There is a line number offset that sums up the line numbers of previously
+There is a line number offset, that sums up the line numbers of previously
 rendered templates. It is advanced at end of ``parse()``.
 
 The line numbers of the current template are tracked by ``$this->rawP`` in the
-main loop of ``parseSub()`` and also for the condition sections that evaluate
+main loop of ``parseSub()`` and also for the condition sections, that evaluate
 to false in the method ``nextDivider()``. ``$this->rawP`` is reset to zero at
 the beginning of the rendering of the current template in  the method
 ``parse()``.
@@ -78,7 +78,7 @@ Collected messages:
 * 'Object Name String, contains invalid character XXX. Must be alphanumeric or
   one of: "_:-\.".'
 * 'Object Name String XXX was not followed by any operator, =<>({'
-* '### ERROR: XXX' (Error to be extract form an error comment created in
+* '### ERROR: XXX' (Error to be extract from an error comment created in
   previous parsing steps like during template includes.)
 
 Syntax highlighting
